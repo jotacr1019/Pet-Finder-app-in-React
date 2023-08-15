@@ -1,0 +1,36 @@
+{
+    "name": "buscador-de-productos-en-react",
+    "version": "1.0.0",
+    "author": "José J. Fernández M.",
+    "description": "Buscador de productos de Mercado Libre hecho con React",
+    "keywords": [],
+    "license": "ISC",
+    "scripts": {
+        "dev": "cross-env NODE_ENV=development webpack",
+        "build": "cross-env NODE_ENV=production webpack",
+        "start": "live-server"
+    },
+    "devDependencies": {
+        "cross-env": "^7.0.3",
+        "ts-loader": "^9.4.4",
+        "typescript": "^5.1.6",
+        "webpack": "^5.88.2",
+        "webpack-cli": "^5.1.4"
+    },
+    "dependencies": {
+        "@emotion/react": "^11.11.1",
+        "@emotion/styled": "^11.11.0",
+        "@mui/icons-material": "^5.14.3",
+        "@mui/material": "^5.14.5",
+        "@types/react": "^18.2.18",
+        "css-loader": "^6.8.1",
+        "live-server": "^1.2.2",
+        "nuka-carousel": "^6.0.3",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-router-dom": "^6.14.2",
+        "recoil": "^0.7.7",
+        "save-dev": "^0.0.1-security",
+        "style-loader": "^3.3.3"
+    }
+}
