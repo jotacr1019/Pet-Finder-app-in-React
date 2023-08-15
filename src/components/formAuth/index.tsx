@@ -26,36 +26,36 @@ export function FormAuth(){
                 <input type="password" placeholder="Password" name="password"></input>
                 <button type="submit">Login</button> */}
                 <TextField
-                      required
-                      id="outlined-required"
-                      label="Email"
-                      defaultValue=""
-                      placeholder="ejemplo@mail.com"
-                      helperText="Incorrect entry."
-                      name="email"
+                    required
+                    id="outlined-required"
+                    label="Email"
+                    defaultValue=""
+                    placeholder="ejemplo@mail.com"
+                    helperText="Incorrect entry."
+                    name="email"
+                />
+                <FormControl sx={{ m: 1, width: '25ch' }} variant="filled">
+                    <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
+                    <OutlinedInput
+                        required
+                        id="outlined-adornment-password"
+                        type={showPassword ? 'text' : 'password'}
+                        name="password"
+                        label="Contraseña"
+                        endAdornment={
+                        <InputAdornment position="end">
+                            <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                                edge="end"
+                                >
+                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                        </InputAdornment>
+                        }
                     />
-                    <FormControl sx={{ m: 1, width: '25ch' }} variant="filled">
-          <InputLabel htmlFor="outlined-adornment-password">Password</InputLabel>
-          <OutlinedInput
-            required
-            id="outlined-adornment-password"
-            type={showPassword ? 'text' : 'password'}
-            name="password"
-            endAdornment={
-              <InputAdornment position="end">
-                <IconButton
-                  aria-label="toggle password visibility"
-                  onClick={handleClickShowPassword}
-                  onMouseDown={handleMouseDownPassword}
-                  edge="end"
-                >
-                  {showPassword ? <VisibilityOff /> : <Visibility />}
-                </IconButton>
-              </InputAdornment>
-            }
-            label="Contraseña"
-          />
-        </FormControl>
-        <Button type="submit" variant="contained">Submit</Button>
+                </FormControl>
+                <Button type="submit" variant="contained">Submit</Button>
             </form>)
 }
