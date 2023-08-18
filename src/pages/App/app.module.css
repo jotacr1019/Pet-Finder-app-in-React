@@ -1,8 +1,12 @@
 .root {
+    display: grid;
+    grid-template-columns: 1fr 45%;
+    justify-content: center;
+    align-items: center;
     height: 90vh;
     width: 100%;
-    background-image: url(../../assets/Petf4.jpeg);
+    /* background-image: url(../../assets/381shots_so.png);
     background-size: cover;
     background-repeat: no-repeat;
-    background-position: center;
+    background-position: center; */
 }

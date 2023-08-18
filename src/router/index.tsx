@@ -18,8 +18,8 @@ export function AppRoutes(){
     return (
         <Routes>
             <Route path="/" element={<Layout />}>
-                <Route index element={<Welcome />} />
-                <Route path="/Home" element={<Home />} />
+                <Route index path="/" element={<Welcome />} />
+                <Route path="/home" element={<Home />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/sign-up" element={<SignUp />} />
                 <Route path="/create-report" element={<CreateReport />} />

@@ -7,6 +7,6 @@ export function Layout(){
                 {/* <header style={{height: '10vh', backgroundColor: 'green', width: '100%'}}>Layout</header> */}
                 <Navbar />
                     <Outlet />
-                <footer>Footer</footer>
+                {/* <footer>Footer</footer> */}
             </div>
 }
