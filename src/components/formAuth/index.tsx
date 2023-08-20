@@ -7,12 +7,12 @@ import { Typography,
     Backdrop,
     CircularProgress,
     Grow } from '@mui/material';
-    import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { CustomButton } from "../../ui/button";
 import { CustomTextField } from "../../ui/textField";
 import { CustomPasswordField } from "../../ui/passwordField";
-import { useAuthData } from "../../hooks/auth";
-import { authUserInDB } from "../../lib";
+import { useAuthData, useAuthUserInDB } from "../../hooks/authUser";
+import { authUserInDB } from "../../lib/api";
 import css from "./index.module.css";
 
 
@@ -24,19 +24,20 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 });
 
 export function FormAuth(){
+    const [authData, setAuthData] = useAuthData();
+    const { login } = useAuthUserInDB();
+
     const [openSnackbar, setOpenSnackbar] = useState(false);
 
     const [openReload, setOpenReload] = useState(false);
 
-    const [authData, setAuthData] = useAuthData();
+    const [isValidEmail, setIsValidEmail] = useState(false)  
 
-    const [isValid, setIsValid] = useState(false)  
-
-    const [dirty, setDirty] = useState(false);
+    const [errorLabel, setErrorLabel] = useState(false);
     
     const [urlVisible, setUrlVisible] = useState(false);
     
-    const [checked, setChecked] = useState(false);
+    const [growChecked, setGrowChecked] = useState(false);
 
     const navigate = useNavigate();
 
@@ -52,7 +53,7 @@ export function FormAuth(){
     };
 
     useEffect(() => {
-        setChecked((prev) => !prev);
+        setGrowChecked((prev) => !prev);
     }, [])
     
     const handleFormSubmit = async (e) => {
@@ -62,10 +63,10 @@ export function FormAuth(){
         const password = e.target.password.value;
 
         if(isEmail(e.target.email.value)){
-            setIsValid(true);
-            setDirty(false);
+            setIsValidEmail(true);
+            setErrorLabel(false);
             setAuthData({ email, password });
-            const response = await authUserInDB(email, password);
+            const response = await login(email, password);
             
             if (response) {
                 setOpenReload(false)
@@ -78,12 +79,12 @@ export function FormAuth(){
 
         } else {
             setOpenReload(false)
-            setIsValid(false);
-            setDirty(true);
+            setIsValidEmail(false);
+            setErrorLabel(true);
         }
     }
 
-    return (<Grow in={checked}>
+    return (<Grow in={growChecked}>
                 <Box sx={{ boxShadow: "rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px",
                         width: { xs: '80%', sm: '60%' , md: '50%', lg: '40%' },
                         height: '68%',
@@ -107,12 +108,12 @@ export function FormAuth(){
                         </Typography>
                         <CustomTextField
                             required={true}
-                            id="outlined-error"
+                            id="outlined-email"
                             label="Email"
                             placeholder="ejemplo@mail.com"
                             name="email"
                             onChange={handleEmailandPasswordInputs}
-                            error={dirty && isValid === false} 
+                            error={errorLabel && isValidEmail === false} 
                         />
                         <CustomPasswordField
                             required={true} 
@@ -135,21 +136,21 @@ export function FormAuth(){
                         </Typography>
                         <CustomButton type="submit" variant="contained">Acceder</CustomButton>
                     </Box>
-                <Snackbar   open={openSnackbar} 
-                            autoHideDuration={5000} 
-                            onClose={handleSnackbarClose} >
-                    <Alert  onClose={handleSnackbarClose} 
-                            severity="error" 
-                            sx={{ width: '100%' }} >
-                        Email o contraseña incorrectos!
-                    </Alert>
-                </Snackbar>
-                <Backdrop
-                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                    open={openReload}
-                >   
-                    <CircularProgress color="inherit" />
-                </Backdrop>
+                    <Snackbar   open={openSnackbar} 
+                                autoHideDuration={5000} 
+                                onClose={handleSnackbarClose} >
+                        <Alert  onClose={handleSnackbarClose} 
+                                severity="error" 
+                                sx={{ width: '100%' }} >
+                            Email o contraseña incorrectos!
+                        </Alert>
+                    </Snackbar>
+                    <Backdrop
+                        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                        open={openReload}
+                    >   
+                        <CircularProgress color="inherit" />
+                    </Backdrop>
                 </Box>
             </Grow>)
 }

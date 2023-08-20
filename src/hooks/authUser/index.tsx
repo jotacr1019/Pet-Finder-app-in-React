@@ -1,12 +1,7 @@
 import { useEffect } from "react";
 import { useRecoilValue, useRecoilState } from "recoil";
-// import {
-//     authDataState,
-//     resultState,
-// } from "../../atoms/auth";
 import { atom, selector } from "recoil";
-
-
+import { authUserInDB } from "../../lib/api";
 
 
 export const authDataState = atom({
@@ -17,7 +12,28 @@ export const authDataState = atom({
     },
 });
 
-console.log({ authDataState });
+export const useAuthData = () => useRecoilState(authDataState);
+
+export function useAuthUserInDB() {
+    async function login(email, password) {
+        try {
+            const userToken = await authUserInDB(email, password);
+            if(userToken){
+                localStorage.setItem("user_token", userToken);
+                return true;
+            } else {
+                console.error("Email o contraseña incorrecta");
+                return false;
+            }
+        } catch (e) {
+            console.error("Ha habido un error: ", e);
+            return false;
+        }
+    }
+    return {
+        login,
+    };
+}
 
 
 // export const resultState = selector({
@@ -53,7 +69,6 @@ console.log({ authDataState });
 //     },
 // });
 
-export const useAuthData = () => useRecoilState(authDataState);
 
 // export function useTokenData() {
 //     // const params = useParams();
