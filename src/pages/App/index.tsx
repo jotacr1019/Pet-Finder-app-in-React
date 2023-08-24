@@ -24,12 +24,13 @@ export function Welcome(){
                         height: '100%'
                         // width:'324px',
                         // height: '242px'
-                }}>
+                    }}>
                     <Box component='img' 
                             sx={{width:{ xs: '324px', sm: '324px', md: '100%' }, 
                                 height: { xs: '242px', sm: '242px', md: 'auto' }}} 
                             src="../../src/assets/663shots_so.png" 
-                            alt="dogs"/>
+                            alt="dogs"
+                    />
                 </Box>
                 <Box sx={{ width: '100%', 
                         display: 'flex',  

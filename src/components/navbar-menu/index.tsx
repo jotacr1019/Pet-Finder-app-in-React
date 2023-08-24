@@ -32,7 +32,7 @@ export function CustomMenu({navLinks, anchorEl, open, onClose}){
                                     <ListItemIcon sx={{ justifyContent: 'center' }}>
                                         {item.icon}
                                     </ListItemIcon> 
-                                        <ListItemButton>
+                                        <ListItemButton sx={{ '&:hover': {backgroundColor: 'transparent' }}}>
                                             <ListItemText primary={item.name} />
                                         </ListItemButton>
                                     </MenuItem>

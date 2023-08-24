@@ -16,7 +16,7 @@ import LogoutIcon from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
 import { grey } from '@mui/material/colors';
 import { Link } from "react-router-dom";
-import { CustomMenu } from "../menu";
+import { CustomMenu } from "../navbar-menu";
 
 
 const greyColor = grey[900];
@@ -58,7 +58,7 @@ export function Navbar() {
             pathSources: ['/edit-data', '/edit-report', '/edit-password', '/user-reports', '/create-report']
         },
         {
-            name: 'Logout',
+            name: 'Cerrar sesión',
             path: '/', 
             icon: <LogoutIcon />,
             variant: "text",
@@ -72,7 +72,7 @@ export function Navbar() {
             pathSources: ['/auth', '/sign-up', '/home']
         },
         {
-            name: 'Sign in',
+            name: 'Iniciar sesión',
             path: '/auth', 
             icon: <LoginIcon />,
             variant: "text",
@@ -111,10 +111,10 @@ export function Navbar() {
                             if (item.pathSources.includes(location.pathname)) {
                                 let buttonVariant: any = 'text';
                                 let buttonColor: any = '#20b2aa'
-                                if (item.name === 'Sign in'|| item.name === 'Logout') {
+                                if (item.name === 'Iniciar sesión'|| item.name === 'Cerrar sesión') {
                                     buttonVariant = 'outlined'; 
                                 }
-                                if (item.name === 'Logout') {
+                                if (item.name === 'Cerrar sesión') {
                                     buttonColor = '#f08080'; 
                                 }
                                 return (<div key={item.name}>
