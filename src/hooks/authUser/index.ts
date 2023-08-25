@@ -3,12 +3,10 @@ import { useRecoilValue, useRecoilState } from "recoil";
 import { atom, selector } from "recoil";
 import { authUserInDB } from "../../lib/api";
 
-
 export const authDataState = atom({
     key: "authData",
     default: {
         email: "",
-        password: "",
     },
 });
 
@@ -18,7 +16,7 @@ export function useAuthUserInDB() {
     async function login(email, password) {
         try {
             const userToken = await authUserInDB(email, password);
-            if(userToken){
+            if (userToken) {
                 localStorage.setItem("user_token", userToken);
                 return true;
             } else {
@@ -35,13 +33,12 @@ export function useAuthUserInDB() {
     };
 }
 
-
 // export const resultState = selector({
 //     key: "authDataState",
 //     get: async ({ get }) => {
 //         const data = get(authDataState);
 //         console.log({ data });
-        
+
 //         const email = data.email;
 //         const password = data.password;
 
@@ -54,7 +51,7 @@ export function useAuthUserInDB() {
 //                 body: JSON.stringify({ email, password }),
 //             });
 //             console.log({ response });
-            
+
 //             if (response.status === 200) {
 //                 const token = await response.json();
 //                 return token;
@@ -69,11 +66,9 @@ export function useAuthUserInDB() {
 //     },
 // });
 
-
 // export function useTokenData() {
 //     // const params = useParams();
 //     const [authData, setAuthData] = useRecoilState(authDataState);
-
 
 //     // useEffect(() => {
 //     //     setAuthData({ email: authData.email, password: authData.password });

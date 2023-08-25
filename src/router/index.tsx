@@ -5,8 +5,6 @@ import { Layout } from "../components/layout";
 import { Welcome } from "../pages/App";
 import { Auth } from "../pages/Auth";
 import { CreateReport } from "../pages/Create-report";
-import { EditData } from "../pages/Edit-data";
-import { EditPassword } from "../pages/Edit-password";
 import { EditReport } from "../pages/Edit-report";
 import { Home } from "../pages/Home";
 import { Menu } from "../pages/Menu";
@@ -24,8 +22,6 @@ export function AppRoutes(){
                 <Route path="/sign-up" element={<SignUp />} />
                 <Route path="/create-report" element={<CreateReport />} />
                 <Route path="/menu" element={<Menu />} />
-                <Route path="/edit-data" element={<EditData />} />
-                <Route path="/edit-password" element={<EditPassword />} />
                 <Route path="/user-reports" element={<UserReports />} />
                 <Route path="/edit-report" element={<EditReport />} />
             </Route>

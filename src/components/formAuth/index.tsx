@@ -65,7 +65,7 @@ export function FormAuth(){
         if(isEmail(e.target.email.value)){
             setIsValidEmail(true);
             setErrorLabel(false);
-            setAuthData({ email, password });
+            setAuthData(email);
             const response = await login(email, password);
             
             if (response) {

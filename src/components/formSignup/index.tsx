@@ -12,7 +12,6 @@ import { CustomButton } from "../../ui/button";
 import { CustomTextField } from "../../ui/textField";
 import { CustomPasswordField } from "../../ui/passwordField";
 import { useNewUserData, useCreateUserInDB } from "../../hooks/createUser";
-import { createUserInDB } from "../../lib/api";
 import css from "./index.module.css";
 
 
@@ -35,7 +34,9 @@ export function FormSignup(){
 
     const [urlVisible, setUrlVisible] = useState(false);
 
-    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
+    const [openEmailSnackbar, setOpenEmailSnackbar] = useState(false);
+    const [openPasswordSnackbar, setOpenPasswordSnackbar] = useState(false);
 
     const [openReload, setOpenReload] = useState(false);
 
@@ -45,11 +46,11 @@ export function FormSignup(){
         setUrlVisible(Boolean(event.target.value.length));
     };
 
-    const handleSnackbarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
+    const handleSnackbarClose = (closeSnackbar, event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
             return;
         }
-        setOpenSnackbar(false);
+        closeSnackbar(false);
     };
 
     useEffect(() => {
@@ -59,18 +60,15 @@ export function FormSignup(){
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         setOpenReload(true);
-        console.log(e.target.name.value);
         const full_name = e.target.name.value
-        console.log(e.target.email.value);
         const email = e.target.email.value
-        console.log(e.target.password.value);
         const password = e.target.password.value
-        console.log(e.target.confirmPassword.value);
         const confirmPassword = e.target.confirmPassword.value
 
         if(password !== confirmPassword){
             setOpenReload(false)
             console.log("Las contraseñas no coinciden");
+            setOpenPasswordSnackbar(true);
         } else {
             if(isEmail(e.target.email.value)){
                 setIsValidEmail(true);
@@ -88,15 +86,15 @@ export function FormSignup(){
                     navigate("/user-reports");
                 } else {
                     setOpenReload(false)
-                    setOpenSnackbar(true);
+                    setOpenErrorSnackbar(true);
                 }
             } else {
-                setOpenReload(false)
+                setOpenReload(false);
+                setOpenEmailSnackbar(true);
                 setIsValidEmail(false);
                 setErrorLabel(true);
             }
         }
-
     }
 
     return (<Grow in={growChecked}>
@@ -129,7 +127,7 @@ export function FormSignup(){
                             Ingresa los siguientes datos para completar el registro
                         </Typography>
                         <CustomTextField
-                            required={true}
+                            required={urlVisible}
                             id="outlined-name-input"
                             label="Nombre"
                             placeholder="Ingresa tu nombre"
@@ -137,7 +135,7 @@ export function FormSignup(){
                             onChange={handleInputsCompletation}
                         />
                         <CustomTextField
-                            required={true}
+                            required={urlVisible}
                             id="outlined-email-input"
                             label="Email"
                             placeholder="ejemplo@mail.com"
@@ -146,15 +144,16 @@ export function FormSignup(){
                             error={errorLabel && isValidEmail === false}
                         />
                         <CustomPasswordField
-                            required={true} 
+                            required={urlVisible} 
                             id='outlined-adornment-password'
                             outlinedInputLabel='Contraseña'
                             label='Contraseña'
                             name='password'
-                            onChange={handleInputsCompletation}>
+                            onChange={handleInputsCompletation}
+                            >
                         </CustomPasswordField>
                         <CustomPasswordField 
-                            required={true}
+                            required={urlVisible}
                             id='outlined-adornment-confirm-password'
                             outlinedInputLabel='Confirmar contraseña'
                             label='Confirmar contraseña'
@@ -174,13 +173,31 @@ export function FormSignup(){
                         </Typography>
                         <CustomButton type="submit" variant="contained">Registrarse</CustomButton>
                     </Box>
-                    <Snackbar   open={openSnackbar} 
+                    <Snackbar   open={openErrorSnackbar} 
                                 autoHideDuration={5000} 
-                                onClose={handleSnackbarClose} >
-                        <Alert  onClose={handleSnackbarClose} 
+                                onClose={() => handleSnackbarClose(setOpenErrorSnackbar)} >
+                        <Alert  onClose={() => handleSnackbarClose(setOpenErrorSnackbar)} 
                                 severity="error" 
                                 sx={{ width: '100%' }} >
                             Email o contraseña incorrectos!
+                        </Alert>
+                    </Snackbar>
+                    <Snackbar   open={openEmailSnackbar} 
+                                autoHideDuration={5000} 
+                                onClose={() => handleSnackbarClose(setOpenEmailSnackbar)} >
+                        <Alert  onClose={() => handleSnackbarClose(setOpenEmailSnackbar)} 
+                                severity="error" 
+                                sx={{ width: '100%' }} >
+                            No es un formato de correo válido!
+                        </Alert>
+                    </Snackbar>
+                    <Snackbar   open={openPasswordSnackbar} 
+                                autoHideDuration={5000} 
+                                onClose={() => handleSnackbarClose(setOpenPasswordSnackbar)} >
+                        <Alert  onClose={() => handleSnackbarClose(setOpenPasswordSnackbar)} 
+                                severity="error" 
+                                sx={{ width: '100%' }} >
+                            Las contraseñas no coinciden!
                         </Alert>
                     </Snackbar>
                     <Backdrop
