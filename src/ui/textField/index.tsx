@@ -5,6 +5,7 @@ import { TextField } from "@mui/material";
 export function CustomTextField({...props}) {
     return <TextField
                 required={props.required}
+                disabled={props.disabled}
                 id={props.id}
                 name={props.name}
                 label={props.label}
@@ -14,7 +15,8 @@ export function CustomTextField({...props}) {
                 error={props.error}
                 // helperText={props.helperText}
                 type="text"
-                defaultValue=""
+                value={props.value}
+                // defaultValue=""
                 // helperText="Incorrect entry."
                 sx={{ input: { color: 'white' },
                     label: { color: 'white' },

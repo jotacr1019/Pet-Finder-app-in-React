@@ -1,0 +1,17 @@
+.root {
+    position: relative;
+    display: inline-block;
+    /* O el valor que desees */
+}
+
+.root :hover {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(10px);
+    /* O el filtro que desees */
+    z-index: -1;
+}

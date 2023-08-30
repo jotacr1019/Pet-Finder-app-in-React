@@ -23,3 +23,17 @@ export const backdropFilterState = atom({
 });
 
 export const useBackdropFilterState = () => useRecoilState(backdropFilterState);
+
+const imagesAtom = atom({
+    key: "images",
+    default: [],
+});
+
+export const useImagesUrl = () => useRecoilState(imagesAtom);
+
+const locationNameAtom = atom({
+    key: "locationName",
+    default: "",
+});
+
+export const useLocationName = () => useRecoilState(locationNameAtom);

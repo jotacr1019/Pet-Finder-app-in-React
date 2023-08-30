@@ -17,7 +17,8 @@ export function Menu(){
                         backgroundSize: 'cover'
                         // backgroundColor: '#4267ac'
                     }}>
-                <Typography sx={{   
+                <Typography variant="h2"
+                            sx={{   
                                 fontSize: {xs: '2rem', sm: '3rem', md: '4.5rem', lg: '5.2rem'},
                                 textAlign: 'center',
                                 color: '#d1466c'

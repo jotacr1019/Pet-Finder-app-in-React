@@ -1,5 +1,4 @@
 import React from "react";
-import css from "./app.module.css";
 import { Box, Typography } from '@mui/material';
 import { InfoMessage } from "../../components/infoMessage";
 import { LocationData } from "../../components/locationData";
@@ -7,7 +6,6 @@ import { LocationData } from "../../components/locationData";
 
 
 export function Welcome(){
-    // return <div className={css.root}>
     return  <Box    sx={{ 
                         display: {xs: 'grid', md: 'flex'}, 
                         width: '100%',
@@ -68,7 +66,7 @@ export function Welcome(){
                                 display: 'flex',
                                 flexDirection: 'column',
                                 width: {xs: '95%', sm: '80%', lg: '65%'},
-                                gap: '14px' 
+                                gap: {xs: '14px', lg: '20px'} 
                             }}>
                         <LocationData></LocationData>
                         <InfoMessage></InfoMessage>

@@ -27,12 +27,15 @@ export function CustomMenu({navLinks, anchorEl, open, onClose}){
                         return (<Link   key={item.name} 
                                         onClick={onClose} 
                                         className={css.link}
-                                        to={item.path}>
-                                    <MenuItem>
+                                        to={item.path} >
+                                    <MenuItem >
                                     <ListItemIcon sx={{ justifyContent: 'center' }}>
                                         {item.icon}
                                     </ListItemIcon> 
-                                        <ListItemButton sx={{ '&:hover': {backgroundColor: 'transparent' }}}>
+                                        <ListItemButton sx={{ 
+                                                            '&:hover': {backgroundColor: 'transparent' }
+                                                        }}
+                                                        disableRipple >
                                             <ListItemText primary={item.name} />
                                         </ListItemButton>
                                     </MenuItem>
