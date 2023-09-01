@@ -69,31 +69,33 @@ export function FormSignup(){
             setOpenReload(false)
             console.log("Las contraseñas no coinciden");
             setOpenPasswordSnackbar(true);
+            return;
+        }
+
+        if(!isEmail(e.target.email.value)){
+            setOpenReload(false);
+            setOpenEmailSnackbar(true);
+            setIsValidEmail(false);
+            setErrorLabel(true);
+            return;
+        }
+
+        setIsValidEmail(true);
+        setErrorLabel(false);
+        setUserData({
+            full_name,
+            email,
+            password
+        });
+        const response = await createUser({full_name, email, password});
+        
+        if (response) {
+            setOpenReload(false)
+            e.target.reset();
+            navigate("/user-reports");
         } else {
-            if(isEmail(e.target.email.value)){
-                setIsValidEmail(true);
-                setErrorLabel(false);
-                setUserData({
-                    full_name,
-                    email,
-                    password
-                });
-                const response = await createUser({full_name, email, password});
-                
-                if (response) {
-                    setOpenReload(false)
-                    e.target.reset();
-                    navigate("/user-reports");
-                } else {
-                    setOpenReload(false)
-                    setOpenErrorSnackbar(true);
-                }
-            } else {
-                setOpenReload(false);
-                setOpenEmailSnackbar(true);
-                setIsValidEmail(false);
-                setErrorLabel(true);
-            }
+            setOpenReload(false)
+            setOpenErrorSnackbar(true);
         }
     }
 

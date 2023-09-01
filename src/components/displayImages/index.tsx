@@ -82,22 +82,17 @@ const ImageMarked = styled('span')(({ theme }) => ({
 export function DisplayImages(props) {
     const {imagesReceived} = props
     const {onChange} = props;
-    // console.log({images});
+
     const [imagesUrl, setImagesUrl] = useState([]);
 
     const [deletedImagesUrl, setDeletedImagesUrl] = useState([]);
 
     useEffect(() => {
-        // if (onChange) {
-        //     onChange(imagesUrl);
-        // }
-        // console.log('imagesReceived en display: ', imagesReceived);
         // setImagesUrl(imagesReceived.filter((item)=> imagesUrl.includes(item)));
         setImagesUrl(imagesReceived);
     }, [imagesReceived])
 
     useEffect(() => {
-        // console.log('deletedImagesUrl en display: ', deletedImagesUrl);
         if (onChange) {
             onChange(deletedImagesUrl);
         }

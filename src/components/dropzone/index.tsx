@@ -1,6 +1,6 @@
 import React, {useCallback, useState, useEffect} from 'react'
 import {useDropzone} from 'react-dropzone'
-import { Button, Box, Typography, fabClasses } from '@mui/material'
+import { Button, Box } from '@mui/material'
 
 
 type MyDropzoneProps = {
@@ -9,26 +9,26 @@ type MyDropzoneProps = {
 
 export function MyDropzone(props){ 
     const {onChange}: MyDropzoneProps = props;
-    // const {imagesFromCreateReport} = props;
 
     const [disabled, setDisabled] = useState(false);
 
     const [imageUrls, setImageUrls] = useState([]);
 
-    const [open, setOpen] = useState(false);
-
-    // const [disabledBtn, setDisabledBtn] = useState(false);
-
-
-    const handleSaveBtn = () => {
-        // setOpen(true);
-        // setDisabledBtn(false);
-    }
-
     const onDrop = useCallback(acceptedFiles => {
-        // console.log({acceptedFiles});
-        const newUrls = acceptedFiles.map(file => URL.createObjectURL(file));
-        setImageUrls(prevUrls => [...prevUrls, ...newUrls])
+        const file = acceptedFiles[0];
+        const i = new Image();
+
+        const reader = new FileReader();
+        reader.onload = function (event) {
+            const imgDataURL = event.target.result;
+            setImageUrls(prevUrls => [...prevUrls, ...[imgDataURL]]);
+        };
+        reader.readAsDataURL(file);
+        i.onload = () => {
+            i.src = file.preview;
+        }
+
+        i.src = file.preview;
     }, [])
 
     useEffect(()=>{
@@ -36,10 +36,6 @@ export function MyDropzone(props){
             onChange(imageUrls);
         }
     }, [imageUrls])
-
-    // useEffect(()=>{
-        
-    // }, [imagesFromCreateReport])
 
     useEffect(()=>{
         setDisabled(props.disabled);
@@ -56,7 +52,6 @@ export function MyDropzone(props){
                 <input  {...getInputProps()} />
                 <Button variant="contained"
                         disabled={disabled}
-                        onClick={handleSaveBtn}
                         sx={{ width: '100%',
                             fontSize: { md: '1rem', lg: '1.1rem'},
                         }} >

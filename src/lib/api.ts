@@ -1,9 +1,19 @@
 // const API_BASE_URL = "http://localhost:8080";
 const API_BASE_URL = "https://pet-finder-app-muig.onrender.com";
+// const API_BASE_URL = "http://localhost:6008";
 
 type userData = {
     full_name: string;
     email: string;
+};
+
+type petData = {
+    name: string;
+    location: string;
+    imagesUrl: string[];
+    status: string;
+    last_lat: number;
+    last_lng: number;
 };
 
 export async function authUserInDB(email: string, password: string) {
@@ -127,6 +137,29 @@ export async function updatePasswordInDB(password: string, token: string) {
         }
         if (response.status === 500) {
             return false;
+        }
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
+export async function createPetInDB(petData: petData, token: string) {
+    try {
+        const response = await fetch(API_BASE_URL + "/pets", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+            },
+            body: JSON.stringify(petData),
+        });
+        if (response.status === 401) {
+            console.log("Token inválido");
+            return null;
+        }
+        if (response.status === 201) {
+            return true;
         }
     } catch (err) {
         console.log(err);

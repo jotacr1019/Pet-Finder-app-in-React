@@ -43,6 +43,7 @@ export function CustomEditData(){
     const [openFailSnackbar, setOpenFailSnackbar] = useState(false);
     const [openEmailSnackbar, setOpenEmailSnackbar] = useState(false);
     const [openSuccessSnackbar, setOpenSuccessSnackbar] = useState(false);
+    const [openUnsuccessSnackbar, setOpenUnsuccessSnackbar] = useState(false);
 
     const [eventNameFullFilled, setNameFullFilled] = useState(false);
     const [eventEmailFullFilled, setEmailFullFilled] = useState(false);
@@ -70,40 +71,48 @@ export function CustomEditData(){
         setBtnSaveDataDisabled(eventNameFullFilled && eventEmailFullFilled ? false : true);
     }, [eventNameFullFilled, eventEmailFullFilled])
 
-    const pullData = async() => {
+    const pullData = async(token) => {
         const form: HTMLFormElement = document.querySelector('.formData');
-        const userToken = localStorage.getItem("user_token");
-        if (userToken) {
-            const dataResponse = await getDataOfUserFromDB(userToken);
-            form.full_name.value = dataResponse.full_name;
-            form.email.value = dataResponse.email;
-            setNameFullFilled(true);
-            setEmailFullFilled(true);
-            return true;
-        } else {
+        const dataResponse = await getDataOfUserFromDB(token);
+        
+        if(!dataResponse){
             return false;
         }
+
+        form.full_name.value = dataResponse.full_name;
+        form.email.value = dataResponse.email;
+        setNameFullFilled(true);
+        setEmailFullFilled(true);
+        return true;
     }
 
     const handleDataChange = async () => {
         setBtnDataLoading(true);
         setBtnPasswordDisabled(true);
         const userToken = localStorage.getItem("user_token");
-        if (userToken) {
-            const response = await pullData()
-            if(response){
-                setBtnSaveDataDisabled(false);
-                setBtnDataLoading(false);
-                setDisplayDivData('flex')
-                setBackDropFilter('brightness(0.5)')
-                setCollapseDataChecked(true);
-                setButtonDataDisplay('none');
-            }
-        } else {
+
+        if(!userToken){
             setBtnDataLoading(false);
             setBtnPasswordDisabled(false);
             setOpenTokenSnackbar(true);
+            return;
         }
+
+        const response = await pullData(userToken)
+
+        if(!response){
+            setBtnDataLoading(false);
+            setBtnPasswordDisabled(false);
+            setOpenUnsuccessSnackbar(true);
+            return;
+        }
+
+        setBtnSaveDataDisabled(false);
+        setBtnDataLoading(false);
+        setDisplayDivData('flex')
+        setBackDropFilter('brightness(0.5)')
+        setCollapseDataChecked(true);
+        setButtonDataDisplay('none');
     }
 
     const handleDataSubmit = async(e) => {
@@ -111,27 +120,30 @@ export function CustomEditData(){
         setBtnSaveLoading(true);
         const full_name = e.target.full_name.value;
         const email = e.target.email.value;
-        if(isEmail(e.target.email.value)){
-            setIsValidEmail(true);
-            setErrorLabel(false);
-            setPersonalData({full_name, email});
-            const response = await updateUser({full_name, email});
-            if (response){
-                setOpenSuccessSnackbar(true);
-                setBtnPasswordDisabled(false);
-                setDisplayDivData('flex')
-                setCollapseDataChecked(false);
-                setBackDropFilter('none');
-                setButtonDataDisplay('initial');
-                setBtnSaveLoading(false);
-            } else {
-                setOpenFailSnackbar(true);
-            }
-        } else {
-            setBtnSaveLoading(false);
+
+        if(!isEmail(e.target.email.value)){
             setOpenEmailSnackbar(true);
             setIsValidEmail(false);
             setErrorLabel(true);
+            setBtnSaveLoading(false);
+            return;
+        }
+
+        setIsValidEmail(true);
+        setErrorLabel(false);
+        setPersonalData({full_name, email});
+        
+        const response = await updateUser({full_name, email});
+        if (response){
+            setOpenSuccessSnackbar(true);
+            setBtnPasswordDisabled(false);
+            setDisplayDivData('flex')
+            setCollapseDataChecked(false);
+            setBackDropFilter('none');
+            setButtonDataDisplay('initial');
+            setBtnSaveLoading(false);
+        } else {
+            setOpenFailSnackbar(true);
         }
     }
 
@@ -250,6 +262,15 @@ export function CustomEditData(){
                             severity="success" 
                             sx={{ width: '100%' }} >
                         Los datos han sido actualizados!
+                    </Alert>
+                </Snackbar>
+                <Snackbar   open={openUnsuccessSnackbar} 
+                            autoHideDuration={5000} 
+                            onClose={() => handleSnackbarClose(setOpenUnsuccessSnackbar)} >
+                    <Alert  onClose={() => handleSnackbarClose(setOpenUnsuccessSnackbar)} 
+                            severity="error" 
+                            sx={{ width: '100%' }} >
+                        Ha ocurrido un error, intenta nuevamente!
                     </Alert>
                 </Snackbar>
                 <Snackbar   open={openFailSnackbar} 

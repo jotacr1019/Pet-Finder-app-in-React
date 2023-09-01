@@ -110,16 +110,20 @@ export function Navbar() {
                         {navLinks.map((item, index) => {
                             if (item.pathSources.includes(location.pathname)) {
                                 let buttonVariant: any = 'text';
-                                let buttonColor: any = '#20b2aa'
+                                let buttonColor: any = '#20b2aa';
                                 if (item.name === 'Iniciar sesión'|| item.name === 'Cerrar sesión') {
-                                    buttonVariant = 'outlined'; 
+                                    buttonVariant = 'outlined';
                                 }
                                 if (item.name === 'Cerrar sesión') {
                                     buttonColor = '#f08080'; 
                                 }
                                 return (<div key={item.name}>
                                             <Link style={{ textDecoration: 'none', color: 'white' }} to={item.path}>
-                                                <Button variant={buttonVariant} color={'inherit'} sx={{'&:hover': { color: buttonColor }}}>{item.name}</Button>
+                                                <Button variant={buttonVariant} 
+                                                        color={'inherit'} 
+                                                        sx={{ '&:hover': { color: buttonColor }}}>
+                                                    {item.name}
+                                                </Button>
                                             </Link>
                                         </div>)
                             }

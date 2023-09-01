@@ -38,7 +38,7 @@ const initialState: mapboxData = {
     }
 }
 
-export function FormCreateReport(){
+export function FormEditReport(){
     const [petReportData, setPetReportData] = usePetReport();
 
     const { createPetReport } = useCreatePetReport();

@@ -65,15 +65,17 @@ export function CustomEditPassword(){
 
     const handlePasswordChange = () => {
         const userToken = localStorage.getItem("user_token");
-        if (userToken) {
-            setBtnDataDisabled(true);
-            setBackDropFilter('brightness(0.5)')
-            setDisplayDivPassword('flex')
-            setCollapsePasswordChecked(true);
-            setButtonPasswordDisplay('none');
-        } else {
+
+        if (!userToken) {
             setOpenTokenSnackbar(true);
+            return;
         }
+
+        setBtnDataDisabled(true);
+        setBackDropFilter('brightness(0.5)')
+        setDisplayDivPassword('flex')
+        setCollapsePasswordChecked(true);
+        setButtonPasswordDisplay('none');
     }
 
     const handlePasswordSubmit = async (e) => {
@@ -82,26 +84,28 @@ export function CustomEditPassword(){
         setBtnCancelDisabled(true);
         const password = e.target.password.value;
         const confirmPassword = e.target.confirmPassword.value;
+        
         if(password !== confirmPassword){
             setBtnSaveLoading(false);
             setOpenPasswordSnackbar(true);
             setBtnCancelDisabled(false);
+            return;
+        } 
+
+        const response = await updatePassword(password);
+        if (response){
+            setOpenSuccessSnackbar(true);
+            setBtnDataDisabled(false);
+            setDisplayDivPassword('flex')
+            setBackDropFilter('none');
+            setCollapsePasswordChecked(false);
+            setButtonPasswordDisplay('initial');
+            setBtnSaveLoading(false);
+            setBtnCancelDisabled(false);
         } else {
-            const response = await updatePassword(password);
-            if (response){
-                setOpenSuccessSnackbar(true);
-                setBtnDataDisabled(false);
-                setDisplayDivPassword('flex')
-                setBackDropFilter('none');
-                setCollapsePasswordChecked(false);
-                setButtonPasswordDisplay('initial');
-                setBtnSaveLoading(false);
-                setBtnCancelDisabled(false);
-            } else {
-                setBtnSaveLoading(false);
-                setOpenFailSnackbar(true);
-                setBtnCancelDisabled(false);
-            }
+            setBtnSaveLoading(false);
+            setOpenFailSnackbar(true);
+            setBtnCancelDisabled(false);
         }
     }
 

@@ -62,25 +62,25 @@ export function FormAuth(){
         const email = e.target.email.value;
         const password = e.target.password.value;
 
-        if(isEmail(e.target.email.value)){
-            setIsValidEmail(true);
-            setErrorLabel(false);
-            setAuthData(email);
-            const response = await login(email, password);
-            
-            if (response) {
-                setOpenReload(false)
-                e.target.reset();
-                navigate("/menu");
-            } else {
-                setOpenReload(false)
-                setOpenSnackbar(true);
-            }
-
-        } else {
+        if(!isEmail(e.target.email.value)){
             setOpenReload(false)
             setIsValidEmail(false);
             setErrorLabel(true);
+            return;
+        }
+
+        setIsValidEmail(true);
+        setErrorLabel(false);
+        setAuthData(email);
+        const response = await login(email, password);
+        
+        if (response) {
+            setOpenReload(false)
+            e.target.reset();
+            navigate("/menu");
+        } else {
+            setOpenReload(false)
+            setOpenSnackbar(true);
         }
     }
 
@@ -147,8 +147,7 @@ export function FormAuth(){
                     </Snackbar>
                     <Backdrop
                         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                        open={openReload}
-                    >   
+                        open={openReload} >   
                         <CircularProgress color="inherit" />
                     </Backdrop>
                 </Box>
