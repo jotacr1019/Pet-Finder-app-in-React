@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { useNavigate } from "react-router-dom";
-import { Box, Typography, Snackbar, Backdrop, CircularProgress } from '@mui/material';
+import { Box, Container, Typography, Snackbar, Backdrop, CircularProgress, ThemeProvider } from '@mui/material';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { MyDropzone } from '../dropzone';
 import { Mapbox } from '../mapbox';
@@ -9,6 +9,7 @@ import { CustomTextField } from "../../ui/textField";
 import { CustomButton } from '../../ui/button';
 import { usePetReport, useCreatePetReport } from '../../hooks/createPetReport';
 import { imgToURLCloudinary } from '../../lib/cloudinary';
+import { formCreateReportTheme } from './themes';
 
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
@@ -155,156 +156,121 @@ export function FormCreateReport(){
     }
 
     return (
-        <Box    component="form"
-                onSubmit={handleSubmit}
-                sx={{
-                    display: 'flex',
-                    flexDirection: 'column',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                    gap: {xs: '15px', sm: '25px', md: '15px', lg: '20px'},
-                    width: '100%',
-                }} >
-            <CustomTextField  
-                        required={true}
-                        id="outlined-pet-name"
-                        className="outlined-pet-name"
-                        defaultValue="Normal"
-                        label="Nombre"
-                        placeholder="Ingresa el nombre de la mascota"
-                        name="name"
-                        sx={{ 
-                            color: 'white'
-                        }} >
-            </CustomTextField>
-            <DisplayImages imagesReceived={imagesUrl} 
-                            onChange={handleDisplayChange}
-                            >
-            </DisplayImages>
-            <MyDropzone onChange={handleDropzoneChange} 
-                        disabled={btnDisable} 
-            />
-            <Typography sx={{   
-                            fontSize: {xs: '0.8rem', sm: '0.8rem', md: '0.9rem', lg: '1rem'},
-                            marginBottom: {xs: '26px', md: '36px', lg: '40px'},
-                            marginTop: {xs: '-44px', sm: '-36px', md: '-26px', lg: '-32px'},
-                            textAlign: 'center',
-                            color: '#fff'
-                        }} >
-                * Puedes agregar hasta 4 fotos
-            </Typography>
-            <Mapbox onChange={handleMapboxChange} />
-            <Typography sx={{   
-                            fontSize: {xs: '0.9rem', sm: '1rem', md: '1.2rem', lg: '1.4rem'},
-                            marginBottom: {xs: '14px', sm: '16px', md: '20px', lg: '22px'},
-                            marginTop: {xs: '-20px', sm: '-30px', md: '-26px', lg: '-32px'},
-                            textAlign: 'center',
-                            color: '#fff'
-                        }} >
-                Buscá un punto de referencia para reportar la mascota. Por ejemplo, la ubicación donde lo viste por última vez.
-            </Typography>
-            <CustomTextField 
-                        disabled
-                        required
-                        value={mapBoxFormData.mapbox.query}
-                        id="outlined-location"
-                        name="location"
-                        label="Ubicación"
-                        InputLabelProps={{
-                            shrink: true,
-                        }} >
-            </CustomTextField>
-            <Box    sx={{
+        <ThemeProvider theme={formCreateReportTheme}>
+            <Box    component="form"
+                    onSubmit={handleSubmit}
+                    sx={{
                         display: 'flex',
-                        flexDirection: {xs: 'column', md: 'row'}, 
+                        flexDirection: 'column',
                         justifyContent: 'center',
                         alignItems: 'center',
-                        gap: {xs: '20px', sm: '22px', md: '60px', lg: '60px'},
-                        marginTop: {xs: '50px', sm: '45px', md: '70px', lg: '90px'},
-                        width: {xs: '100%', md: '70%'},
+                        gap: {xs: '15px', sm: '25px', md: '15px', lg: '20px'},
+                        width: '100%',
                     }} >
-                <CustomButton   type="submit" 
-                                variant="contained"
-                                sx={{ width: '100%',
-                                    backgroundColor: '#191970',
-                                    fontSize: {lg: '1.2rem'},
-                                    '&:hover': {
-                                        backgroundColor: '#00004e'
-                                    }
-                                }} >
-                    Crear reporte
-                </CustomButton>
-                <CustomButton   variant="contained"
-                                onClick={handleCancelBtn}
-                                sx={{ width: '100%',
-                                    backgroundColor: '#91323b',
-                                    '&:hover': {
-                                        backgroundColor: '#891722'
-                                    },
-                                    fontSize: {lg: '1.2rem'}
-                                }} >
-                    Cancelar
-                </CustomButton>
+                <CustomTextField  
+                            required={true}
+                            id="outlined-pet-name"
+                            className="outlined-pet-name"
+                            defaultValue="Normal"
+                            label="Nombre"
+                            placeholder="Ingresa el nombre de la mascota"
+                            name="name"
+                            sx={{ color: '#fff' }} >
+                </CustomTextField>
+                <DisplayImages imagesReceived={imagesUrl} 
+                                onChange={handleDisplayChange}
+                />
+                <MyDropzone onChange={handleDropzoneChange} 
+                            disabled={btnDisable} 
+                />
+                <Typography variant="body2" className="dropzoneText" >
+                    * Puedes agregar hasta 4 fotos
+                </Typography>
+                <Mapbox onChange={handleMapboxChange} />
+                <Typography variant="body1" className="mapboxText" >
+                    Buscá un punto de referencia para reportar la mascota. Por ejemplo, la ubicación donde lo viste por última vez.
+                </Typography>
+                <CustomTextField 
+                            disabled
+                            required
+                            value={mapBoxFormData.mapbox.query}
+                            id="outlined-location"
+                            name="location"
+                            label="Ubicación"
+                            InputLabelProps={{ shrink: true }} >
+                </CustomTextField>
+                <Container disableGutters={true} className="buttonsContainer" >
+                    <CustomButton   type="submit" 
+                                    variant="contained"
+                                    className="submitButton" >
+                        Crear reporte
+                    </CustomButton>
+                    <CustomButton   variant="contained"
+                                    onClick={handleCancelBtn}
+                                    className="cancelButton" >
+                        Cancelar
+                    </CustomButton>
+                </Container>
+                <Snackbar   open={openMapboxSnackbar} 
+                            autoHideDuration={5000} 
+                            onClose={() => handleSnackbarClose(setOpenMapboxSnackbar)} >
+                    <Alert  onClose={() => handleSnackbarClose(setOpenMapboxSnackbar)} 
+                            severity="error" 
+                            sx={{ width: '100%' }} >
+                        Necesitas agregar una dirección!
+                    </Alert>
+                </Snackbar>
+                <Snackbar   open={openUndefinedMapboxSnackbar} 
+                            autoHideDuration={5000} 
+                            onClose={() => handleSnackbarClose(setOpenUndefinedMapboxSnackbar)} >
+                    <Alert  onClose={() => handleSnackbarClose(setOpenUndefinedMapboxSnackbar)} 
+                            severity="error" 
+                            sx={{ width: '100%' }} >
+                        Necesitas elegir una ubicación más especifica!
+                    </Alert>
+                </Snackbar>
+                <Snackbar   open={openImagesUrlSnackbar} 
+                            autoHideDuration={5000} 
+                            onClose={() => handleSnackbarClose(setOpenImagesUrlSnackbar)} >
+                    <Alert  onClose={() => handleSnackbarClose(setOpenImagesUrlSnackbar)} 
+                            severity="error" 
+                            sx={{ width: '100%' }} >
+                        Necesitas agregar al menos una foto!
+                    </Alert>
+                </Snackbar>
+                <Snackbar   open={openNoTokenSnackbar} 
+                            autoHideDuration={5000} 
+                            onClose={() => handleSnackbarClose(setOpenNoTokenSnackbar)} >
+                    <Alert  onClose={() => handleSnackbarClose(setOpenNoTokenSnackbar)} 
+                            severity="error" 
+                            sx={{ width: '100%' }} >
+                        No tienes los permisos para crear reportes!
+                    </Alert>
+                </Snackbar>
+                <Snackbar   open={openSuccessSnackbar} 
+                            autoHideDuration={5000} 
+                            onClose={() => handleSnackbarClose(setOpenSuccessSnackbar)} >
+                    <Alert  onClose={() => handleSnackbarClose(setOpenSuccessSnackbar)} 
+                            severity="success" 
+                            sx={{ width: '100%' }} >
+                        Reporte creado!
+                    </Alert>
+                </Snackbar>
+                <Snackbar   open={openFailSnackbar} 
+                            autoHideDuration={5000} 
+                            onClose={() => handleSnackbarClose(setOpenFailSnackbar)} >
+                    <Alert  onClose={() => handleSnackbarClose(setOpenFailSnackbar)} 
+                            severity="error" 
+                            sx={{ width: '100%' }} >
+                        Reporte creado!
+                    </Alert>
+                </Snackbar>
+                <Backdrop
+                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    open={openReload} >   
+                    <CircularProgress color="inherit" />
+                </Backdrop>
             </Box>
-            <Snackbar   open={openMapboxSnackbar} 
-                        autoHideDuration={5000} 
-                        onClose={() => handleSnackbarClose(setOpenMapboxSnackbar)} >
-                <Alert  onClose={() => handleSnackbarClose(setOpenMapboxSnackbar)} 
-                        severity="error" 
-                        sx={{ width: '100%' }} >
-                    Necesitas agregar una dirección!
-                </Alert>
-            </Snackbar>
-            <Snackbar   open={openUndefinedMapboxSnackbar} 
-                        autoHideDuration={5000} 
-                        onClose={() => handleSnackbarClose(setOpenUndefinedMapboxSnackbar)} >
-                <Alert  onClose={() => handleSnackbarClose(setOpenUndefinedMapboxSnackbar)} 
-                        severity="error" 
-                        sx={{ width: '100%' }} >
-                    Necesitas elegir una ubicación más especifica!
-                </Alert>
-            </Snackbar>
-            <Snackbar   open={openImagesUrlSnackbar} 
-                        autoHideDuration={5000} 
-                        onClose={() => handleSnackbarClose(setOpenImagesUrlSnackbar)} >
-                <Alert  onClose={() => handleSnackbarClose(setOpenImagesUrlSnackbar)} 
-                        severity="error" 
-                        sx={{ width: '100%' }} >
-                    Necesitas agregar al menos una foto!
-                </Alert>
-            </Snackbar>
-            <Snackbar   open={openNoTokenSnackbar} 
-                        autoHideDuration={5000} 
-                        onClose={() => handleSnackbarClose(setOpenNoTokenSnackbar)} >
-                <Alert  onClose={() => handleSnackbarClose(setOpenNoTokenSnackbar)} 
-                        severity="error" 
-                        sx={{ width: '100%' }} >
-                    No tienes los permisos para crear reportes!
-                </Alert>
-            </Snackbar>
-            <Snackbar   open={openSuccessSnackbar} 
-                        autoHideDuration={5000} 
-                        onClose={() => handleSnackbarClose(setOpenSuccessSnackbar)} >
-                <Alert  onClose={() => handleSnackbarClose(setOpenSuccessSnackbar)} 
-                        severity="success" 
-                        sx={{ width: '100%' }} >
-                    Reporte creado!
-                </Alert>
-            </Snackbar>
-            <Snackbar   open={openFailSnackbar} 
-                        autoHideDuration={5000} 
-                        onClose={() => handleSnackbarClose(setOpenFailSnackbar)} >
-                <Alert  onClose={() => handleSnackbarClose(setOpenFailSnackbar)} 
-                        severity="error" 
-                        sx={{ width: '100%' }} >
-                    Reporte creado!
-                </Alert>
-            </Snackbar>
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={openReload} >   
-                <CircularProgress color="inherit" />
-            </Backdrop>
-        </Box>
+        </ThemeProvider>
     )
 }

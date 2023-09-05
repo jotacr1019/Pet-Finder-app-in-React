@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
+import { useLocation } from "react-router-dom";
 import Map, {Marker, NavigationControl} from 'react-map-gl';
-import { Box, 
+import { Box,
+    Container,
     TextField,
     Button, 
     Divider, 
@@ -9,11 +11,13 @@ import { Box,
     ListItem,
     ListItemText,
     ListItemAvatar,
+    ThemeProvider,
     Avatar } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import PlaceTwoToneIcon from '@mui/icons-material/PlaceTwoTone';
 // import mapboxgl from 'mapbox-gl'
 import { useLocationName } from '../../atoms';
+import { mapboxTheme } from './themes';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 
@@ -26,9 +30,13 @@ type MapBoxSearchProps = {
 export function Mapbox(props: MapBoxSearchProps) {
     const { onChange } = props;
 
+    const location = useLocation();
+
     const [transitiveQuery, setTransitiveQuery] = useState('');
     const [queryValues, setQueryValues] = useState([]);
     const [searchEmpty, setSearchEmpty] = useState("");
+
+    const [displayTextField, setDisplayTextField] = useState('none');
 
     const [displayList, setDisplayList] = useState('none');
 
@@ -39,6 +47,10 @@ export function Mapbox(props: MapBoxSearchProps) {
         latitude: latLng.lat,
         zoom: 7
     })
+
+    useEffect(() => {
+        location.pathname === '/create-report' || location.pathname === '/edit-report' ? setDisplayTextField('flex') : setDisplayTextField('none');
+    }, [location.pathname]);
 
     const handleSearch = async (e)=>{
         e.preventDefault();
@@ -108,150 +120,92 @@ export function Mapbox(props: MapBoxSearchProps) {
     }
 
     return (
-        <Box    sx={{ 
-                    width: {xs: '100%'}, 
-                    height: {xs: '65vh', md: '72vh', lg: '75vh'},
-                    marginBottom: '15px',
-                    borderRadius: '6px',
-                    boxShadow: 'rgba(0, 0, 0, 0.16) 0px 1px 4px, rgb(51, 51, 51) 0px 0px 0px 3px' 
-                }}>
-            <Map
-                mapboxAccessToken={mapBoxToken}
-                {...viewState}
-                onMove={evt => setViewState(evt.viewState)}
-                style={{
-                    width: '100%', 
-                    height: '100%',
-                    borderRadius: '6px',
-                }}
-                onClick={handleMapClick}
-                mapStyle="mapbox://styles/mapbox/streets-v9" >
-                <Marker longitude={latLng.lng} 
-                        latitude={latLng.lat} 
-                        anchor="bottom" 
-                        draggable={true}
+        <ThemeProvider theme={mapboxTheme}>
+            <Container  disableGutters={true} className="principalContainer" >
+                <Map    mapboxAccessToken={mapBoxToken}
+                        {...viewState}
+                        onMove={evt => setViewState(evt.viewState)}
                         style={{
-                            width:  window.innerWidth < 768 ? '70px' : window.innerWidth < 1024 ? '78px' : '78px',
-                                height: '60px'
-                            }} 
-                        onDragEnd={handleDragEnd} >
-                    <Box    component="img"
-                            style={{width: '100%', height: '100%'}} 
-                            src="../src/assets/dogMarker2.png"
-                            alt="marker" >
-                    </Box>
-                </Marker>
-                <NavigationControl 
-                                showCompass={false}
-                                showZoom={true}
-                />
-                <Box   sx={{
-                            marginTop: '4px',
-                            marginLeft: '4px',
-                            position: 'absolute',
-                            width: {xs: '70%'}, 
-                            maxWidth: '400px',
+                            width: '100%', 
+                            height: '100%',
                             borderRadius: '6px',
-                            backdropFilter: 'brightness(0.3)',
-                        }} >
-                    <TextField
+                        }}
+                        onClick={handleMapClick}
+                        mapStyle="mapbox://styles/mapbox/streets-v9" >
+                    <Marker longitude={latLng.lng} 
+                            latitude={latLng.lat} 
+                            anchor="bottom" 
+                            draggable={true}
+                            style={{
+                                    width:  window.innerWidth < 768 ? '70px' : window.innerWidth < 1024 ? '78px' : '78px',
+                                    height: '60px'
+                                }} 
+                            onDragEnd={handleDragEnd} >
+                        <Box    component="img"
+                                style={{width: '100%', height: '100%'}} 
+                                src="../src/assets/dogMarker2.png"
+                                alt="marker" >
+                        </Box>
+                    </Marker>
+                    <NavigationControl showCompass={false} showZoom={true} />
+                    <Container className="searchContainer" disableGutters={true} >
+                        <TextField
                             id="location-search"
                             placeholder="Busqueda"
                             onChange={handleInputChange}
+                            className="searchInput"
+                            sx={{ display: displayTextField }}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="start">
                                         <Button onClick={handleSearch} 
                                                 type="submit"
-                                                sx={{ backgroundColor: 'transparent',
-                                                    minWidth: '0px',
-                                                    width: '0px',
-                                                    color: 'white',
-                                                    '&:hover': {
-                                                        backgroundColor: 'transparent'
-                                                    } 
-                                                }} >
+                                                variant="text"
+                                                className="searchButton" >
                                             <SearchIcon />
                                         </Button>
                                     </InputAdornment>
                                 ),
                             }}
-                            sx={{
-                                '.MuiInputBase-root': {
-                                    paddingRight: '10px',
-                                    gap: '10px',
-                                    color: 'white'
-                                },
-                                width: '100%'
-                            }}
-                    />
-                    <List   sx={{ 
-                                display: displayList,
-                                width: '100%', 
-                                maxWidth: 360
-                            }}>
-                        {queryValues.length === 0
-                            ? <ListItem sx={{ 
-                                            padding: 1,
-                                            minHeight: '70px',
-                                            backgroundColor: '#b0c4de',
-                                        }} >
-                                <ListItemText primary={`La busqueda "${searchEmpty}" no obtuvo resultados`} />
-                            </ListItem> 
-                            : queryValues.map((item, index) => (
-                                <div key={index}>    
-                                    <ListItem   sx={{ 
-                                                    padding: '6px 8px',
-                                                    minHeight: '70px',
-                                                    backgroundColor: '#b0c4de',
-                                                }} >
-                                        <ListItemAvatar>
-                                            <Avatar>
-                                                <PlaceTwoToneIcon />
-                                            </Avatar>
-                                        </ListItemAvatar>
-                                        <Box    sx={{ 
-                                                    display: 'flex', 
-                                                    flexDirection: 'column',
-                                                    alignItems: 'flex-start'
-                                                }} >
-                                            <Button sx={{ margin: '0px', 
-                                                        padding: '0px',
-                                                        fontSize: {xs: '0.6rem', sm: '0.7rem'},
-                                                        textAlign: 'left',
-                                                        "&:hover": {backgroundColor: "transparent"}
-                                                    }}
-                                                    onClick={() => handleClickListItem(item.mapbox_id)}
-                                                    disableRipple 
-                                                    disableFocusRipple >
-                                                <ListItemText 
-                                                            sx={{   
-                                                                textAlign: 'left', 
-                                                                '.MuiTypography-root': {
-                                                                    fontSize: {xs: '0.7rem', sm: '0.9rem', md: '1.1rem'},
-                                                                }
-                                                            }} 
-                                                            primary={item.name} 
+                        />
+                        <List className="list"  sx={{ display: displayList }} >
+                            {queryValues.length === 0
+                                ? <ListItem className="listEmptyItem" >
+                                    <ListItemText primary={`La busqueda "${searchEmpty}" no obtuvo resultados`} />
+                                </ListItem> 
+                                : queryValues.map((item, index) => (
+                                    <div key={index}>    
+                                        <ListItem className="listItem" >
+                                            <ListItemAvatar>
+                                                <Avatar>
+                                                    <PlaceTwoToneIcon />
+                                                </Avatar>
+                                            </ListItemAvatar>
+                                            <Container  
+                                                        className="itemsContainer" 
+                                                        disableGutters={true} >
+                                                <Button className="listItemButton"
+                                                        onClick={() => handleClickListItem(item.mapbox_id)}
+                                                        disableRipple 
+                                                        disableFocusRipple >
+                                                    <ListItemText 
+                                                                className="primaryItemText"
+                                                                primary={item.name} 
+                                                    />
+                                                </Button>
+                                                <ListItemText   className="secondaryItemText"
+                                                                secondary={item.place_formatted} 
                                                 />
-                                            </Button>
-                                            <ListItemText 
-                                                        sx={{
-                                                            textAlign: 'left',
-                                                            '.MuiTypography-root': {
-                                                                fontSize: {xs: '0.7rem', md: '0.8rem', lg: '0.9rem'},
-                                                            }
-                                                        }} 
-                                                        secondary={item.place_formatted} 
-                                            />
-                                        </Box>
-                                    </ListItem>
-                                    {index !== queryValues.length - 1 ? <Divider sx={{ color: 'white', backgroundColor: 'white' }}/> : null}
-                                </div>
-                            ))
-                        }
-                    </List>
-                </Box>
-            </Map>
-        </Box>
+                                            </Container>
+                                        </ListItem>
+                                        {index !== queryValues.length - 1 ? <Divider className="divider" /> : null}
+                                    </div>
+                                ))
+                            }
+                        </List>
+                    </Container>
+                </Map>
+            </Container>
+        </ThemeProvider>
     );
 }

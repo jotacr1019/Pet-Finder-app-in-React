@@ -1,6 +1,7 @@
 import React, {useCallback, useState, useEffect} from 'react'
 import {useDropzone} from 'react-dropzone'
-import { Button, Box } from '@mui/material'
+import { Button, Container, ThemeProvider } from '@mui/material'
+import { dropzoneTheme } from './themes'
 
 
 type MyDropzoneProps = {
@@ -43,19 +44,17 @@ export function MyDropzone(props){
 
     const {getRootProps, getInputProps, isDragActive} = useDropzone({ onDrop, noClick: disabled })
 
-    return (<Box    sx={{
-                        width: { xs: '95%', sm: '75%', lg: '50%' },
-                        marginBottom: {xs: '32px', sm: '15px'},
-                        textAlign: 'center',
-                    }} 
-                    {...getRootProps()} >
-                <input  {...getInputProps()} />
-                <Button variant="contained"
-                        disabled={disabled}
-                        sx={{ width: '100%',
-                            fontSize: { md: '1rem', lg: '1.1rem'},
-                        }} >
-                    Agregar fotos
-                </Button>
-            </Box>)
+        return (
+            <ThemeProvider theme={dropzoneTheme}>
+                <Container  {...getRootProps()} 
+                            disableGutters={true} 
+                            className="dropzoneContainer" >
+                    <input  {...getInputProps()} />
+                    <Button variant="contained"
+                            disabled={disabled}
+                            className="dropzoneButton" >
+                        Agregar fotos
+                    </Button>
+                </Container>
+            </ThemeProvider>)
 }

@@ -166,3 +166,50 @@ export async function createPetInDB(petData: petData, token: string) {
         return null;
     }
 }
+
+export async function getDataOfPetInDB(token: string, userId: number) {
+    try {
+        const response = await fetch(API_BASE_URL + "/pets/" + userId, {
+            method: "GET",
+            headers: {
+                Authorization: "Bearer " + token,
+            },
+        });
+        if (response.status === 302) {
+            const data = await response.json();
+            console.log({ data });
+            return data;
+        }
+        if (response.status === 401) {
+            console.log("Token inválido");
+            return null;
+        }
+        if (response.status === 404) {
+            return null;
+        }
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
+export async function getPetsAroundZoneInDB(lat: number, lng: number) {
+    try {
+        const response = await fetch(
+            API_BASE_URL + "/pets-cerca-de?lat=" + lat + "&lng=" + lng,
+            {
+                method: "GET",
+            }
+        );
+        if (response.status === 302) {
+            const data = await response.json();
+            return data;
+        }
+        if (response.status === 400) {
+            return false;
+        }
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}

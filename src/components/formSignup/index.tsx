@@ -3,15 +3,18 @@ import { Link, useNavigate } from "react-router-dom";
 import isEmail from 'validator/lib/isEmail';
 import { Typography,
     Box,
+    Container,
     Snackbar,
     Backdrop,
     CircularProgress,
+    ThemeProvider,
     Grow } from '@mui/material';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { CustomButton } from "../../ui/button";
 import { CustomTextField } from "../../ui/textField";
 import { CustomPasswordField } from "../../ui/passwordField";
 import { useNewUserData, useCreateUserInDB } from "../../hooks/createUser";
+import { formSignupTheme } from "./themes";
 import css from "./index.module.css";
 
 
@@ -99,13 +102,10 @@ export function FormSignup(){
         }
     }
 
-    return (<Grow in={growChecked}>
-                <Box sx={{ boxShadow: "rgba(0, 0, 0, 0.3) 0px 19px 38px, rgba(0, 0, 0, 0.22) 0px 15px 12px",
-                        width: { xs: '80%', sm: '70%' , md: '55%', lg: '40%' },
-                        height: 'fit-content',
-                        padding: { xs: '22px 20px', sm: '22px 50px' , md: '22px 58px', lg: '28px 54px' },
-                        backgroundColor: "#212121",
-                        borderRadius: "6px" }} >
+    return (
+        <ThemeProvider theme={formSignupTheme}>
+            <Grow in={growChecked}>
+                <Container disableGutters={true} className="principalContainer" >
                     <Box    component="form" 
                             onSubmit={handleFormSubmit}
                             sx={{
@@ -114,60 +114,46 @@ export function FormSignup(){
                                 width: '100%',
                                 gap: { xs: '28px', sm: '22px' , md: '16px', lg: '16px' }
                             }} >
-                        <Typography sx={{ textAlign: 'center',
-                                        color: 'white',
-                                        marginBottom: { xs: '8px', sm: '15px' , md: '20px', lg: '25px' },
-                                        typography: { xs: {fontSize: '1.8rem'}, sm: {fontSize: '2.2rem'}, md: {fontSize: '2.8rem'} }
-                                    }} >
+                        <Typography variant="h3" className="title" >
                             Registrarse
                         </Typography>
-                        <Typography sx={{ textAlign: 'center',
-                                        gap: '6px',
-                                        color: 'white',
-                                        marginTop: {xs: '0px', sm: '14px', md: '20px', lg: '20px'},
-                                        fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' } }}>
+                        <Typography variant="body1" className="subtitle" >
                             Ingresa los siguientes datos para completar el registro
                         </Typography>
                         <CustomTextField
-                            required={urlVisible}
-                            id="outlined-name-input"
-                            label="Nombre"
-                            placeholder="Ingresa tu nombre"
-                            name="name"
-                            onChange={handleInputsCompletation}
+                                    required={urlVisible}
+                                    id="outlined-name-input"
+                                    label="Nombre"
+                                    placeholder="Ingresa tu nombre"
+                                    name="name"
+                                    onChange={handleInputsCompletation}
                         />
                         <CustomTextField
-                            required={urlVisible}
-                            id="outlined-email-input"
-                            label="Email"
-                            placeholder="ejemplo@mail.com"
-                            name="email"
-                            onChange={handleInputsCompletation}
-                            error={errorLabel && isValidEmail === false}
+                                    required={urlVisible}
+                                    id="outlined-email-input"
+                                    label="Email"
+                                    placeholder="ejemplo@mail.com"
+                                    name="email"
+                                    onChange={handleInputsCompletation}
+                                    error={errorLabel && isValidEmail === false}
                         />
                         <CustomPasswordField
-                            required={urlVisible} 
-                            id='outlined-adornment-password'
-                            outlinedInputLabel='Contraseña'
-                            label='Contraseña'
-                            name='password'
-                            onChange={handleInputsCompletation}
-                            >
+                                    required={urlVisible} 
+                                    id='outlined-adornment-password'
+                                    outlinedInputLabel='Contraseña'
+                                    label='Contraseña'
+                                    name='password'
+                                    onChange={handleInputsCompletation} >
                         </CustomPasswordField>
                         <CustomPasswordField 
-                            required={urlVisible}
-                            id='outlined-adornment-confirm-password'
-                            outlinedInputLabel='Confirmar contraseña'
-                            label='Confirmar contraseña'
-                            name='confirmPassword'
-                            onChange={handleInputsCompletation} >
+                                    required={urlVisible}
+                                    id='outlined-adornment-confirm-password'
+                                    outlinedInputLabel='Confirmar contraseña'
+                                    label='Confirmar contraseña'
+                                    name='confirmPassword'
+                                    onChange={handleInputsCompletation} >
                         </CustomPasswordField>
-                        <Typography sx={{ display: 'flex',
-                                        alignSelf: 'center',
-                                        gap: '6px',
-                                        color: 'white',
-                                        marginTop: {xs: '14px', sm: '14px', md: '20px', lg: '20px'},
-                                        fontSize: { xs: '0.8rem', sm: '0.9rem', md: '1rem' } }}>
+                        <Typography variant="body2" className="text" >
                             ¿Ya tienes una cuenta?
                             <Link to={'/auth'} className={css.link}>
                                 Inicia sesión
@@ -208,6 +194,7 @@ export function FormSignup(){
                     >   
                         <CircularProgress color="inherit" />
                     </Backdrop>
-                </Box>
-            </Grow>)
+                </Container>
+            </Grow>
+        </ThemeProvider>)
 }

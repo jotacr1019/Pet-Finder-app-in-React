@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Box, Snackbar, Collapse} from '@mui/material';
+import { Box, Container, Snackbar, Collapse, ThemeProvider } from '@mui/material';
 import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import SaveIcon from '@mui/icons-material/Save';
 import LoadingButton from '@mui/lab/LoadingButton';
@@ -10,6 +10,7 @@ import { useBtnPasswordDisabledState,
     useBtnDataDisabledState,
     useBackdropFilterState } from "../../atoms";
 import { getDataOfUserFromDB } from "../../lib/api";
+import { editPersonalDataTheme } from "./themes";
 
 
 const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
@@ -21,6 +22,7 @@ const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
 
 export function CustomEditData(){
     const [personalData, setPersonalData] = useUserDataUpdated();
+    const {updateUser} = useUpdateUserInDB()
 
     const [btnDataDisabled, setBtnDataDisabled] = useBtnDataDisabledState();
     const [btnPasswordDisabled, setBtnPasswordDisabled] = useBtnPasswordDisabledState();
@@ -48,8 +50,17 @@ export function CustomEditData(){
     const [eventNameFullFilled, setNameFullFilled] = useState(false);
     const [eventEmailFullFilled, setEmailFullFilled] = useState(false);
 
+    const [editDataBtnColor, setEditDataBtnColor] = useState('#fff');
+    const [btnSaveDataColor, setBtnSaveDataColor] = useState('rgba(0, 0, 0, 0.26)');
 
-    const {updateUser} = useUpdateUserInDB()
+    useEffect(() => {
+        setEditDataBtnColor(btnDataDisabled === true ? 'rgba(0, 0, 0, 0.26)' : '#fff');
+    }, [btnDataDisabled])
+
+    useEffect(() => {
+        setBtnSaveDataDisabled(eventNameFullFilled && eventEmailFullFilled ? false : true);
+        setBtnSaveDataColor(eventNameFullFilled && eventEmailFullFilled ? '#fff' : 'rgba(0, 0, 0, 0.26)');
+    }, [eventNameFullFilled, eventEmailFullFilled])
 
     const handleInputsCompletation = (event, id) => {
         if (id === 'outlined-name') {
@@ -66,10 +77,6 @@ export function CustomEditData(){
         }
         setClose(false);
     };
-
-    useEffect(() => {
-        setBtnSaveDataDisabled(eventNameFullFilled && eventEmailFullFilled ? false : true);
-    }, [eventNameFullFilled, eventEmailFullFilled])
 
     const pullData = async(token) => {
         const form: HTMLFormElement = document.querySelector('.formData');
@@ -147,140 +154,111 @@ export function CustomEditData(){
         }
     }
 
-    return <Box     sx={{  
-                        width: '88%',
-                        textAlign: 'center'
-                    }} >
-                <LoadingButton  
-                        disabled={btnDataDisabled}
-                        variant="outlined"
-                        onClick={handleDataChange} 
-                        sx={{
-                            display: buttonDataDisplay,
-                            width: {xs: '80%', md: '60%', lg: '55%'},
-                            transition: '0.2s',
-                            '&:hover': {
-                                transform: 'scale(1.1)',
-                                backdropFilter: 'blur(4px)',
-                                opacity: 1
-                            },
-                            backgroundColor: '#191970',
-                            color: 'white',
-                            opacity: 0.8,
-                            textAlign: 'center'
-                        }}
-                        loading={btnDataloading}
-                        loadingPosition='center'
-                        loadingIndicator={<span style={{color: 'white' }}>
-                                            Espere...
-                                        </span>} >
-                    Modificar datos personales
-                </LoadingButton>
-                <Collapse   in={collapseDataChecked}
+    return <ThemeProvider theme={editPersonalDataTheme}>      
+                <Container disableGutters={true} className="principalDataContainer" >
+                    <LoadingButton  
+                            disabled={btnDataDisabled}
+                            variant="outlined"
+                            className='editDataButton'
+                            onClick={handleDataChange} 
                             sx={{ 
-                                width: '100%'
-                            }} >
-                    <Box sx={{  width: '100%', 
-                                height: '230px',
-                                display: displayDivData,
-                                justifyContent: 'center',
-                                alignItems: 'center' 
-                            }} >
-                        <Box    sx={{
-                                    '& > :not(style)': {
-                                        display: 'flex',
-                                        flexDirection: 'column',
-                                        justifyContent: 'center',
-                                        gap: '10px',
-                                        height: 220,
-                                        width: {xs: 250, sm: 335, md: 400, lg: 440},
-                                    }
-                                }} >
-                            {<Box   component='form'
-                                    className='formData'    
-                                    onSubmit={handleDataSubmit}>
-                                <CustomTextField
-                                    id="outlined-name"
-                                    label="Nombre"
-                                    placeholder="Ingresa un nombre"
-                                    name="full_name"
-                                    onChange={(event) => handleInputsCompletation(event, 'outlined-name')}
-                                />
-                                <CustomTextField
-                                    id="outlined-email"
-                                    label="Email"
-                                    placeholder="ejemplo@mail.com"
-                                    name="email"
-                                    onChange={(event) => handleInputsCompletation(event, 'outlined-email')}
-                                    error={errorLabel && isValidEmail === false} 
-                                />
-                                <LoadingButton  
-                                            disabled={btnSaveDataDisabled}
-                                            type="submit"
-                                            loading={btnSaveLoading}
-                                            loadingIndicator={<span style={{color: 'white', textAlign: 'center'}}>
-                                                                Espere...
-                                                            </span>}
-                                            loadingPosition='center'
-                                            startIcon={<SaveIcon />} 
-                                            sx={{width: '100%',
-                                                color: 'white',
-                                                backgroundColor: '#191970',
-                                                '&:hover': {
-                                                    backgroundColor: '#00004e',
-                                                }, 
-                                                textAlign: 'center'
-                                            }} >
-                                    Guardar
-                                </LoadingButton>
-                            </Box>}
-                        </Box>
-                    </Box>
-                </Collapse>
-                <Snackbar   open={openEmailSnackbar} 
-                            autoHideDuration={5000} 
-                            onClose={() => handleSnackbarClose(setOpenEmailSnackbar)} >
-                    <Alert  onClose={() => handleSnackbarClose(setOpenEmailSnackbar)} 
-                            severity="error" 
-                            sx={{ width: '100%' }} >
-                        No es un formato de correo válido!
-                    </Alert>
-                </Snackbar>
-                <Snackbar   open={openTokenSnackbar} 
-                            autoHideDuration={5000} 
-                            onClose={() => handleSnackbarClose(setOpenTokenSnackbar)} >
-                    <Alert  onClose={() => handleSnackbarClose(setOpenTokenSnackbar)} 
-                            severity="error" 
-                            sx={{ width: '100%' }} >
-                        No tienes los permisos para esta acción!
-                    </Alert>
-                </Snackbar>
-                <Snackbar   open={openSuccessSnackbar} 
-                            autoHideDuration={5000} 
-                            onClose={() => handleSnackbarClose(setOpenSuccessSnackbar)} >
-                    <Alert  onClose={() => handleSnackbarClose(setOpenSuccessSnackbar)} 
-                            severity="success" 
-                            sx={{ width: '100%' }} >
-                        Los datos han sido actualizados!
-                    </Alert>
-                </Snackbar>
-                <Snackbar   open={openUnsuccessSnackbar} 
-                            autoHideDuration={5000} 
-                            onClose={() => handleSnackbarClose(setOpenUnsuccessSnackbar)} >
-                    <Alert  onClose={() => handleSnackbarClose(setOpenUnsuccessSnackbar)} 
-                            severity="error" 
-                            sx={{ width: '100%' }} >
-                        Ha ocurrido un error, intenta nuevamente!
-                    </Alert>
-                </Snackbar>
-                <Snackbar   open={openFailSnackbar} 
-                            autoHideDuration={5000} 
-                            onClose={() => handleSnackbarClose(setOpenFailSnackbar)} >
-                    <Alert  onClose={() => handleSnackbarClose(setOpenFailSnackbar)} 
-                            severity="error" 
-                            sx={{ width: '100%' }} >
-                        Ha ocurrido un error, datos no actualizados!
-                    </Alert>
-                </Snackbar>
-            </Box>
+                                display: buttonDataDisplay,
+                                color: editDataBtnColor
+                            }}
+                            loading={btnDataloading}
+                            loadingPosition='center'
+                            loadingIndicator={<span style={{color: 'white' }}>
+                                                Espere...
+                                            </span>} >
+                        Modificar datos personales
+                    </LoadingButton>
+                    <Collapse   in={collapseDataChecked} >
+                        <Container  className="secondaryDataContainer"
+                                    disableGutters={true}
+                                    sx={{ display: displayDivData }} >
+                            <Container  className="formDataContainer" 
+                                        disableGutters={true}>
+                                {<Box   component='form'
+                                        className='formData'    
+                                        onSubmit={handleDataSubmit} >
+                                    <CustomTextField
+                                        id="outlined-name"
+                                        label="Nombre"
+                                        placeholder="Ingresa un nombre"
+                                        name="full_name"
+                                        onChange={(event) => handleInputsCompletation(event, 'outlined-name')}
+                                    />
+                                    <CustomTextField
+                                        id="outlined-email"
+                                        label="Email"
+                                        placeholder="ejemplo@mail.com"
+                                        name="email"
+                                        onChange={(event) => handleInputsCompletation(event, 'outlined-email')}
+                                        error={errorLabel && isValidEmail === false} 
+                                    />
+                                    <LoadingButton  
+                                                disabled={btnSaveDataDisabled}
+                                                type="submit"
+                                                variant="text"
+                                                className="submitDataButton"
+                                                sx={{ color: btnSaveDataColor }}
+                                                loading={btnSaveLoading}
+                                                loadingIndicator={<span style={{color: 'white', textAlign: 'center'}}>
+                                                                    Espere...
+                                                                </span>}
+                                                startIcon={<SaveIcon />} 
+                                                loadingPosition='center' >
+                                        Guardar
+                                    </LoadingButton>
+                                </Box>}
+                            </Container>
+                        </Container>
+                    </Collapse>
+                    <Snackbar   open={openEmailSnackbar} 
+                                autoHideDuration={5000} 
+                                onClose={() => handleSnackbarClose(setOpenEmailSnackbar)} >
+                        <Alert  onClose={() => handleSnackbarClose(setOpenEmailSnackbar)} 
+                                severity="error" 
+                                sx={{ width: '100%' }} >
+                            No es un formato de correo válido!
+                        </Alert>
+                    </Snackbar>
+                    <Snackbar   open={openTokenSnackbar} 
+                                autoHideDuration={5000} 
+                                onClose={() => handleSnackbarClose(setOpenTokenSnackbar)} >
+                        <Alert  onClose={() => handleSnackbarClose(setOpenTokenSnackbar)} 
+                                severity="error" 
+                                sx={{ width: '100%' }} >
+                            No tienes los permisos para esta acción!
+                        </Alert>
+                    </Snackbar>
+                    <Snackbar   open={openSuccessSnackbar} 
+                                autoHideDuration={5000} 
+                                onClose={() => handleSnackbarClose(setOpenSuccessSnackbar)} >
+                        <Alert  onClose={() => handleSnackbarClose(setOpenSuccessSnackbar)} 
+                                severity="success" 
+                                sx={{ width: '100%' }} >
+                            Los datos han sido actualizados!
+                        </Alert>
+                    </Snackbar>
+                    <Snackbar   open={openUnsuccessSnackbar} 
+                                autoHideDuration={5000} 
+                                onClose={() => handleSnackbarClose(setOpenUnsuccessSnackbar)} >
+                        <Alert  onClose={() => handleSnackbarClose(setOpenUnsuccessSnackbar)} 
+                                severity="error" 
+                                sx={{ width: '100%' }} >
+                            Ha ocurrido un error, intenta nuevamente!
+                        </Alert>
+                    </Snackbar>
+                    <Snackbar   open={openFailSnackbar} 
+                                autoHideDuration={5000} 
+                                onClose={() => handleSnackbarClose(setOpenFailSnackbar)} >
+                        <Alert  onClose={() => handleSnackbarClose(setOpenFailSnackbar)} 
+                                severity="error" 
+                                sx={{ width: '100%' }} >
+                            Ha ocurrido un error, datos no actualizados!
+                        </Alert>
+                    </Snackbar>
+                </Container>
+            </ThemeProvider>
 }
