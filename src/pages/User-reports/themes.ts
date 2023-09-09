@@ -1,35 +1,32 @@
 import { createTheme } from "@mui/material/styles";
 
-export const menuTheme = createTheme({
+export const userReportsTheme = createTheme({
     components: {
         MuiContainer: {
             styleOverrides: {
                 root: ({ theme }) =>
                     theme.unstable_sx({
-                        "&.menuContainer": {
+                        "&.userReportsContainer": {
                             display: "flex",
                             flexDirection: "column",
-                            justifyContent: "space-around",
+                            justifyContent: "center",
                             alignItems: "center",
-                            height: {
+                            gap: { xs: "40px", sm: "55px", md: "70px" },
+                            height: "fit-content",
+                            minHeight: {
                                 xs: "92.4vh",
                                 sm: "90.4vh",
                                 md: "90.4vh",
                             },
                             width: "100%",
-                            minWidth: "375px",
                             maxWidth: "none",
+                            minWidth: "375px",
                             padding: {
-                                xs: "25px 35px",
-                                sm: "30px 100px",
-                                md: "30px 120px",
-                                lg: "30px 195px",
+                                xs: "45px 18px",
+                                sm: "55px 70px",
+                                lg: "60px 75px 80px",
                             },
-                            backgroundImage: {
-                                xs: "url(../../src/assets/Petf7.jpg)",
-                            },
-                            backgroundPosition: "center center",
-                            backgroundSize: "cover",
+                            backgroundColor: "#4267ac",
                         },
                     }),
             },
@@ -46,7 +43,7 @@ export const menuTheme = createTheme({
                                 lg: "5.2rem",
                             },
                             textAlign: "center",
-                            color: "#d1466c",
+                            color: "#bdb76b",
                         },
                     }),
             },

@@ -29,7 +29,7 @@ export function InfoMessage() {
 
     return (
         <ThemeProvider theme={infoMessageTheme}>
-            <Container disableGutters={true} className='principalContainer'>
+            <Container disableGutters={true} className='infoMessageContainer'>
                 <CustomButton 
                             variant="contained"
                             className="infoMessageButton"

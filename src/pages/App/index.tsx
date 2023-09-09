@@ -9,7 +9,7 @@ import { appTheme } from "./themes";
 export function Welcome(){
     return (  
         <ThemeProvider theme={appTheme}>
-            <Container disableGutters={true} className="principalContainer" >
+            <Container disableGutters={true} className="appContainer" >
                 <Container disableGutters={true} className="imageContainer" >
                     <Box    component='img' 
                             sx={{

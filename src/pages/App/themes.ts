@@ -6,7 +6,7 @@ export const appTheme = createTheme({
             styleOverrides: {
                 root: ({ theme }) =>
                     theme.unstable_sx({
-                        "&.principalContainer": {
+                        "&.appContainer": {
                             display: { xs: "grid", md: "flex" },
                             width: "100%",
                             maxWidth: "none",

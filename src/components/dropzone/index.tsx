@@ -36,6 +36,7 @@ export function MyDropzone(props){
         if (onChange) {
             onChange(imageUrls);
         }
+        // console.log('imageUrls en dropzone', imageUrls);     // borrar
     }, [imageUrls])
 
     useEffect(()=>{

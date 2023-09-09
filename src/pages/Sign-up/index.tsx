@@ -6,7 +6,7 @@ import { signUpTheme } from "./themes";
 
 export function SignUp(){
     return  <ThemeProvider theme={signUpTheme}>
-                <Container disableGutters={true} className="principalContainer" >
+                <Container disableGutters={true} className="signUpContainer" >
                     <FormSignup />
                 </Container>
             </ThemeProvider>

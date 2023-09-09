@@ -6,7 +6,7 @@ export const menuDisplayTheme = createTheme({
             styleOverrides: {
                 root: ({ theme }) =>
                     theme.unstable_sx({
-                        "&.container": {
+                        "&.menuDisplayContainer": {
                             display: "flex",
                             flexDirection: "column",
                             justifyContent: "space-evenly",

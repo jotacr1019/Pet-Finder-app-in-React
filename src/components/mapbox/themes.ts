@@ -6,7 +6,7 @@ export const mapboxTheme = createTheme({
             styleOverrides: {
                 root: ({ theme }) =>
                     theme.unstable_sx({
-                        "&.principalContainer": {
+                        "&.mapboxContainer": {
                             width: { xs: "100%" },
                             maxWidth: "none",
                             height: { xs: "65vh", md: "72vh", lg: "75vh" },

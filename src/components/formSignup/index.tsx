@@ -105,7 +105,7 @@ export function FormSignup(){
     return (
         <ThemeProvider theme={formSignupTheme}>
             <Grow in={growChecked}>
-                <Container disableGutters={true} className="principalContainer" >
+                <Container disableGutters={true} className="formSignupContainer" >
                     <Box    component="form" 
                             onSubmit={handleFormSubmit}
                             sx={{

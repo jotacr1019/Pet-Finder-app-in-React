@@ -6,7 +6,7 @@ import { editReportTheme } from './themes';
 
 export function EditReport(){
     return  <ThemeProvider theme={editReportTheme}>
-                <Container disableGutters={true} className="principalContainer" >
+                <Container disableGutters={true} className="editReportContainer" >
                     <Typography variant="h2" className="title" >
                         Editar reporte de mascota
                     </Typography>

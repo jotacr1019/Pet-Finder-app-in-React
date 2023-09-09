@@ -6,7 +6,7 @@ export const infoMessageTheme = createTheme({
             styleOverrides: {
                 root: ({ theme }) =>
                     theme.unstable_sx({
-                        "&.principalContainer": {
+                        "&.infoMessageContainer": {
                             padding: "0px",
                             maxWidth: "none",
                         },

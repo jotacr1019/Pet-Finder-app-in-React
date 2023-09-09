@@ -138,7 +138,7 @@ export function CustomEditPassword(){
     }
 
     return <ThemeProvider theme={editPasswordTheme}>
-                <Container disableGutters={true} className="principalContainer" >
+                <Container disableGutters={true} className="editPasswordContainer" >
                     <LoadingButton 
                                 disabled={btnPasswordDisabled}
                                 variant="outlined"

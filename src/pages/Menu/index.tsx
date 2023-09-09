@@ -6,7 +6,7 @@ import { menuTheme } from './themes';
 
 export function Menu(){
     return  <ThemeProvider theme={menuTheme}>
-                <Container disableGutters={true} className="principalContainer" >
+                <Container maxWidth={false} disableGutters={true} className="menuContainer" >
                     <Typography variant="h2" className="title" >
                         Datos Personales
                     </Typography>

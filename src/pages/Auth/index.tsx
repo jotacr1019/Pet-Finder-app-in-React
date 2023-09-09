@@ -6,7 +6,7 @@ import { authTheme } from "./themes";
 
 export function Auth(){
     return  <ThemeProvider theme={authTheme}>
-                <Container disableGutters={true} className="principalContainer">
+                <Container disableGutters={true} className="authContainer">
                     <FormAuth />
                 </Container>
             </ThemeProvider>

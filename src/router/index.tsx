@@ -23,7 +23,7 @@ export function AppRoutes(){
                 <Route path="/create-report" element={<CreateReport />} />
                 <Route path="/menu" element={<Menu />} />
                 <Route path="/user-reports" element={<UserReports />} />
-                <Route path="/edit-report" element={<EditReport />} />
+                <Route path="/edit-report/:id" element={<EditReport />} />
             </Route>
         </Routes>
     )

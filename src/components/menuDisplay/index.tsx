@@ -10,8 +10,9 @@ export function MenuDisplay(){
     const [backDropFilter, setBackDropFilter] = useBackdropFilterState();
 
     return  (<ThemeProvider theme={menuDisplayTheme}>
-                <Container  disableGutters={true} 
-                            className="container" 
+                <Container  disableGutters={true}
+                            maxWidth={false} 
+                            className="menuDisplayContainer" 
                             sx={{ backdropFilter: backDropFilter }} >
                     <CustomEditData></CustomEditData>
                     <CustomEditPassword></CustomEditPassword>

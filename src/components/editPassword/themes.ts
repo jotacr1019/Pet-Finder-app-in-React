@@ -6,7 +6,7 @@ export const editPasswordTheme = createTheme({
             styleOverrides: {
                 root: ({ theme }) =>
                     theme.unstable_sx({
-                        "&.principalContainer": {
+                        "&.editPasswordContainer": {
                             display: "flex",
                             flexDirection: "column",
                             justifyContent: "center",

@@ -23,7 +23,7 @@ export function CustomMenu({navLinks, anchorEl, open, onClose}){
                     'aria-labelledby': 'basic-button',
                 }} >   
                 {navLinks.map((item) => {
-                    if (item.pathSources.includes(location.pathname)) {
+                    if (item.pathSources.includes(location.pathname.split('/')[1])) {
                         return (<Link   key={item.name} 
                                         onClick={onClose} 
                                         className={css.link}

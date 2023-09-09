@@ -155,7 +155,7 @@ export function CustomEditData(){
     }
 
     return <ThemeProvider theme={editPersonalDataTheme}>      
-                <Container disableGutters={true} className="principalDataContainer" >
+                <Container disableGutters={true} className="editDataContainer" >
                     <LoadingButton  
                             disabled={btnDataDisabled}
                             variant="outlined"

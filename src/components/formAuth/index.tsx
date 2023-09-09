@@ -89,7 +89,7 @@ export function FormAuth(){
 
     return (<ThemeProvider theme={formAuthTheme}>
                 <Grow in={growChecked}>
-                    <Container disableGutters={true} className="container">
+                    <Container disableGutters={true} className="formAuthContainer">
                         <Box    component="form" 
                                 onSubmit={handleFormSubmit}
                                 sx={{   display: 'flex',

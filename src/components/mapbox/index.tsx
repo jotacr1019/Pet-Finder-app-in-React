@@ -49,7 +49,7 @@ export function Mapbox(props: MapBoxSearchProps) {
     })
 
     useEffect(() => {
-        location.pathname === '/create-report' || location.pathname === '/edit-report' ? setDisplayTextField('flex') : setDisplayTextField('none');
+        location.pathname.split('/')[1] === 'create-report' || location.pathname.split('/')[1] === 'edit-report' ? setDisplayTextField('flex') : setDisplayTextField('none');
     }, [location.pathname]);
 
     const handleSearch = async (e)=>{
@@ -121,7 +121,7 @@ export function Mapbox(props: MapBoxSearchProps) {
 
     return (
         <ThemeProvider theme={mapboxTheme}>
-            <Container  disableGutters={true} className="principalContainer" >
+            <Container  disableGutters={true} className="mapboxContainer" >
                 <Map    mapboxAccessToken={mapBoxToken}
                         {...viewState}
                         onMove={evt => setViewState(evt.viewState)}

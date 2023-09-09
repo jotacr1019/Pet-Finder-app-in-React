@@ -7,10 +7,20 @@ type userData = {
     email: string;
 };
 
-type petData = {
+type newPetData = {
     name: string;
     location: string;
-    imagesUrl: string[];
+    imageUrl: string[];
+    status: string;
+    last_lat: number;
+    last_lng: number;
+};
+
+type petData = {
+    id: number;
+    name: string;
+    location: string;
+    imageUrl: string[];
     status: string;
     last_lat: number;
     last_lng: number;
@@ -144,7 +154,7 @@ export async function updatePasswordInDB(password: string, token: string) {
     }
 }
 
-export async function createPetInDB(petData: petData, token: string) {
+export async function createPetInDB(petData: newPetData, token: string) {
     try {
         const response = await fetch(API_BASE_URL + "/pets", {
             method: "POST",
@@ -167,17 +177,65 @@ export async function createPetInDB(petData: petData, token: string) {
     }
 }
 
-export async function getDataOfPetInDB(token: string, userId: number) {
+export async function getPetsAroundZoneInDB(lat: number, lng: number) {
     try {
-        const response = await fetch(API_BASE_URL + "/pets/" + userId, {
-            method: "GET",
-            headers: {
-                Authorization: "Bearer " + token,
-            },
-        });
+        const response = await fetch(
+            API_BASE_URL + "/pets-cerca-de?lat=" + lat + "&lng=" + lng,
+            {
+                method: "GET",
+            }
+        );
         if (response.status === 302) {
             const data = await response.json();
-            console.log({ data });
+            return data;
+        }
+        if (response.status === 400) {
+            return false;
+        }
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
+export async function getPetsOfUserFromDB(userId: number) {
+    try {
+        const response = await fetch(
+            API_BASE_URL + "/pets" + "?userId=" + userId,
+            {
+                method: "GET",
+            }
+        );
+        if (response.status === 302) {
+            const data = await response.json();
+            return data;
+        }
+        if (response.status === 400) {
+            return false;
+        }
+        if (response.status === 404) {
+            console.log("No se encontraron mascotas");
+            return false;
+        }
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
+export async function getDataOfPetInDB(token: string, petId: number) {
+    try {
+        const response = await fetch(
+            API_BASE_URL + "/pets/pet" + "?petId=" + petId,
+            {
+                method: "GET",
+                headers: {
+                    Authorization: "Bearer " + token,
+                },
+            }
+        );
+        if (response.status === 302) {
+            const data = await response.json();
             return data;
         }
         if (response.status === 401) {
@@ -193,20 +251,53 @@ export async function getDataOfPetInDB(token: string, userId: number) {
     }
 }
 
-export async function getPetsAroundZoneInDB(lat: number, lng: number) {
+export async function updatePetInDB(petData: petData, token: string) {
     try {
-        const response = await fetch(
-            API_BASE_URL + "/pets-cerca-de?lat=" + lat + "&lng=" + lng,
-            {
-                method: "GET",
-            }
-        );
-        if (response.status === 302) {
-            const data = await response.json();
-            return data;
-        }
-        if (response.status === 400) {
+        const response = await fetch(API_BASE_URL + "/pets", {
+            method: "PUT",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+            },
+            body: JSON.stringify(petData),
+        });
+        if (response.status === 401) {
+            console.log("Token inválido");
             return false;
+        }
+        if (response.status === 500) {
+            console.log("No se logró actualizar la mascota");
+            return false;
+        }
+        if (response.status === 200) {
+            return true;
+        }
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}
+
+export async function deletePetFromDB(petId: number, token: string) {
+    try {
+        const response = await fetch(API_BASE_URL + "/pets", {
+            method: "DELETE",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: "Bearer " + token,
+            },
+            body: JSON.stringify({ petId }),
+        });
+        if (response.status === 401) {
+            console.log("Token inválido");
+            return false;
+        }
+        if (response.status === 500) {
+            console.log("No se logró eliminar el reporte");
+            return false;
+        }
+        if (response.status === 200) {
+            return true;
         }
     } catch (err) {
         console.log(err);

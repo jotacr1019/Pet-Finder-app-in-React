@@ -6,7 +6,7 @@ export const signUpTheme = createTheme({
             styleOverrides: {
                 root: ({ theme }) =>
                     theme.unstable_sx({
-                        "&.principalContainer": {
+                        "&.signUpContainer": {
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",

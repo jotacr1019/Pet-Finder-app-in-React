@@ -6,7 +6,7 @@ export const editPersonalDataTheme = createTheme({
             styleOverrides: {
                 root: ({ theme }) =>
                     theme.unstable_sx({
-                        "&.principalDataContainer": {
+                        "&.editDataContainer": {
                             display: "flex",
                             flexDirection: "column",
                             justifyContent: "center",

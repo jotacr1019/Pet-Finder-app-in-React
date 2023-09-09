@@ -12,6 +12,7 @@ export function CustomTextField({...props}) {
                 placeholder={props.placeholder}
                 onChange={props.onChange}
                 onBlur={props.onBlur}
+                InputLabelProps={props.InputLabelProps}
                 error={props.error}
                 // helperText={props.helperText}
                 type="text"

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { AppBar, 
     Box,
@@ -43,45 +43,47 @@ export function Navbar() {
             name: 'Reportar mascota',
             path: '/create-report',
             icon: <ReportIcon />,
-            pathSources: ['/edit-data', '/edit-report', '/edit-password', '/menu', '/user-reports']
+            pathSources: ['edit-report', 'menu', 'user-reports']
         },
         {
             name: 'Mascotas reportadas',
             path: '/user-reports',
             icon: <PetsIcon />,
-            pathSources: ['/edit-data', '/edit-report', '/edit-password', '/menu', '/create-report']
+            pathSources: ['edit-report', 'menu', 'create-report']
         },
         {
             name: 'Mis datos',
             path: '/menu', 
             icon: <FolderSharedIcon />,
-            pathSources: ['/edit-data', '/edit-report', '/edit-password', '/user-reports', '/create-report']
+            pathSources: ['edit-report', 'user-reports', 'create-report']
         },
         {
             name: 'Cerrar sesión',
             path: '/', 
             icon: <LogoutIcon />,
-            pathSources: ['/edit-data', '/edit-report', '/edit-password', '/menu', '/user-reports', '/create-report']
+            pathSources: ['edit-report', 'menu', 'user-reports', 'create-report']
         },
         {
             name: 'Inicio',
             path: '/', 
             icon: <HomeIcon />,
-            pathSources: ['/auth', '/sign-up', '/home']
+            pathSources: ['auth', 'sign-up', 'home']
         },
         {
             name: 'Iniciar sesión',
             path: '/auth', 
             icon: <LoginIcon />,
-            pathSources: ['/welcome', '/']
+            pathSources: ['']
         }
     ]
 
     return (
         <ThemeProvider theme={navbarTheme}>
-            <Container disableGutters={true} className="principalContainer" >
+            <Container maxWidth={false} disableGutters={true} className="navbarContainer" >
                 <AppBar position="static" className="appbar" >
-                    <Toolbar>
+                    <Toolbar 
+                            // disableGutters={true}
+                            >
                         <Box    sx={{ flexGrow: 1,
                                     display: 'flex',
                                     alignItems: 'center' 
@@ -105,7 +107,7 @@ export function Navbar() {
                         </IconButton>
                         <Box sx={{display: {xs: 'none', md: 'flex'}}}>
                             {navLinks.map((item, index) => {
-                                if (item.pathSources.includes(location.pathname)) {
+                                if (item.pathSources.includes(location.pathname.split('/')[1])) {
                                     let buttonVariant: any = 'text';
                                     let buttonColor: any = '#20b2aa';
 

@@ -6,7 +6,7 @@ import { createReportTheme } from './themes';
 
 export function CreateReport(){
     return  <ThemeProvider theme={createReportTheme}>
-                <Container disableGutters={true} className="principalContainer" >
+                <Container disableGutters={true} className="createReportContainer" >
                     <Typography variant="h2" className="title" >
                         Reportar Mascota
                     </Typography>

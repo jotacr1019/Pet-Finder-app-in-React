@@ -6,7 +6,7 @@ export const navbarTheme = createTheme({
             styleOverrides: {
                 root: ({ theme }) =>
                     theme.unstable_sx({
-                        "&.principalContainer": {
+                        "&.navbarContainer": {
                             flexGrow: 1,
                             minWidth: 375,
                             maxWidth: "none",

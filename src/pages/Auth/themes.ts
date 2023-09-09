@@ -6,7 +6,7 @@ export const authTheme = createTheme({
             styleOverrides: {
                 root: ({ theme }) =>
                     theme.unstable_sx({
-                        "&.principalContainer": {
+                        "&.authContainer": {
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",

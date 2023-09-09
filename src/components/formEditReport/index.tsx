@@ -13,7 +13,9 @@ import { Mapbox } from '../mapbox';
 import { DisplayImages } from '../displayImages';
 import { CustomTextField } from "../../ui/textField";
 import { CustomButton } from '../../ui/button';
-import { useUpdatePetData, usePetDataStore } from '../../hooks/editPetData';
+import { useGetDataOfPet } from '../../hooks/dataOfPet';
+import { useUpdatePetData } from '../../hooks/editPetData';
+import { useDeleteReport } from '../../hooks/deleteReport';
 import { imgToURLCloudinary } from '../../lib/cloudinary';
 import { formEditReportTheme } from './themes';
 
@@ -46,11 +48,16 @@ const initialState: mapboxData = {
 }
 
 export function FormEditReport(){
-    // const { getPetData } = useGetPetData();
+    const { getDataOfPet } = useGetDataOfPet();
     const { updatePetData } = useUpdatePetData();
-    const [dataStore, setDataStore] = usePetDataStore();
+    const { deleteReport } = useDeleteReport();
+    // const [dataStore, setDataStore] = usePetDataStore();
 
     const [mapBoxFormData, setMapboxFormData] = useState(initialState);
+
+    // const [nameValue, setNameValue] = useState('');
+
+    const [idOfPet, setIdOfPet] = useState(0);
 
     const [imagesUrl, setImagesUrl] = useState([]);
 
@@ -60,7 +67,10 @@ export function FormEditReport(){
 
     const [openReload, setOpenReload] = useState(false);
 
-    const [openMapboxSnackbar, setOpenMapboxSnackbar] = useState(false);
+    // const [eventNameFullFilled, setNameFullFilled] = useState(false);
+    // const [eventLocationFullFilled, setLocationFullFilled] = useState(false);
+
+    const [openDeleteSnackbar, setOpenDeleteSnackbar] = useState(false);
     const [openImagesUrlSnackbar, setOpenImagesUrlSnackbar] = useState(false);
     const [openUndefinedMapboxSnackbar, setOpenUndefinedMapboxSnackbar] = useState(false);
     const [openNoTokenSnackbar, setOpenNoTokenSnackbar] = useState(false);
@@ -71,24 +81,36 @@ export function FormEditReport(){
 
     const pullData = async() => {
         const form: HTMLFormElement = document.querySelector('.form');
-        // const dataResponse = await getPetData();
+        const dataResponse = await getDataOfPet();
         // console.log({dataResponse});
-        // const dataResponse = await getDataOfUserFromDB(token);
         
-        // if(!dataResponse){
-        //     return false;
-        // }
+        if(!dataResponse){
+            return false;
+        }
 
-        // form.full_name.value = dataResponse.full_name;
-        // form.email.value = dataResponse.email;
-        // setNameFullFilled(true);
-        // setEmailFullFilled(true);
+        setIdOfPet(dataResponse.id);
+        form.pet_name.value = dataResponse.name;
+        setMapboxFormData({
+            ...mapBoxFormData,
+            mapbox: {
+                query: dataResponse.location,
+                coords: {
+                    lat: dataResponse.last_lat,
+                    lng: dataResponse.last_lng
+            }
+        }});
+        setImagesUrl(dataResponse.imageUrl);
         return true;
     }
 
     useEffect(()=>{
         pullData();
     }, [])
+
+    useEffect(()=>{
+        // console.log('imagesUrl en editReport', imagesUrl);
+        imagesUrl.length > 3 ? setBtnDisable(true) : setBtnDisable(false);
+    }, [imagesUrl])
 
     const handleSnackbarClose = (setClose, event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
@@ -97,13 +119,11 @@ export function FormEditReport(){
         setClose(false);
     };
 
-    useEffect(()=>{
-        imagesUrl.length > 3 ? setBtnDisable(true) : setBtnDisable(false);
-    }, [imagesUrl])
-
     const handleDropzoneChange = (acceptedFiles) => {
-        const imagesToDisplayImages = acceptedFiles.filter((item)=> {return !deletedImages.includes(item)});
-        setImagesUrl(imagesToDisplayImages);
+        const imagesDeletedVerified = acceptedFiles.filter((item)=> {return !deletedImages.includes(item)});
+        // console.log({imagesDeletedVerified});
+        const finalVerification = imagesDeletedVerified.filter((item)=> {return !imagesUrl.includes(item)});
+        setImagesUrl(prevUrls => [...prevUrls, ...finalVerification]);
     }
 
     const handleDisplayChange = (deletedImages) => {
@@ -128,14 +148,15 @@ export function FormEditReport(){
             return;
         } 
 
-        if(mapBoxFormData.mapbox.query === ''){
-            setOpenMapboxSnackbar(true);
-            setOpenReload(false);
-            return;
-        }
+        // if(mapBoxFormData.mapbox.query === ''){
+        //     // setOpenMapboxSnackbar(true);
+        //     setOpenReload(false);
+        //     return;
+        // }
         
+        // console.log({mapBoxFormData});
         const latLng: any = mapBoxFormData.mapbox.coords;
-        if(latLng.newLat === undefined){
+        if(latLng.lat === undefined){
             setOpenUndefinedMapboxSnackbar(true);
             setOpenReload(false);
             return;
@@ -148,26 +169,50 @@ export function FormEditReport(){
             return;
         }
 
-        const imagesUrlCloudinary: string[] = await imgToURLCloudinary(imagesUrl);
-        const allData = {
-            last_lat: latLng.newLat,
-            last_lng: latLng.newLng,
-            name: e.target.name.value,
-            imageUrl: imagesUrlCloudinary,
+        const imagesWithoutClodinary = imagesUrl.filter((item)=> {return !item.includes('cloudinary')});
+        const imagesWithCloudinary: string[] = imagesUrl.filter((item)=> {return item.includes('cloudinary')});
+        const imagesUrlCloudinary: string[] = await imgToURLCloudinary(imagesWithoutClodinary);
+        imagesWithCloudinary.push(...imagesUrlCloudinary);
+        // console.log({imagesWithCloudinary});
+
+        const petData = {
+            id: idOfPet,
+            last_lat: latLng.lat,
+            last_lng: latLng.lng,
+            name: e.target.pet_name.value,
+            imageUrl: imagesWithCloudinary,
             status: 'missing',
             location: mapBoxFormData.mapbox.query
         }
+        // console.log(allPetData);
 
-        const createResponse = await updatePetData(allData);
-        if (createResponse) {
-            console.log('Pet creada: ', createResponse);
+        const updateResponse = await updatePetData(petData);
+        if (updateResponse) {
+            // console.log('Pet actualizada: ', updateResponse);
             setOpenSuccessSnackbar(true);
             setTimeout(() => {
                 setOpenReload(false);
                 navigate("/user-reports");
             }, 2500);
         } else {
-            console.log('Error al crear pet', createResponse);
+            // console.log('Error al actualizar pet', updateResponse);
+            setOpenReload(false);
+            setOpenFailSnackbar(true);
+        }
+    }
+
+    const handleFoundBtn = (e) => {
+        e.preventDefault();
+        setOpenReload(true);
+
+        const deleteResponse = deleteReport(idOfPet);
+        if (deleteResponse) {
+            setOpenDeleteSnackbar(true);
+            setTimeout(() => {
+                setOpenReload(false);
+                navigate("/user-reports");
+            }, 2500);
+        } else {
             setOpenReload(false);
             setOpenFailSnackbar(true);
         }
@@ -179,7 +224,7 @@ export function FormEditReport(){
         if (form) {
             form.reset();
         }
-        navigate("/menu");
+        navigate("/user-reports");
     }
 
     return (
@@ -195,19 +240,19 @@ export function FormEditReport(){
                         gap: {xs: '15px', sm: '25px', md: '15px', lg: '20px'},
                         width: '100%',
                     }} >
-                <CustomTextField  
-                            required={true}
+                <CustomTextField 
                             id="outlined-pet-name"
                             className="outlined-pet-name"
-                            defaultValue="Normal"
                             label="Nombre"
                             placeholder="Ingresa el nombre de la mascota"
-                            name="name" >
+                            name="pet_name"
+                            InputLabelProps={{
+                                shrink: true,
+                            }} >
                 </CustomTextField>
-                <DisplayImages imagesReceived={imagesUrl} 
-                                onChange={handleDisplayChange}
-                                >
-                </DisplayImages>
+                <DisplayImages  imagesReceived={imagesUrl} 
+                                onChange={handleDisplayChange} 
+                />
                 <MyDropzone onChange={handleDropzoneChange} 
                             disabled={btnDisable} 
                 />
@@ -236,24 +281,16 @@ export function FormEditReport(){
                         Guardar
                     </CustomButton>
                     <CustomButton   variant="contained"
-                                    className="foundButton"
-                                    onClick={handleCancelBtn} >
+                                    className="foundButton" 
+                                    onClick={handleFoundBtn} >
                         Reportar como encontrado
                     </CustomButton>
                     <CustomButton   variant="contained"
-                                    className="deleteButton" >
-                        Eliminar reporte
+                                    className="deleteButton" 
+                                    onClick={handleCancelBtn} >
+                        Cancelar
                     </CustomButton>
                 </Container>
-                <Snackbar   open={openMapboxSnackbar} 
-                            autoHideDuration={5000} 
-                            onClose={() => handleSnackbarClose(setOpenMapboxSnackbar)} >
-                    <Alert  onClose={() => handleSnackbarClose(setOpenMapboxSnackbar)} 
-                            severity="error" 
-                            sx={{ width: '100%' }} >
-                        Necesitas agregar una dirección!
-                    </Alert>
-                </Snackbar>
                 <Snackbar   open={openUndefinedMapboxSnackbar} 
                             autoHideDuration={5000} 
                             onClose={() => handleSnackbarClose(setOpenUndefinedMapboxSnackbar)} >
@@ -281,13 +318,22 @@ export function FormEditReport(){
                         No tienes los permisos para crear reportes!
                     </Alert>
                 </Snackbar>
+                <Snackbar   open={openDeleteSnackbar} 
+                            autoHideDuration={5000} 
+                            onClose={() => handleSnackbarClose(setOpenDeleteSnackbar)} >
+                    <Alert  onClose={() => handleSnackbarClose(setOpenDeleteSnackbar)} 
+                            severity="success" 
+                            sx={{ width: '100%' }} >
+                        Reporte borrado exitosamente!
+                    </Alert>
+                </Snackbar>
                 <Snackbar   open={openSuccessSnackbar} 
                             autoHideDuration={5000} 
                             onClose={() => handleSnackbarClose(setOpenSuccessSnackbar)} >
                     <Alert  onClose={() => handleSnackbarClose(setOpenSuccessSnackbar)} 
                             severity="success" 
                             sx={{ width: '100%' }} >
-                        Reporte creado!
+                        Reporte editado!
                     </Alert>
                 </Snackbar>
                 <Snackbar   open={openFailSnackbar} 
@@ -296,7 +342,7 @@ export function FormEditReport(){
                     <Alert  onClose={() => handleSnackbarClose(setOpenFailSnackbar)} 
                             severity="error" 
                             sx={{ width: '100%' }} >
-                        Reporte creado!
+                        Ha sucedido un error, intentalo de nuevo!
                     </Alert>
                 </Snackbar>
                 <Backdrop

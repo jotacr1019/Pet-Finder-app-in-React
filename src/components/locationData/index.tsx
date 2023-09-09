@@ -89,11 +89,17 @@ export function LocationData(){
 
     const [locationButtonDisplay, setLocationButtonDisplay] = useState("initial");
 
+    const [btnSearchDisabled, setBtnSearchDisabled] = useState(false);
+
     const navigate = useNavigate();
 
     useEffect(() => {
         setQuery(mapBoxFormData.mapbox.query);
     }, [mapBoxFormData])
+
+    useEffect(() => {
+        query !== "" ? setBtnSearchDisabled(false) : setBtnSearchDisabled(true);
+    }, [query])
 
     const handleSnackbarClose = (setClose, event?: React.SyntheticEvent | Event, reason?: string) => {
         if (reason === 'clickaway') {
@@ -189,7 +195,8 @@ export function LocationData(){
                                     endAdornment: (
                                         <InputAdornment position="start">
                                             <Button 
-                                                    onClick={handleSearch} 
+                                                    disabled={btnSearchDisabled}
+                                                    onClick={handleSearch}
                                                     type="submit"
                                                     variant="contained"
                                                     className="searchButton" >

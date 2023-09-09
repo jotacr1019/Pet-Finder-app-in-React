@@ -1,12 +1,15 @@
 import React from "react";
-import { usePetsFound } from "../../hooks/petsAround";
+import { Container, ThemeProvider, Typography } from "@mui/material";
+import { HomeCards } from "../../components/cards";
+import { HomeTheme } from "./themes";
 
 export function Home(){
-
-    const [petsFound, setPetsFound] = usePetsFound();
-
-    return  <div>
-                <h1>Home</h1>
-                <p>{JSON.stringify(petsFound)}</p>
-            </div>
+    return  <ThemeProvider theme={HomeTheme}>
+                <Container disableGutters={true} className="homeContainer">
+                    <Typography variant="h2" className="title" >
+                        Mascotas Perdidas cerca de tu ubicación
+                    </Typography>
+                    <HomeCards />
+                </Container>
+            </ThemeProvider>
 }

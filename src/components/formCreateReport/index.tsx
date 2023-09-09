@@ -262,7 +262,7 @@ export function FormCreateReport(){
                     <Alert  onClose={() => handleSnackbarClose(setOpenFailSnackbar)} 
                             severity="error" 
                             sx={{ width: '100%' }} >
-                        Reporte creado!
+                        Ha sucedido un error, intentalo de nuevo!
                     </Alert>
                 </Snackbar>
                 <Backdrop

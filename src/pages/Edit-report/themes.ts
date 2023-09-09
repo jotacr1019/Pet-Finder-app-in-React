@@ -6,7 +6,7 @@ export const editReportTheme = createTheme({
             styleOverrides: {
                 root: ({ theme }) =>
                     theme.unstable_sx({
-                        "&.principalContainer": {
+                        "&.editReportContainer": {
                             display: "flex",
                             flexDirection: "column",
                             justifyContent: "center",
