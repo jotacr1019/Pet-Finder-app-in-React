@@ -10,15 +10,7 @@ export const homeCardTheme = createTheme({
                             display: "flex",
                             justifyContent: "center",
                             alignItems: "center",
-                            // height: "fit-content",
-                            // minHeight: {
-                            //     xs: "92.4vh",
-                            //     sm: "90.4vh",
-                            //     md: "90.4vh",
-                            // },
                             width: "100%",
-                            // maxWidth: "none",
-                            // minWidth: "375px",
                             backgroundColor: "#4267ac",
                         },
                         "&.card": {
@@ -59,18 +51,10 @@ export const homeCardTheme = createTheme({
                         "&.cardDetails": {
                             display: "flex",
                             flexDirection: "column",
-                            // maxWidth: { xs: "300px", sm: "320px" },
-                            // minWidth: { xs: "300px", sm: "320px" },
                             width: "100%",
-                            // height: { xs: "365px", sm: "400px" },
                             color: "black",
                             height: "100%",
                             gap: "8px",
-                            // display: "grid",
-                            // placeContent: "center",
-                            //
-                            //
-                            //
                             overflow: "hidden",
                         },
                         "&.titleContainer": {
@@ -82,40 +66,8 @@ export const homeCardTheme = createTheme({
                             width: "fit-content",
                             padding: "0px 14px",
                             borderRadius: "25px",
-                            // backgroundColor: "#4267ac",
                             backgroundColor: "#e19568",
                         },
-                        // "&.cardImageContainer": {
-                        //     display: "flex",
-                        //     // justifyContent: "center",
-                        //     alignItems: "center",
-                        //     width: "fit-content",
-                        //     gap: "6px",
-                        //     maxWidth: "100%",
-                        //     height: {
-                        //         xs: "230px",
-                        //         sm: "250px",
-                        //         md: "270px",
-                        //         lg: "280px",
-                        //     },
-                        //     //
-                        //     //
-                        //     //
-                        //     border: "2px solid blue",
-                        //     // display: "flex",
-                        //     // flexDirection: "row",
-                        //     // overflow: "hidden",
-                        //     // width: "100%",
-                        //     animation: "bannermove 20s linear infinite",
-                        //     "@keyframes bannermove": {
-                        //         "0%": {
-                        //             transform: "translate(100%)",
-                        //         },
-                        //         "100%": {
-                        //             transform: "translate(-300%)",
-                        //         },
-                        //     },
-                        // },
                         "&.cardImageStaticContainer": {
                             display: "flex",
                             justifyContent: "center",
@@ -128,6 +80,28 @@ export const homeCardTheme = createTheme({
                                 md: "270px",
                                 lg: "280px",
                             },
+                        },
+                        "&.secondaryContainer": {
+                            width: "100%",
+                            maxWidth: "none",
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "space-between",
+                            alignItems: "center",
+                            gap: "4px",
+                            padding: 2,
+                            paddingTop: {
+                                xs: "6px",
+                                sm: "6px",
+                            },
+                            paddingRight: {
+                                xs: "0",
+                                sm: "0",
+                                md: "0",
+                                lg: "0",
+                            },
+                            backgroundColor: "#212121",
+                            color: "white",
                         },
                     }),
             },
@@ -174,9 +148,24 @@ export const homeCardTheme = createTheme({
                             padding: "3px",
                             position: "absolute",
                             left: "50%",
+                            // left: "21%",
                             bottom: 0,
+                            // bottom: "-5%",
                             opacity: 0,
                             transition: "0.3s ease-out",
+                        },
+                    }),
+                text: ({ theme }) =>
+                    theme.unstable_sx({
+                        "&.closeButton": {
+                            minWidth: "0px",
+                            fontSize: { xs: 16, sm: 18, md: 20, lg: 22 },
+                            alignSelf: "flex-end",
+                            paddingRight: "6px",
+                            color: "inherit",
+                            "&:hover": {
+                                backgroundColor: "transparent",
+                            },
                         },
                     }),
             },
@@ -185,7 +174,7 @@ export const homeCardTheme = createTheme({
             styleOverrides: {
                 h4: ({ theme }) =>
                     theme.unstable_sx({
-                        "&,textTitle": {
+                        "&.cardTitle": {
                             fontSize: {
                                 xs: "1.6rem",
                                 sm: "1.8rem",
@@ -197,11 +186,90 @@ export const homeCardTheme = createTheme({
                             marginTop: "6px",
                             textAlign: "center",
                         },
+                        "&.reportTitle": {
+                            m: 0,
+                            textAlign: "center",
+                            fontSize: {
+                                xs: "1.6rem",
+                                sm: "1.7rem",
+                                md: "1.9rem",
+                                lg: "2.6rem",
+                            },
+                            padding: {
+                                xs: "0px 56px 0px 40px",
+                            },
+                        },
                     }),
                 body1: ({ theme }) =>
                     theme.unstable_sx({
-                        "&.textBody": {
+                        "&.cardText": {
                             color: "rgb(134, 134, 134)",
+                        },
+                    }),
+            },
+        },
+        MuiPaper: {
+            styleOverrides: {
+                root: ({ theme }) =>
+                    theme.unstable_sx({
+                        "&.MuiPaper-root": {
+                            backgroundColor: "#212121",
+                            maxWidth: {
+                                xs: "360px",
+                                sm: "370px",
+                                md: "400px",
+                                lg: "470px",
+                            },
+                            minWidth: "330px",
+                            borderRadius: "8px",
+                        },
+                    }),
+            },
+        },
+        MuiDialogContent: {
+            styleOverrides: {
+                root: ({ theme }) =>
+                    theme.unstable_sx({
+                        "&.dialogContent": {
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            gap: { xs: "22px" },
+                            padding: {
+                                xs: "16px",
+                                md: "26px 20px ",
+                            },
+                            backgroundColor: "#212121",
+                            // color: "white",
+                        },
+                    }),
+            },
+        },
+        MuiTextField: {
+            styleOverrides: {
+                root: ({ theme }) =>
+                    theme.unstable_sx({
+                        "&.messageTextField": {
+                            input: { color: "#fff" },
+                            label: { color: "#fff" },
+                            width: "100%",
+                            color: "#fff",
+                            ".MuiInputBase-inputMultiline": {
+                                color: "#fff",
+                            },
+                            // ".MuiInputBase-root": {
+                            //     // paddingRight: { xs: "6px", sm: "10px" },
+                            //     // gap: { xs: "10px", sm: "18px" },
+                            //     // backgroundColor: "#212121",
+                            //     color: "#fff",
+                            // },
+                            ".css-1d3z3hw-MuiOutlinedInput-notchedOutline": {
+                                borderColor: "white !important",
+                            },
+                            // "& .MuiInputBase-input.Mui-disabled": {
+                            //     WebkitTextFillColor: "#fff",
+                            // },
                         },
                     }),
             },

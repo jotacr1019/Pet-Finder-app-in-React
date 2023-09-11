@@ -1,22 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Box, Container, Snackbar, Collapse, ThemeProvider } from '@mui/material';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import { Box, Container, Collapse, ThemeProvider } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import LoadingButton from '@mui/lab/LoadingButton';
 import { CustomPasswordField } from "../../ui/passwordField";
+import { CustomSnackbar } from '../../ui/snackbar';
 import { usePasswordUserInDB } from "../../hooks/updatePassword";
 import { useBtnPasswordDisabledState, 
     useBtnDataDisabledState,
     useBackdropFilterState } from "../../atoms";
 import { editPasswordTheme } from "./themes";
 
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-    props,
-    ref,
-) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 export function CustomEditPassword(){
     const {updatePassword} = usePasswordUserInDB()
@@ -64,13 +57,6 @@ export function CustomEditPassword(){
         if (id === 'outlined-confirm-password') {
             setConfirmPasswordFullFilled(Boolean(event.target.value.length));
         }
-    };
-
-    const handleSnackbarClose = (setClose, event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setClose(false);
     };
 
     const handlePasswordChange = () => {
@@ -201,42 +187,18 @@ export function CustomEditPassword(){
                             </Container>
                         </Container>
                     </Collapse>
-                    <Snackbar   open={openTokenSnackbar} 
-                                autoHideDuration={5000} 
-                                onClose={() => handleSnackbarClose(setOpenTokenSnackbar)} >
-                        <Alert  onClose={() => handleSnackbarClose(setOpenTokenSnackbar)} 
-                                severity="error" 
-                                sx={{ width: '100%' }} >
-                            No tienes los permisos para esta acción!
-                        </Alert>
-                    </Snackbar>
-                    <Snackbar   open={openSuccessSnackbar} 
-                                autoHideDuration={5000} 
-                                onClose={() => handleSnackbarClose(setOpenSuccessSnackbar)} >
-                        <Alert  onClose={() => handleSnackbarClose(setOpenSuccessSnackbar)} 
-                                severity="success" 
-                                sx={{ width: '100%' }} >
-                            Los datos han sido actualizados!
-                        </Alert>
-                    </Snackbar>
-                    <Snackbar   open={openPasswordSnackbar} 
-                                    autoHideDuration={5000} 
-                                    onClose={() => handleSnackbarClose(setOpenPasswordSnackbar)} >
-                            <Alert  onClose={() => handleSnackbarClose(setOpenPasswordSnackbar)} 
-                                    severity="error" 
-                                    sx={{ width: '100%' }} >
-                                Las contraseñas no coinciden!
-                            </Alert>
-                    </Snackbar>
-                    <Snackbar   open={openFailSnackbar} 
-                                autoHideDuration={5000} 
-                                onClose={() => handleSnackbarClose(setOpenFailSnackbar)} >
-                        <Alert  onClose={() => handleSnackbarClose(setOpenFailSnackbar)} 
-                                severity="error" 
-                                sx={{ width: '100%' }} >
-                            Ha ocurrido un error, datos no actualizados!
-                        </Alert>
-                    </Snackbar>
+                    <CustomSnackbar open={openTokenSnackbar} severity="error" onClose={setOpenTokenSnackbar}>
+                        No tienes los permisos para esta acción!
+                    </CustomSnackbar>
+                    <CustomSnackbar open={openSuccessSnackbar} severity="success" onClose={setOpenSuccessSnackbar}>
+                        Los datos han sido actualizados!
+                    </CustomSnackbar>
+                    <CustomSnackbar open={openPasswordSnackbar} severity="error" onClose={setOpenPasswordSnackbar}>
+                        Las contraseñas no coinciden!
+                    </CustomSnackbar>
+                    <CustomSnackbar open={openFailSnackbar} severity="error" onClose={setOpenFailSnackbar}>
+                        Ha ocurrido un error, datos no actualizados!
+                    </CustomSnackbar>
                 </Container>
             </ThemeProvider>
 }

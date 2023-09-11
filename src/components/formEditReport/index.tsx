@@ -2,30 +2,22 @@ import React, {useEffect, useState} from 'react'
 import { useNavigate } from "react-router-dom";
 import { Box, 
     Container, 
-    Typography, 
-    Snackbar, 
+    Typography,
     Backdrop, 
     CircularProgress,
     ThemeProvider } from '@mui/material';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { MyDropzone } from '../dropzone';
 import { Mapbox } from '../mapbox';
 import { DisplayImages } from '../displayImages';
 import { CustomTextField } from "../../ui/textField";
 import { CustomButton } from '../../ui/button';
+import { CustomSnackbar } from '../../ui/snackbar';
 import { useGetDataOfPet } from '../../hooks/dataOfPet';
 import { useUpdatePetData } from '../../hooks/editPetData';
 import { useDeleteReport } from '../../hooks/deleteReport';
 import { imgToURLCloudinary } from '../../lib/cloudinary';
 import { formEditReportTheme } from './themes';
 
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-    props,
-    ref,
-) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 type mapboxData = {
     mapbox: {
@@ -111,13 +103,6 @@ export function FormEditReport(){
         // console.log('imagesUrl en editReport', imagesUrl);
         imagesUrl.length > 3 ? setBtnDisable(true) : setBtnDisable(false);
     }, [imagesUrl])
-
-    const handleSnackbarClose = (setClose, event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setClose(false);
-    };
 
     const handleDropzoneChange = (acceptedFiles) => {
         const imagesDeletedVerified = acceptedFiles.filter((item)=> {return !deletedImages.includes(item)});
@@ -291,60 +276,24 @@ export function FormEditReport(){
                         Cancelar
                     </CustomButton>
                 </Container>
-                <Snackbar   open={openUndefinedMapboxSnackbar} 
-                            autoHideDuration={5000} 
-                            onClose={() => handleSnackbarClose(setOpenUndefinedMapboxSnackbar)} >
-                    <Alert  onClose={() => handleSnackbarClose(setOpenUndefinedMapboxSnackbar)} 
-                            severity="error" 
-                            sx={{ width: '100%' }} >
-                        Necesitas elegir una ubicación más especifica!
-                    </Alert>
-                </Snackbar>
-                <Snackbar   open={openImagesUrlSnackbar} 
-                            autoHideDuration={5000} 
-                            onClose={() => handleSnackbarClose(setOpenImagesUrlSnackbar)} >
-                    <Alert  onClose={() => handleSnackbarClose(setOpenImagesUrlSnackbar)} 
-                            severity="error" 
-                            sx={{ width: '100%' }} >
-                        Necesitas agregar al menos una foto!
-                    </Alert>
-                </Snackbar>
-                <Snackbar   open={openNoTokenSnackbar} 
-                            autoHideDuration={5000} 
-                            onClose={() => handleSnackbarClose(setOpenNoTokenSnackbar)} >
-                    <Alert  onClose={() => handleSnackbarClose(setOpenNoTokenSnackbar)} 
-                            severity="error" 
-                            sx={{ width: '100%' }} >
-                        No tienes los permisos para crear reportes!
-                    </Alert>
-                </Snackbar>
-                <Snackbar   open={openDeleteSnackbar} 
-                            autoHideDuration={5000} 
-                            onClose={() => handleSnackbarClose(setOpenDeleteSnackbar)} >
-                    <Alert  onClose={() => handleSnackbarClose(setOpenDeleteSnackbar)} 
-                            severity="success" 
-                            sx={{ width: '100%' }} >
-                        Reporte borrado exitosamente!
-                    </Alert>
-                </Snackbar>
-                <Snackbar   open={openSuccessSnackbar} 
-                            autoHideDuration={5000} 
-                            onClose={() => handleSnackbarClose(setOpenSuccessSnackbar)} >
-                    <Alert  onClose={() => handleSnackbarClose(setOpenSuccessSnackbar)} 
-                            severity="success" 
-                            sx={{ width: '100%' }} >
-                        Reporte editado!
-                    </Alert>
-                </Snackbar>
-                <Snackbar   open={openFailSnackbar} 
-                            autoHideDuration={5000} 
-                            onClose={() => handleSnackbarClose(setOpenFailSnackbar)} >
-                    <Alert  onClose={() => handleSnackbarClose(setOpenFailSnackbar)} 
-                            severity="error" 
-                            sx={{ width: '100%' }} >
-                        Ha sucedido un error, intentalo de nuevo!
-                    </Alert>
-                </Snackbar>
+                <CustomSnackbar open={openUndefinedMapboxSnackbar} severity="error" onClose={setOpenUndefinedMapboxSnackbar}>
+                    Necesitas elegir una ubicación más especifica!
+                </CustomSnackbar>
+                <CustomSnackbar open={openImagesUrlSnackbar} severity="error" onClose={setOpenImagesUrlSnackbar}>
+                    Necesitas agregar al menos una foto!
+                </CustomSnackbar>
+                <CustomSnackbar open={openNoTokenSnackbar} severity="error" onClose={setOpenNoTokenSnackbar}>
+                    No tienes los permisos para crear reportes!
+                </CustomSnackbar>
+                <CustomSnackbar open={openDeleteSnackbar} severity="success" onClose={setOpenDeleteSnackbar}>
+                    Reporte borrado exitosamente!
+                </CustomSnackbar>
+                <CustomSnackbar open={openSuccessSnackbar} severity="success" onClose={setOpenSuccessSnackbar}>
+                    Reporte editado!
+                </CustomSnackbar>
+                <CustomSnackbar open={openFailSnackbar} severity="error" onClose={setOpenFailSnackbar}>
+                    Ha sucedido un error, intentalo de nuevo!
+                </CustomSnackbar>
                 <Backdrop
                     sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                     open={openReload} >   

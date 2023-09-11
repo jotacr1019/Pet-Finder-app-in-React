@@ -75,6 +75,24 @@ export const infoMessageTheme = createTheme({
                     }),
             },
         },
+        MuiPaper: {
+            styleOverrides: {
+                root: ({ theme }) =>
+                    theme.unstable_sx({
+                        "&.MuiPaper-root": {
+                            backgroundColor: "#212121",
+                            maxWidth: {
+                                xs: "360px",
+                                sm: "370px",
+                                md: "400px",
+                                lg: "470px",
+                            },
+                            minWidth: "310px",
+                            borderRadius: "8px",
+                        },
+                    }),
+            },
+        },
         MuiDialogContent: {
             styleOverrides: {
                 root: ({ theme }) =>
@@ -82,6 +100,9 @@ export const infoMessageTheme = createTheme({
                         "&.dialogContent": {
                             backgroundColor: "#212121",
                             color: "white",
+                            padding: {
+                                md: "26px 20px",
+                            },
                         },
                     }),
             },

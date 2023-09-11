@@ -304,3 +304,29 @@ export async function deletePetFromDB(petId: number, token: string) {
         return null;
     }
 }
+
+export async function createReportInDB(reportData) {
+    try {
+        const response = await fetch(API_BASE_URL + "/reports", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(reportData),
+        });
+        if (response.status === 400) {
+            return false;
+        }
+        if (response.status === 500) {
+            console.log("No se logró crear el reporte");
+            return false;
+        }
+        if (response.status === 201) {
+            // const data = await response.json();
+            return true;
+        }
+    } catch (err) {
+        console.log(err);
+        return null;
+    }
+}

@@ -6,23 +6,15 @@ import { Button,
     TextField, 
     InputAdornment, 
     Dialog,
-    Snackbar,
     Backdrop, 
     CircularProgress } from '@mui/material';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { styled } from '@mui/material/styles';
 import { Mapbox } from "../../components/mapbox";
 import { CustomButton } from "../../ui/button";
+import { CustomSnackbar } from '../../ui/snackbar';
 import { usePetsFound, useGetPetsAroundZone } from "../../hooks/petsAround";
 import { locationButtonTheme } from "./themes";
 
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-    props,
-    ref,
-) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 type mapboxData = {
     mapbox: {
@@ -100,13 +92,6 @@ export function LocationData(){
     useEffect(() => {
         query !== "" ? setBtnSearchDisabled(false) : setBtnSearchDisabled(true);
     }, [query])
-
-    const handleSnackbarClose = (setClose, event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setClose(false);
-    };
 
     const handleClick = async() => {
         setOpenReload(true);
@@ -214,15 +199,9 @@ export function LocationData(){
                         <CircularProgress color="inherit" />
                     </Backdrop>
                 </BootstrapDialog>
-                <Snackbar   open={openErrorSnackbar} 
-                            autoHideDuration={5000} 
-                            onClose={() => handleSnackbarClose(setOpenErrorSnackbar)} >
-                    <Alert  onClose={() => handleSnackbarClose(setOpenErrorSnackbar)} 
-                            severity="error" 
-                            sx={{ width: '100%' }} >
-                        Ha ocurrido un error, inténtalo de nuevo!
-                    </Alert>
-                </Snackbar>
+                <CustomSnackbar open={openErrorSnackbar} severity="error" onClose={setOpenErrorSnackbar}>
+                    Ha ocurrido un error, inténtalo de nuevo!
+                </CustomSnackbar>
             </Container>
         </ThemeProvider> )
 }

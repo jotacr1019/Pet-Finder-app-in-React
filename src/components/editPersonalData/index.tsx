@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Box, Container, Snackbar, Collapse, ThemeProvider } from '@mui/material';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
+import { Box, Container, Collapse, ThemeProvider } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import LoadingButton from '@mui/lab/LoadingButton';
 import isEmail from 'validator/lib/isEmail';
 import { CustomTextField } from "../../ui/textField";
+import { CustomSnackbar } from '../../ui/snackbar';
 import { useUserDataUpdated, useUpdateUserInDB } from "../../hooks/updateUserData";
 import { useBtnPasswordDisabledState,
     useBtnDataDisabledState,
@@ -12,13 +12,6 @@ import { useBtnPasswordDisabledState,
 import { getDataOfUserFromDB } from "../../lib/api";
 import { editPersonalDataTheme } from "./themes";
 
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-    props,
-    ref,
-) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 export function CustomEditData(){
     const [personalData, setPersonalData] = useUserDataUpdated();
@@ -69,13 +62,6 @@ export function CustomEditData(){
         if (id === 'outlined-email') {
             setEmailFullFilled(Boolean(event.target.value.length));
         }
-    };
-
-    const handleSnackbarClose = (setClose, event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setClose(false);
     };
 
     const pullData = async(token) => {
@@ -214,51 +200,21 @@ export function CustomEditData(){
                             </Container>
                         </Container>
                     </Collapse>
-                    <Snackbar   open={openEmailSnackbar} 
-                                autoHideDuration={5000} 
-                                onClose={() => handleSnackbarClose(setOpenEmailSnackbar)} >
-                        <Alert  onClose={() => handleSnackbarClose(setOpenEmailSnackbar)} 
-                                severity="error" 
-                                sx={{ width: '100%' }} >
-                            No es un formato de correo válido!
-                        </Alert>
-                    </Snackbar>
-                    <Snackbar   open={openTokenSnackbar} 
-                                autoHideDuration={5000} 
-                                onClose={() => handleSnackbarClose(setOpenTokenSnackbar)} >
-                        <Alert  onClose={() => handleSnackbarClose(setOpenTokenSnackbar)} 
-                                severity="error" 
-                                sx={{ width: '100%' }} >
-                            No tienes los permisos para esta acción!
-                        </Alert>
-                    </Snackbar>
-                    <Snackbar   open={openSuccessSnackbar} 
-                                autoHideDuration={5000} 
-                                onClose={() => handleSnackbarClose(setOpenSuccessSnackbar)} >
-                        <Alert  onClose={() => handleSnackbarClose(setOpenSuccessSnackbar)} 
-                                severity="success" 
-                                sx={{ width: '100%' }} >
-                            Los datos han sido actualizados!
-                        </Alert>
-                    </Snackbar>
-                    <Snackbar   open={openUnsuccessSnackbar} 
-                                autoHideDuration={5000} 
-                                onClose={() => handleSnackbarClose(setOpenUnsuccessSnackbar)} >
-                        <Alert  onClose={() => handleSnackbarClose(setOpenUnsuccessSnackbar)} 
-                                severity="error" 
-                                sx={{ width: '100%' }} >
-                            Ha ocurrido un error, intenta nuevamente!
-                        </Alert>
-                    </Snackbar>
-                    <Snackbar   open={openFailSnackbar} 
-                                autoHideDuration={5000} 
-                                onClose={() => handleSnackbarClose(setOpenFailSnackbar)} >
-                        <Alert  onClose={() => handleSnackbarClose(setOpenFailSnackbar)} 
-                                severity="error" 
-                                sx={{ width: '100%' }} >
-                            Ha ocurrido un error, datos no actualizados!
-                        </Alert>
-                    </Snackbar>
+                    <CustomSnackbar open={openEmailSnackbar} severity="error" onClose={setOpenEmailSnackbar}>
+                        No es un formato de correo válido!
+                    </CustomSnackbar>
+                    <CustomSnackbar open={openTokenSnackbar} severity="error" onClose={setOpenTokenSnackbar}>
+                        No tienes los permisos para esta acción!
+                    </CustomSnackbar>
+                    <CustomSnackbar open={openSuccessSnackbar} severity="success" onClose={setOpenSuccessSnackbar}>
+                        Los datos han sido actualizados!
+                    </CustomSnackbar>
+                    <CustomSnackbar open={openUnsuccessSnackbar} severity="error" onClose={setOpenUnsuccessSnackbar}>
+                        Ha ocurrido un error, intenta nuevamente!
+                    </CustomSnackbar>
+                    <CustomSnackbar open={openFailSnackbar} severity="error" onClose={setOpenFailSnackbar}>
+                        Ha ocurrido un error, datos no actualizados!
+                    </CustomSnackbar>
                 </Container>
             </ThemeProvider>
 }

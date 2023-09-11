@@ -4,26 +4,18 @@ import isEmail from 'validator/lib/isEmail';
 import { Typography,
     Box,
     Container,
-    Snackbar,
     Backdrop,
     CircularProgress,
     ThemeProvider,
     Grow } from '@mui/material';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { CustomButton } from "../../ui/button";
 import { CustomTextField } from "../../ui/textField";
+import { CustomSnackbar } from '../../ui/snackbar';
 import { CustomPasswordField } from "../../ui/passwordField";
 import { useNewUserData, useCreateUserInDB } from "../../hooks/createUser";
 import { formSignupTheme } from "./themes";
 import css from "./index.module.css";
 
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-    props,
-    ref,
-) {
-    return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 export function FormSignup(){
     const [userData, setUserData] = useNewUserData();
@@ -47,13 +39,6 @@ export function FormSignup(){
 
     const handleInputsCompletation = (event) => {
         setUrlVisible(Boolean(event.target.value.length));
-    };
-
-    const handleSnackbarClose = (closeSnackbar, event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        closeSnackbar(false);
     };
 
     useEffect(() => {
@@ -161,33 +146,15 @@ export function FormSignup(){
                         </Typography>
                         <CustomButton type="submit" variant="contained">Registrarse</CustomButton>
                     </Box>
-                    <Snackbar   open={openErrorSnackbar} 
-                                autoHideDuration={5000} 
-                                onClose={() => handleSnackbarClose(setOpenErrorSnackbar)} >
-                        <Alert  onClose={() => handleSnackbarClose(setOpenErrorSnackbar)} 
-                                severity="error" 
-                                sx={{ width: '100%' }} >
-                            Email o contraseña incorrectos!
-                        </Alert>
-                    </Snackbar>
-                    <Snackbar   open={openEmailSnackbar} 
-                                autoHideDuration={5000} 
-                                onClose={() => handleSnackbarClose(setOpenEmailSnackbar)} >
-                        <Alert  onClose={() => handleSnackbarClose(setOpenEmailSnackbar)} 
-                                severity="error" 
-                                sx={{ width: '100%' }} >
-                            No es un formato de correo válido!
-                        </Alert>
-                    </Snackbar>
-                    <Snackbar   open={openPasswordSnackbar} 
-                                autoHideDuration={5000} 
-                                onClose={() => handleSnackbarClose(setOpenPasswordSnackbar)} >
-                        <Alert  onClose={() => handleSnackbarClose(setOpenPasswordSnackbar)} 
-                                severity="error" 
-                                sx={{ width: '100%' }} >
-                            Las contraseñas no coinciden!
-                        </Alert>
-                    </Snackbar>
+                    <CustomSnackbar open={openErrorSnackbar} severity="error" onClose={setOpenErrorSnackbar}>
+                        Email o contraseña incorrectos!
+                    </CustomSnackbar>
+                    <CustomSnackbar open={openEmailSnackbar} severity="error" onClose={setOpenEmailSnackbar}>
+                        No es un formato de correo válido!
+                    </CustomSnackbar>
+                    <CustomSnackbar open={openPasswordSnackbar} severity="error" onClose={setOpenPasswordSnackbar}>
+                        Las contraseñas no coinciden!
+                    </CustomSnackbar>
                     <Backdrop
                         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                         open={openReload}

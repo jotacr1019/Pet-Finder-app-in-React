@@ -98,9 +98,18 @@ export const locationButtonTheme = createTheme({
             styleOverrides: {
                 root: ({ theme }) =>
                     theme.unstable_sx({
-                        backgroundColor: "#212121",
-                        borderRadius: "8px",
-                        width: "100%",
+                        "&.MuiPaper-root": {
+                            backgroundColor: "#212121",
+                            borderRadius: "8px",
+                            width: "100%",
+                            maxWidth: {
+                                xs: "380px",
+                                sm: "570px",
+                                md: "600px",
+                                lg: "660px",
+                            },
+                            minWidth: "330px",
+                        },
                     }),
             },
         },

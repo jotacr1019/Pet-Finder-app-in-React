@@ -36,8 +36,8 @@ export function UserReportsCards() {
         <ThemeProvider theme={userReportsCardsTheme}>
             <Container disableGutters={true} className="homeCardContainer">
                 <List className="listCard">
-                    {petsFound.length > 0?
-                    (petsFound.map((pet, index) => (
+                    {petsFound.length > 0
+                    ? (petsFound.map((pet, index) => (
                         <ListItem className='listItem' disablePadding key={pet.id}>
                             <Container disableGutters={true} className="card">
                                 <Container disableGutters={true} className="cardDetails">
@@ -72,8 +72,8 @@ export function UserReportsCards() {
                                 </Link>
                             </Container>
                         </ListItem>
-                    ))):
-                    (<List className="listCard" >
+                    )))
+                    : (<List className="listCard" >
                         <Container disableGutters={true} className="skeletonContainer" >
                             <Skeleton variant="text" className="skeletonText1" />
                             <Skeleton variant="rectangular" className="skeletonRectangular" />

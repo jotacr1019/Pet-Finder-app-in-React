@@ -13,18 +13,19 @@ export function CustomTextField({...props}) {
                 onChange={props.onChange}
                 onBlur={props.onBlur}
                 InputLabelProps={props.InputLabelProps}
+                InputProps={props.InputProps}
                 error={props.error}
                 // helperText={props.helperText}
                 type="text"
                 value={props.value}
                 // defaultValue=""
                 // helperText="Incorrect entry."
-                sx={{ input: { color: 'white' },
-                    label: { color: 'white' },
-                    color: 'white',
+                sx={{ input: { color: '#fff' },
+                    label: { color: '#fff' },
+                    color: '#fff',
                     width: '100%',
                     '.css-1d3z3hw-MuiOutlinedInput-notchedOutline': {
-                        borderColor: 'white !important'
+                        borderColor: '#fff !important'
                     }
                 }} 
             />;

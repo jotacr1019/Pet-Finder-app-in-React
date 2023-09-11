@@ -4,27 +4,19 @@ import isEmail from 'validator/lib/isEmail';
 import { Typography,
     Box,
     Container,
-    Snackbar,
     Backdrop,
     CircularProgress,
     Grow,
     ThemeProvider } from '@mui/material';
-import MuiAlert, { AlertProps } from '@mui/material/Alert';
 import { CustomButton } from "../../ui/button";
 import { CustomTextField } from "../../ui/textField";
+import { CustomSnackbar } from '../../ui/snackbar';
 import { CustomPasswordField } from "../../ui/passwordField";
 import { useAuthData, useAuthUserInDB } from "../../hooks/authUser";
 // import { authUserInDB } from "../../lib/api";
 import { formAuthTheme } from "./themes";
 import css from "./index.module.css";
 
-
-const Alert = React.forwardRef<HTMLDivElement, AlertProps>(function Alert(
-        props,
-        ref,
-    ) {
-        return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
-});
 
 export function FormAuth(){
     const [authData, setAuthData] = useAuthData();
@@ -50,13 +42,6 @@ export function FormAuth(){
 
     const handleEmailandPasswordInputs = (event) => {
         setUrlVisible(Boolean(event.target.value.length));
-    };
-
-    const handleSnackbarClose = (event?: React.SyntheticEvent | Event, reason?: string) => {
-        if (reason === 'clickaway') {
-            return;
-        }
-        setOpenSnackbar(false);
     };
     
     const handleFormSubmit = async (e) => {
@@ -127,15 +112,9 @@ export function FormAuth(){
                                 Acceder
                             </CustomButton>
                         </Box>
-                        <Snackbar   open={openSnackbar} 
-                                    autoHideDuration={5000} 
-                                    onClose={handleSnackbarClose} >
-                            <Alert  onClose={handleSnackbarClose} 
-                                    severity="error" 
-                                    sx={{ width: '100%' }} >
-                                Email o contraseña incorrectos!
-                            </Alert>
-                        </Snackbar>
+                        <CustomSnackbar open={openSnackbar} severity="error" onClose={setOpenSnackbar}>
+                            Email o contraseña incorrectos!
+                        </CustomSnackbar>
                         <Backdrop
                             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                             open={openReload} >   
