@@ -17,7 +17,7 @@ export function AppRoutes(){
         <Routes>
             <Route path="/" element={<Layout />}>
                 <Route index path="/" element={<Welcome />} />
-                <Route path="/home" element={<Home />} />
+                <Route path="/home/:location" element={<Home />} />
                 <Route path="/auth" element={<Auth />} />
                 <Route path="/sign-up" element={<SignUp />} />
                 <Route path="/create-report" element={<CreateReport />} />

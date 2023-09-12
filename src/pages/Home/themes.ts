@@ -25,7 +25,7 @@ export const HomeTheme = createTheme({
                             padding: {
                                 xs: "45px 18px",
                                 sm: "55px 70px",
-                                lg: "60px 75px 80px",
+                                lg: "60px 75px 70px",
                             },
                             backgroundColor: "#4267ac",
                         },
@@ -41,7 +41,7 @@ export const HomeTheme = createTheme({
                                 xs: "2rem",
                                 sm: "3rem",
                                 md: "4.5rem",
-                                lg: "5.2rem",
+                                lg: "4.8rem",
                             },
                             textAlign: "center",
                             color: "#bdb76b",

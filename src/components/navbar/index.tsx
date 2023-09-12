@@ -30,13 +30,19 @@ export function Navbar() {
 
     const open = Boolean(anchorEl);
 
-    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
     };
 
-    const handleClose = () => {
+    const handleCloseMenu = () => {
         setAnchorEl(null);
     };
+
+    const handleSessionClose = (name) => {
+        if(name === 'Cerrar sesión'){
+            localStorage.removeItem('user_token');
+        }
+    }
 
     const navLinks = [
         {
@@ -81,9 +87,7 @@ export function Navbar() {
         <ThemeProvider theme={navbarTheme}>
             <Container maxWidth={false} disableGutters={true} className="navbarContainer" >
                 <AppBar position="static" className="appbar" >
-                    <Toolbar 
-                            // disableGutters={true}
-                            >
+                    <Toolbar>
                         <Box    sx={{ flexGrow: 1,
                                     display: 'flex',
                                     alignItems: 'center' 
@@ -97,7 +101,7 @@ export function Navbar() {
                                 Pet finder
                             </Typography>
                         </Box>
-                        <IconButton onClick={handleClick}
+                        <IconButton onClick={handleMenuClick}
                             size="large"
                             edge="end"
                             color="inherit"
@@ -121,7 +125,8 @@ export function Navbar() {
 
                                     return (<div key={item.name}>
                                                 <Link style={{ textDecoration: 'none', color: '#fff' }} to={item.path}>
-                                                    <Button variant={buttonVariant} 
+                                                    <Button variant={buttonVariant}
+                                                            onClick={() => handleSessionClose(item.name)} 
                                                             color={'inherit'} 
                                                             sx={{ '&:hover': { color: buttonColor }}}>
                                                         {item.name}
@@ -136,7 +141,7 @@ export function Navbar() {
                 <CustomMenu navLinks={navLinks} 
                             anchorEl={anchorEl} 
                             open={open} 
-                            onClose={handleClose} 
+                            onClose={handleCloseMenu} 
                 />
             </Container>
         </ThemeProvider>

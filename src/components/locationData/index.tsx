@@ -94,8 +94,8 @@ export function LocationData(){
     }, [query])
 
     const handleClick = async() => {
-        setOpenReload(true);
         try{
+            setOpenReload(true);
             const response: any = await getLocationOfUser();
             const lat = response.lat;
             const lng = response.lng;
@@ -109,7 +109,7 @@ export function LocationData(){
 
             setPetsFound(petsFound);
             setOpenReload(false);
-            navigate("/home");
+            navigate(`/home/location=lat=${lat}&lng=${lng}`);
         }
         catch(err){
             console.log(err);
@@ -135,7 +135,7 @@ export function LocationData(){
         console.log({petsFound});
         setPetsFound(petsFound);
         setOpenReload(false);
-        navigate("/home");
+        navigate(`/home/location=lat=${lat}&lng=${lng}`);
     }
 
     function handleMapboxChange(data) {

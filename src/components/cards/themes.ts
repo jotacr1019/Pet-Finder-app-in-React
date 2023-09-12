@@ -103,6 +103,15 @@ export const homeCardTheme = createTheme({
                             backgroundColor: "#212121",
                             color: "white",
                         },
+                        "&.notFoundContainer": {
+                            display: "flex",
+                            flexDirection: { xs: "column", md: "row" },
+                            justifyContent: "center",
+                            alignItems: "center",
+                            gap: "10px",
+                            maxWidth: { sm: "445px", md: "620px", lg: "690px" },
+                            marginTop: { xs: "150px", sm: "80px", md: "36px" },
+                        },
                     }),
             },
         },
@@ -197,6 +206,13 @@ export const homeCardTheme = createTheme({
                             },
                             padding: {
                                 xs: "0px 56px 0px 40px",
+                            },
+                        },
+                        "&.notFoundText": {
+                            color: "#fff",
+                            textAlign: "center",
+                            fontSize: {
+                                md: "2.8rem",
                             },
                         },
                     }),

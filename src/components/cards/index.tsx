@@ -134,38 +134,52 @@ export function HomeCards() {
         <ThemeProvider theme={homeCardTheme}>
             <Container disableGutters={true} className="homeCardContainer">
                 <List className="listCard">
-                    {petsFound?.map((pet, index) => (
-                        <ListItem className='listItem' disablePadding key={index}>
-                            <Container disableGutters={true} className="card">
-                                <Container disableGutters={true} className="cardDetails">
-                                    <Container disableGutters={true} className="titleContainer">
-                                        <PetsIcon />
-                                        <Typography variant="h4" className="cardTitle">
-                                            {pet.name}
+                    {petsFound.length > 0
+                        ? petsFound.map((pet, index) => (
+                            <ListItem className='listItem' disablePadding key={index}>
+                                <Container disableGutters={true} className="card">
+                                    <Container disableGutters={true} className="cardDetails">
+                                        <Container disableGutters={true} className="titleContainer">
+                                            <PetsIcon />
+                                            <Typography variant="h4" className="cardTitle">
+                                                {pet.name}
+                                            </Typography>
+                                        </Container>
+                                        <Container disableGutters={true} className={pet.imageUrl.length < 2 ? imageClassName : pet.imageUrl.length === 2 ? css.containerOfTwoImages : pet.imageUrl.length === 3 ? css.containerOfThreeImages : css.containerOfFourImages } >
+                                            {pet.imageUrl.map((url, index) => (
+                                                <Box    component="img" 
+                                                        key={index}
+                                                        src={url}
+                                                        alt={pet.name}
+                                                        className={ pet.imageUrl.length < 2 ? css.imageStatic : '' } >
+                                                </Box>
+                                            ))}
+                                        </Container>
+                                        <Typography variant="body1" className="cardText">
+                                            {pet.location}
                                         </Typography>
                                     </Container>
-                                    <Container disableGutters={true} className={pet.imageUrl.length < 2 ? imageClassName : pet.imageUrl.length === 2 ? css.containerOfTwoImages : pet.imageUrl.length === 3 ? css.containerOfThreeImages : css.containerOfFourImages } >
-                                        {pet.imageUrl.map((url, index) => (
-                                            <Box    component="img" 
-                                                    key={index}
-                                                    src={url}
-                                                    alt={pet.name}
-                                                    className={ pet.imageUrl.length < 2 ? css.imageStatic : '' } >
-                                            </Box>
-                                        ))}
-                                    </Container>
-                                    <Typography variant="body1" className="cardText">
-                                        {pet.location}
-                                    </Typography>
+                                    <Button className="cardButton" 
+                                            variant="contained"
+                                            onClick={() => handleOpenReportForm(pet)} >
+                                        Reportar
+                                    </Button>
                                 </Container>
-                                <Button className="cardButton" 
-                                        variant="contained"
-                                        onClick={() => handleOpenReportForm(pet)} >
-                                    Reportar
-                                </Button>
+                            </ListItem>
+                        ))
+                        :   <Container disableGutters={true} className="notFoundContainer">
+                                <Box    component="img" 
+                                        src="../../src/assets/notDog.png"
+                                        sx={{ 
+                                            width: {xs: '100px', sm: '130px', md: '160px'}, 
+                                            height: {xs: '100px', sm: '130px', md: '160px'}, 
+                                        }} >
+                                </Box>
+                                <Typography variant="h4" className="notFoundText"> 
+                                    No hay mascotas reportadas cerca de tu ubicación
+                                </Typography>
                             </Container>
-                        </ListItem>
-                    ))}
+                        }
                 </List>
             </Container>
             <BootstrapDialog
