@@ -43,11 +43,8 @@ export function FormEditReport(){
     const { getDataOfPet } = useGetDataOfPet();
     const { updatePetData } = useUpdatePetData();
     const { deleteReport } = useDeleteReport();
-    // const [dataStore, setDataStore] = usePetDataStore();
 
     const [mapBoxFormData, setMapboxFormData] = useState(initialState);
-
-    // const [nameValue, setNameValue] = useState('');
 
     const [idOfPet, setIdOfPet] = useState(0);
 
@@ -58,9 +55,6 @@ export function FormEditReport(){
     const [btnDisable, setBtnDisable] = useState(false);
 
     const [openReload, setOpenReload] = useState(false);
-
-    // const [eventNameFullFilled, setNameFullFilled] = useState(false);
-    // const [eventLocationFullFilled, setLocationFullFilled] = useState(false);
 
     const [openDeleteSnackbar, setOpenDeleteSnackbar] = useState(false);
     const [openImagesUrlSnackbar, setOpenImagesUrlSnackbar] = useState(false);
@@ -74,7 +68,6 @@ export function FormEditReport(){
     const pullData = async() => {
         const form: HTMLFormElement = document.querySelector('.form');
         const dataResponse = await getDataOfPet();
-        // console.log({dataResponse});
         
         if(!dataResponse){
             return false;
@@ -100,13 +93,11 @@ export function FormEditReport(){
     }, [])
 
     useEffect(()=>{
-        // console.log('imagesUrl en editReport', imagesUrl);
         imagesUrl.length > 3 ? setBtnDisable(true) : setBtnDisable(false);
     }, [imagesUrl])
 
     const handleDropzoneChange = (acceptedFiles) => {
         const imagesDeletedVerified = acceptedFiles.filter((item)=> {return !deletedImages.includes(item)});
-        // console.log({imagesDeletedVerified});
         const finalVerification = imagesDeletedVerified.filter((item)=> {return !imagesUrl.includes(item)});
         setImagesUrl(prevUrls => [...prevUrls, ...finalVerification]);
     }
@@ -133,13 +124,6 @@ export function FormEditReport(){
             return;
         } 
 
-        // if(mapBoxFormData.mapbox.query === ''){
-        //     // setOpenMapboxSnackbar(true);
-        //     setOpenReload(false);
-        //     return;
-        // }
-        
-        // console.log({mapBoxFormData});
         const latLng: any = mapBoxFormData.mapbox.coords;
         if(latLng.lat === undefined){
             setOpenUndefinedMapboxSnackbar(true);
@@ -158,7 +142,6 @@ export function FormEditReport(){
         const imagesWithCloudinary: string[] = imagesUrl.filter((item)=> {return item.includes('cloudinary')});
         const imagesUrlCloudinary: string[] = await imgToURLCloudinary(imagesWithoutClodinary);
         imagesWithCloudinary.push(...imagesUrlCloudinary);
-        // console.log({imagesWithCloudinary});
 
         const petData = {
             id: idOfPet,
@@ -169,18 +152,15 @@ export function FormEditReport(){
             status: 'missing',
             location: mapBoxFormData.mapbox.query
         }
-        // console.log(allPetData);
 
         const updateResponse = await updatePetData(petData);
         if (updateResponse) {
-            // console.log('Pet actualizada: ', updateResponse);
             setOpenSuccessSnackbar(true);
             setTimeout(() => {
                 setOpenReload(false);
                 navigate("/user-reports");
             }, 2500);
         } else {
-            // console.log('Error al actualizar pet', updateResponse);
             setOpenReload(false);
             setOpenFailSnackbar(true);
         }

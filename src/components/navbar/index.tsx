@@ -16,13 +16,10 @@ import FolderSharedIcon from '@mui/icons-material/FolderShared';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
-import { grey } from '@mui/material/colors';
 import { Link } from "react-router-dom";
 import { CustomMenu } from "../navbar-menu";
 import { navbarTheme } from "./themes";
 
-
-const greyColor = grey[900];
 
 export function Navbar() {
     const location = useLocation();

@@ -1,5 +1,5 @@
-const cloudName = "dpnltzaxy";
-const uploadPreset = "vvtvx8pc";
+const cloudName = process.env.CLOUD_NAME;
+const uploadPreset = process.env.UPLOAD_PRESET;
 
 export async function imgToURLCloudinary(images) {
     try {
@@ -21,7 +21,6 @@ export async function imgToURLCloudinary(images) {
             const data = await resp.json();
             console.log("Upload successful:", data);
             uploadResults.push(data.url);
-            // return data.url;
         }
 
         return uploadResults;

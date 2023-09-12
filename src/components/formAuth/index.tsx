@@ -13,7 +13,6 @@ import { CustomTextField } from "../../ui/textField";
 import { CustomSnackbar } from '../../ui/snackbar';
 import { CustomPasswordField } from "../../ui/passwordField";
 import { useAuthData, useAuthUserInDB } from "../../hooks/authUser";
-// import { authUserInDB } from "../../lib/api";
 import { formAuthTheme } from "./themes";
 import css from "./index.module.css";
 

@@ -1,9 +1,5 @@
 import React, { useState } from "react";
-import { FormControl, 
-    InputLabel,
-    OutlinedInput,
-    InputAdornment,
-    IconButton } from "@mui/material";
+import { FormControl, InputLabel, OutlinedInput, InputAdornment, IconButton } from "@mui/material";
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
@@ -18,8 +14,7 @@ export function CustomPasswordField({...props}){
     };
 
     return <FormControl variant="outlined" required={props.required}>
-                <InputLabel htmlFor="outlined-adornment-password" 
-                            sx={{ color: 'white' }} >
+                <InputLabel htmlFor="outlined-adornment-password" sx={{ color: 'white' }} >
                     {props.label}
                 </InputLabel>
                 <OutlinedInput

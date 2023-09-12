@@ -1,19 +1,7 @@
-import { useRecoilValue, useRecoilState } from "recoil";
-import { atom } from "recoil";
 import { updatePasswordInDB } from "../../lib/api";
 
-// export const userPasswordUpdatedState = atom({
-//     key: "userPasswordUpdated",
-//     default: {
-//         token: "",
-//     },
-// });
-
-// export const useUserPasswordUpdated = () =>
-//     useRecoilState(userPasswordUpdatedState);
-
 export function usePasswordUserInDB() {
-    async function updatePassword(password) {
+    async function updatePassword(password: string) {
         try {
             const token = localStorage.getItem("user_token");
             const response = await updatePasswordInDB(password, token);

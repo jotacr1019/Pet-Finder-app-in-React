@@ -50,10 +50,6 @@ export const formEditReportTheme = createTheme({
                             color: "#fff",
                         },
                     }),
-                // root: {
-                // textAlign: 'end',
-                // color: '#f0234f1',
-                // },
             },
         },
         MuiContainer: {

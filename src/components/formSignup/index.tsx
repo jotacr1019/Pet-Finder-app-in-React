@@ -55,7 +55,6 @@ export function FormSignup(){
 
         if(password !== confirmPassword){
             setOpenReload(false)
-            console.log("Las contraseñas no coinciden");
             setOpenPasswordSnackbar(true);
             return;
         }
@@ -157,8 +156,7 @@ export function FormSignup(){
                     </CustomSnackbar>
                     <Backdrop
                         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                        open={openReload}
-                    >   
+                        open={openReload} >   
                         <CircularProgress color="inherit" />
                     </Backdrop>
                 </Container>

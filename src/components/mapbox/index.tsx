@@ -15,13 +15,11 @@ import { Box,
     Avatar } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import PlaceTwoToneIcon from '@mui/icons-material/PlaceTwoTone';
-// import mapboxgl from 'mapbox-gl'
-import { useLocationName } from '../../atoms';
 import { mapboxTheme } from './themes';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 
-const mapBoxToken = 'pk.eyJ1Ijoiam90YWoxMDE5IiwiYSI6ImNsbHJnaWFhcTBsbngzZ3M1MmdxeTU1anYifQ.B08-O1rb-4pR05T1y06kJA';
+const mapBoxToken = process.env.MAPBOX_TOKEN;
 
 type MapBoxSearchProps = {
     onChange?: (any) => any;

@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { atom } from "recoil";
 import { createPetInDB } from "../../lib/api";
 
@@ -26,10 +25,8 @@ export const newPetReportState = atom({
 
 export const usePetReport = () => useRecoilState(newPetReportState);
 
-export function useCreatePetReport(): {
-    createPetReport: (data: petData) => Promise<boolean>;
-} {
-    async function createPetReport(data) {
+export function useCreatePetReport() {
+    async function createPetReport(data: petData) {
         try {
             const token = localStorage.getItem("user_token");
             const response = await createPetInDB(data, token);

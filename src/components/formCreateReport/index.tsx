@@ -11,8 +11,6 @@ import { usePetReport, useCreatePetReport } from '../../hooks/createPetReport';
 import { imgToURLCloudinary } from '../../lib/cloudinary';
 import { formCreateReportTheme } from './themes';
 
-// const token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwiaWF0IjoxNjk0MjgwNTcyfQ.B-r3gGqSt-kOUfQ59ylr99o-zZew4yhX8WKT2GT_S28
-
 
 type mapboxData = {
     mapbox: {
@@ -121,14 +119,12 @@ export function FormCreateReport(){
         setPetReportData(allData);
         const createResponse = await createPetReport(allData);
         if (createResponse) {
-            console.log('Pet creada: ', createResponse);
             setOpenSuccessSnackbar(true);
             setTimeout(() => {
                 setOpenReload(false);
                 navigate("/user-reports");
             }, 2500);
         } else {
-            console.log('Error al crear pet', createResponse);
             setOpenReload(false);
             setOpenFailSnackbar(true);
         }
@@ -199,15 +195,6 @@ export function FormCreateReport(){
                         Cancelar
                     </CustomButton>
                 </Container>
-                {/* <Snackbar   open={openMapboxSnackbar} 
-                            autoHideDuration={5000} 
-                            onClose={() => handleSnackbarClose(setOpenMapboxSnackbar)} >
-                    <Alert  onClose={() => handleSnackbarClose(setOpenMapboxSnackbar)} 
-                            severity="error" 
-                            sx={{ width: '100%' }} >
-                        Necesitas agregar una dirección!
-                    </Alert>
-                </Snackbar> */}
                 <CustomSnackbar open={openMapboxSnackbar} severity="error" onClose={setOpenMapboxSnackbar}>
                     Necesitas agregar una dirección!
                 </CustomSnackbar>

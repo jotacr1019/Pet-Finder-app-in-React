@@ -37,16 +37,12 @@ export const locationButtonTheme = createTheme({
                         "&.locationContainer": {
                             padding: "0px",
                             maxWidth: "none",
-                            // borderRadius: "8px",
-                            // color: "green",
-                            // width: "700px",
                         },
                         "&.searchContainer": {
                             display: "flex",
                             justifyContent: "center",
                             width: { xs: "100%" },
                             borderRadius: "6px",
-                            // backgroundColor: "#191970",
                             backgroundColor: "#212121",
                         },
                         "&.mapboxContainer": {

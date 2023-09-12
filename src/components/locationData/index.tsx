@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Button, 
     ThemeProvider, 
     Container, 
@@ -75,7 +75,8 @@ export function LocationData(){
 
     const [mapboxOpen, setMapboxOpen] = useState(false);
 
-    const [openReload, setOpenReload] = useState(false);
+    const [openDialogReload, setOpenDialogReload] = useState(false);
+    const [openLocationBtnReload, setOpenLocationBtnReload] = useState(false);
 
     const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
 
@@ -95,46 +96,42 @@ export function LocationData(){
 
     const handleClick = async() => {
         try{
-            setOpenReload(true);
+            setOpenLocationBtnReload(true);
             const response: any = await getLocationOfUser();
             const lat = response.lat;
             const lng = response.lng;
             const petsFound: [] = await getPetsAround({lat, lng});
-            // console.log({petsFound});
 
             if(!petsFound){
-                setOpenReload(false);
+                setOpenLocationBtnReload(false);
                 setOpenErrorSnackbar(true);
             }
 
             setPetsFound(petsFound);
-            setOpenReload(false);
+            setOpenLocationBtnReload(false);
             navigate(`/home/location=lat=${lat}&lng=${lng}`);
         }
         catch(err){
             console.log(err);
-            setOpenReload(false);
+            setOpenLocationBtnReload(false);
             setMapboxOpen(true);
         }
     }
 
     const handleSearch = async (e) => {
         e.preventDefault();
-        setOpenReload(true);
-        // console.log(mapBoxFormData);
+        setOpenDialogReload(true);
         const lat = mapBoxFormData.mapbox.coords.newLat;
         const lng = mapBoxFormData.mapbox.coords.newLng;
-        // console.log({lat, lng});
-        const petsFound: [] = await getPetsAround({lat, lng});
 
+        const petsFound: [] = await getPetsAround({lat, lng});
         if(!petsFound){
-            setOpenReload(false);
+            setOpenDialogReload(false);
             setOpenErrorSnackbar(true);
         }
 
-        console.log({petsFound});
         setPetsFound(petsFound);
-        setOpenReload(false);
+        setOpenDialogReload(false);
         navigate(`/home/location=lat=${lat}&lng=${lng}`);
     }
 
@@ -195,13 +192,18 @@ export function LocationData(){
                     </Container>
                     <Backdrop
                         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                        open={openReload} >   
+                        open={openDialogReload} >   
                         <CircularProgress color="inherit" />
                     </Backdrop>
                 </BootstrapDialog>
                 <CustomSnackbar open={openErrorSnackbar} severity="error" onClose={setOpenErrorSnackbar}>
                     Ha ocurrido un error, inténtalo de nuevo!
                 </CustomSnackbar>
+                <Backdrop
+                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
+                    open={openLocationBtnReload} >   
+                    <CircularProgress color="inherit" />
+                </Backdrop>
             </Container>
         </ThemeProvider> )
 }

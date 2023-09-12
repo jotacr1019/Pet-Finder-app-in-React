@@ -36,7 +36,6 @@ export function MyDropzone(props){
         if (onChange) {
             onChange(imageUrls);
         }
-        // console.log('imageUrls en dropzone', imageUrls);     // borrar
     }, [imageUrls])
 
     useEffect(()=>{
@@ -45,17 +44,17 @@ export function MyDropzone(props){
 
     const {getRootProps, getInputProps, isDragActive} = useDropzone({ onDrop, noClick: disabled })
 
-        return (
-            <ThemeProvider theme={dropzoneTheme}>
-                <Container  {...getRootProps()} 
-                            disableGutters={true} 
-                            className="dropzoneContainer" >
-                    <input  {...getInputProps()} />
-                    <Button variant="contained"
-                            disabled={disabled}
-                            className="dropzoneButton" >
-                        Agregar fotos
-                    </Button>
-                </Container>
-            </ThemeProvider>)
+    return (
+        <ThemeProvider theme={dropzoneTheme}>
+            <Container  {...getRootProps()} 
+                        disableGutters={true} 
+                        className="dropzoneContainer" >
+                <input  {...getInputProps()} />
+                <Button variant="contained"
+                        disabled={disabled}
+                        className="dropzoneButton" >
+                    Agregar fotos
+                </Button>
+            </Container>
+        </ThemeProvider>)
 }

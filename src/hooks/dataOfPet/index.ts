@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { useParams } from "react-router-dom";
 import { atom } from "recoil";
 import { getDataOfPetInDB } from "../../lib/api";

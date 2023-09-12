@@ -17,17 +17,14 @@ export function Welcome(){
                                 height: { xs: '242px', sm: '242px', md: 'auto' }
                             }} 
                             src="../../src/assets/663shots_so.png" 
-                            alt="dogs"
+                            alt="dogsPicture"
                     />
                 </Container>
                 <Container disableGutters={true} className="titleAndButtonsContainer" >
-                    <Typography className="title" 
-                                variant="h1" 
-                                color="primary" >
+                    <Typography className="title" variant="h1" color="primary" >
                         Pet Finder App
                     </Typography>
-                    <Typography className="subtitle"
-                                variant='h4'>
+                    <Typography className="subtitle" variant='h4'>
                         Encontrá y reportá mascotas perdidas cerca de tu ubicación
                     </Typography>
                     <Container disableGutters={true} className="buttonsContainer" >

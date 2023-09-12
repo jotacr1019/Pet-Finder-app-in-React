@@ -18,7 +18,6 @@ export function DisplayImages(props) {
     const [deletedImagesUrl, setDeletedImagesUrl] = useState([]);
 
     useEffect(() => {
-        // setImagesUrl(imagesReceived.filter((item)=> imagesUrl.includes(item)));
         setImagesUrl(imagesReceived);
     }, [imagesReceived])
 

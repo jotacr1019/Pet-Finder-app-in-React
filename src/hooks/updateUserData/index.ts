@@ -1,19 +1,17 @@
-import { useEffect } from "react";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { atom } from "recoil";
 import { updateUserInDB } from "../../lib/api";
-
 
 type userData = {
     full_name: string;
     email: string;
-}
+};
 
 export const userDataUpdatedState = atom({
     key: "userDataUpdated",
     default: {
         full_name: "",
-        email: ""
+        email: "",
     },
 });
 
@@ -24,10 +22,9 @@ export function useUpdateUserInDB() {
         try {
             const token = localStorage.getItem("user_token");
             const response = await updateUserInDB(userData, token);
-            if(response){
+            if (response) {
                 return true;
             } else {
-                console.log("Usuario no actualizado");
                 return false;
             }
         } catch (e) {

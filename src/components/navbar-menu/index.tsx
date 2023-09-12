@@ -9,19 +9,24 @@ import css from "./index.module.css";
 
 
 export function CustomMenu({navLinks, anchorEl, open, onClose}){
-    return (<Menu
-                id="basic-menu"
-                anchorEl={anchorEl}
-                open={open}
-                onClose={onClose}
-                sx={{ display: {xs: 'flex', md: 'none'},
-                    '.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
-                        backgroundColor: '#aebecf' 
-                    }
-                }}
-                MenuListProps={{
-                    'aria-labelledby': 'basic-button',
-                }} >   
+    const handleSessionClose = (name) => {
+        if(name === 'Cerrar sesión'){
+            localStorage.removeItem('user_token');
+        }
+    }
+
+    return (<Menu   id="basic-menu"
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={onClose}
+                    sx={{ display: {xs: 'flex', md: 'none'},
+                        '.css-3dzjca-MuiPaper-root-MuiPopover-paper-MuiMenu-paper': {
+                            backgroundColor: '#aebecf' 
+                        }
+                    }}
+                    MenuListProps={{
+                        'aria-labelledby': 'basic-button',
+                    }} >   
                 {navLinks.map((item) => {
                     if (item.pathSources.includes(location.pathname.split('/')[1])) {
                         return (<Link   key={item.name} 
@@ -35,6 +40,7 @@ export function CustomMenu({navLinks, anchorEl, open, onClose}){
                                         <ListItemButton sx={{ 
                                                             '&:hover': {backgroundColor: 'transparent' }
                                                         }}
+                                                        onClick={() => handleSessionClose(item.name)} 
                                                         disableRipple >
                                             <ListItemText primary={item.name} />
                                         </ListItemButton>

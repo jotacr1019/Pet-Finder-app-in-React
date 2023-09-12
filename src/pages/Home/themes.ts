@@ -10,7 +10,6 @@ export const HomeTheme = createTheme({
                             display: "flex",
                             flexDirection: "column",
                             justifyContent: "center",
-                            // justifyContent: "space-around",
                             alignItems: "center",
                             gap: { xs: "40px", sm: "55px", md: "70px" },
                             height: "fit-content",

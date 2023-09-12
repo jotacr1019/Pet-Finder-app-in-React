@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { atom } from "recoil";
 import { getPetsOfUserFromDB, getDataOfUserFromDB } from "../../lib/api";
 
@@ -10,7 +9,7 @@ export const newPetsOfUserState = atom({
 
 export const usePetsOfUser = () => useRecoilState(newPetsOfUserState);
 
-export function useGetPetsOfUser(): { getPetsOfUser: () => Promise<[]> } {
+export function useGetPetsOfUser() {
     async function getPetsOfUser() {
         try {
             const token = localStorage.getItem("user_token");
@@ -24,7 +23,6 @@ export function useGetPetsOfUser(): { getPetsOfUser: () => Promise<[]> } {
             }
         } catch (e) {
             console.error("Ha habido un error: ", e);
-            // return false;
             return [];
         }
     }

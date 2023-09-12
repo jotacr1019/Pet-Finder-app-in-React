@@ -1,10 +1,15 @@
-// const API_BASE_URL = "http://localhost:8080";
 const API_BASE_URL = "https://pet-finder-app-muig.onrender.com";
 // const API_BASE_URL = "http://localhost:6008";
 
 type userData = {
     full_name: string;
     email: string;
+};
+
+type fullUserData = {
+    full_name: string;
+    email: string;
+    password: string;
 };
 
 type newPetData = {
@@ -24,6 +29,15 @@ type petData = {
     status: string;
     last_lat: number;
     last_lng: number;
+};
+
+type reportData = {
+    reporter_name: string;
+    phone_number: string;
+    message: string;
+    petId: number;
+    pet_name: string;
+    userId: number;
 };
 
 export async function authUserInDB(email: string, password: string) {
@@ -49,7 +63,7 @@ export async function authUserInDB(email: string, password: string) {
     }
 }
 
-export async function createUserInDB(userData: any) {
+export async function createUserInDB(userData: fullUserData) {
     try {
         const response = await fetch(API_BASE_URL + "/auth", {
             method: "POST",
@@ -59,12 +73,10 @@ export async function createUserInDB(userData: any) {
             body: JSON.stringify(userData),
         });
         if (response.status === 201) {
-            // const data = await response.json();
             const token = await authUserInDB(userData.email, userData.password);
             return token;
         }
         if (response.status === 500) {
-            console.log("Usuario no creado");
             return null;
         }
     } catch (err) {
@@ -87,11 +99,9 @@ export async function updateUserInDB(userData: userData, token: string) {
             return true;
         }
         if (response.status === 401) {
-            console.log("Token inválido");
             return false;
         }
         if (response.status === 400) {
-            console.log("No se envió la información completa");
             return false;
         }
     } catch (err) {
@@ -113,7 +123,6 @@ export async function getDataOfUserFromDB(token: string) {
             return data;
         }
         if (response.status === 401) {
-            console.log("Token inválido");
             return null;
         }
     } catch (err) {
@@ -138,11 +147,9 @@ export async function updatePasswordInDB(password: string, token: string) {
             return true;
         }
         if (response.status === 401) {
-            console.log("Token inválido");
             return false;
         }
         if (response.status === 400) {
-            console.log("No se envió la información completa");
             return false;
         }
         if (response.status === 500) {
@@ -165,7 +172,6 @@ export async function createPetInDB(petData: newPetData, token: string) {
             body: JSON.stringify(petData),
         });
         if (response.status === 401) {
-            console.log("Token inválido");
             return null;
         }
         if (response.status === 201) {
@@ -214,7 +220,6 @@ export async function getPetsOfUserFromDB(userId: number) {
             return false;
         }
         if (response.status === 404) {
-            console.log("No se encontraron mascotas");
             return false;
         }
     } catch (err) {
@@ -239,7 +244,6 @@ export async function getDataOfPetInDB(token: string, petId: number) {
             return data;
         }
         if (response.status === 401) {
-            console.log("Token inválido");
             return null;
         }
         if (response.status === 404) {
@@ -262,11 +266,9 @@ export async function updatePetInDB(petData: petData, token: string) {
             body: JSON.stringify(petData),
         });
         if (response.status === 401) {
-            console.log("Token inválido");
             return false;
         }
         if (response.status === 500) {
-            console.log("No se logró actualizar la mascota");
             return false;
         }
         if (response.status === 200) {
@@ -289,11 +291,9 @@ export async function deletePetFromDB(petId: number, token: string) {
             body: JSON.stringify({ petId }),
         });
         if (response.status === 401) {
-            console.log("Token inválido");
             return false;
         }
         if (response.status === 500) {
-            console.log("No se logró eliminar el reporte");
             return false;
         }
         if (response.status === 200) {
@@ -305,7 +305,7 @@ export async function deletePetFromDB(petId: number, token: string) {
     }
 }
 
-export async function createReportInDB(reportData) {
+export async function createReportInDB(reportData: reportData) {
     try {
         const response = await fetch(API_BASE_URL + "/reports", {
             method: "POST",
@@ -318,11 +318,9 @@ export async function createReportInDB(reportData) {
             return false;
         }
         if (response.status === 500) {
-            console.log("No se logró crear el reporte");
             return false;
         }
         if (response.status === 201) {
-            // const data = await response.json();
             return true;
         }
     } catch (err) {

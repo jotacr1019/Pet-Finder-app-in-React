@@ -189,9 +189,9 @@ export function CustomEditData(){
                                                 className="submitDataButton"
                                                 sx={{ color: btnSaveDataColor }}
                                                 loading={btnSaveLoading}
-                                                loadingIndicator={<span style={{color: 'white', textAlign: 'center'}}>
-                                                                    Espere...
-                                                                </span>}
+                                                loadingIndicator={  <span style={{color: 'white', textAlign: 'center'}}>
+                                                                        Espere...
+                                                                    </span>}
                                                 startIcon={<SaveIcon />} 
                                                 loadingPosition='center' >
                                         Guardar

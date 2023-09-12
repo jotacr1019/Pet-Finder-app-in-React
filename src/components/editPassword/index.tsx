@@ -123,82 +123,82 @@ export function CustomEditPassword(){
         setButtonPasswordDisplay('initial');
     }
 
-    return <ThemeProvider theme={editPasswordTheme}>
-                <Container disableGutters={true} className="editPasswordContainer" >
-                    <LoadingButton 
-                                disabled={btnPasswordDisabled}
-                                variant="outlined"
-                                onClick={handlePasswordChange} 
-                                className="editPasswordButton"
-                                sx={{ 
-                                    display: buttonPasswordDisplay,
-                                    color: editPasswordBtnColor
-                                }} >
-                        Modificar contraseña
-                    </LoadingButton>
-                    <Collapse in={collapsePasswordChecked}>
-                        <Container 
-                                className="secundaryContainer"
-                                disableGutters={true}
-                                sx={{display: displayDivPassword}} >
-                            <Container  className="formContainer"
-                                        disableGutters={true} >
-                                {<Box   component='form'   
-                                        onSubmit={handlePasswordSubmit}
-                                        >
-                                    <CustomPasswordField
-                                        id='outlined-password'
-                                        outlinedInputLabel='Contraseña nueva'
-                                        label='Contraseña nueva'
-                                        name='password'
-                                        onChange={(event) => handleInputsCompletation(event, 'outlined-password')} >
-                                    </CustomPasswordField>
-                                    <CustomPasswordField
-                                        id='outlined-confirm-password'
-                                        outlinedInputLabel='Confirmar contraseña'
-                                        label='Confirmar contraseña'
-                                        name='confirmPassword'
-                                        onChange={(event) => handleInputsCompletation(event, 'outlined-confirm-password')} >
-                                    </CustomPasswordField>
-                                    <LoadingButton  
-                                                disabled={btnSavePasswordDisabled}
-                                                type="submit"
-                                                startIcon={<SaveIcon />} 
-                                                variant="text"
-                                                className="submitButton"
-                                                sx={{ color: btnSaveColor }}
-                                                loading={btnSaveloading}
-                                                loadingPosition='center'
-                                                loadingIndicator={<span style={{color: 'white' }}>
+    return (
+        <ThemeProvider theme={editPasswordTheme}>
+            <Container disableGutters={true} className="editPasswordContainer" >
+                <LoadingButton 
+                            disabled={btnPasswordDisabled}
+                            variant="outlined"
+                            onClick={handlePasswordChange} 
+                            className="editPasswordButton"
+                            sx={{ 
+                                display: buttonPasswordDisplay,
+                                color: editPasswordBtnColor
+                            }} >
+                    Modificar contraseña
+                </LoadingButton>
+                <Collapse in={collapsePasswordChecked}>
+                    <Container 
+                            className="secundaryContainer"
+                            disableGutters={true}
+                            sx={{display: displayDivPassword}} >
+                        <Container  className="formContainer"
+                                    disableGutters={true} >
+                            {<Box   component='form'   
+                                    onSubmit={handlePasswordSubmit} >
+                                <CustomPasswordField
+                                    id='outlined-password'
+                                    outlinedInputLabel='Contraseña nueva'
+                                    label='Contraseña nueva'
+                                    name='password'
+                                    onChange={(event) => handleInputsCompletation(event, 'outlined-password')} >
+                                </CustomPasswordField>
+                                <CustomPasswordField
+                                    id='outlined-confirm-password'
+                                    outlinedInputLabel='Confirmar contraseña'
+                                    label='Confirmar contraseña'
+                                    name='confirmPassword'
+                                    onChange={(event) => handleInputsCompletation(event, 'outlined-confirm-password')} >
+                                </CustomPasswordField>
+                                <LoadingButton  
+                                            disabled={btnSavePasswordDisabled}
+                                            type="submit"
+                                            startIcon={<SaveIcon />} 
+                                            variant="text"
+                                            className="submitButton"
+                                            sx={{ color: btnSaveColor }}
+                                            loading={btnSaveloading}
+                                            loadingPosition='center'
+                                            loadingIndicator={  <span style={{color: 'white' }}>
                                                                     Espere...
                                                                 </span>} >
-                                        Guardar
-                                    </LoadingButton>
-                                    <LoadingButton 
-                                                disabled={btnCancelDisabled}
-                                                onClick={handleBtnCancelPassword}
-                                                variant="text"
-                                                className="cancelButton"
-                                                type="submit"
-                                                sx={{ color: btnCancelColor }} >
-                                        Cancelar
-                                    </LoadingButton>
-                                </Box>}
-                            </Container>
+                                    Guardar
+                                </LoadingButton>
+                                <LoadingButton 
+                                            disabled={btnCancelDisabled}
+                                            onClick={handleBtnCancelPassword}
+                                            variant="text"
+                                            className="cancelButton"
+                                            type="submit"
+                                            sx={{ color: btnCancelColor }} >
+                                    Cancelar
+                                </LoadingButton>
+                            </Box>}
                         </Container>
-                    </Collapse>
-                    <CustomSnackbar open={openTokenSnackbar} severity="error" onClose={setOpenTokenSnackbar}>
-                        No tienes los permisos para esta acción!
-                    </CustomSnackbar>
-                    <CustomSnackbar open={openSuccessSnackbar} severity="success" onClose={setOpenSuccessSnackbar}>
-                        Los datos han sido actualizados!
-                    </CustomSnackbar>
-                    <CustomSnackbar open={openPasswordSnackbar} severity="error" onClose={setOpenPasswordSnackbar}>
-                        Las contraseñas no coinciden!
-                    </CustomSnackbar>
-                    <CustomSnackbar open={openFailSnackbar} severity="error" onClose={setOpenFailSnackbar}>
-                        Ha ocurrido un error, datos no actualizados!
-                    </CustomSnackbar>
-                </Container>
-            </ThemeProvider>
+                    </Container>
+                </Collapse>
+                <CustomSnackbar open={openTokenSnackbar} severity="error" onClose={setOpenTokenSnackbar}>
+                    No tienes los permisos para esta acción!
+                </CustomSnackbar>
+                <CustomSnackbar open={openSuccessSnackbar} severity="success" onClose={setOpenSuccessSnackbar}>
+                    Los datos han sido actualizados!
+                </CustomSnackbar>
+                <CustomSnackbar open={openPasswordSnackbar} severity="error" onClose={setOpenPasswordSnackbar}>
+                    Las contraseñas no coinciden!
+                </CustomSnackbar>
+                <CustomSnackbar open={openFailSnackbar} severity="error" onClose={setOpenFailSnackbar}>
+                    Ha ocurrido un error, datos no actualizados!
+                </CustomSnackbar>
+            </Container>
+        </ThemeProvider> )
 }

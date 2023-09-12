@@ -1,5 +1,4 @@
-import { useEffect } from "react";
-import { useRecoilValue, useRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { atom } from "recoil";
 import { getPetsAroundZoneInDB } from "../../lib/api";
 
@@ -15,9 +14,7 @@ export const newPetsFoundState = atom({
 
 export const usePetsFound = () => useRecoilState(newPetsFoundState);
 
-export function useGetPetsAroundZone(): {
-    getPetsAround: (data) => Promise<[]>;
-} {
+export function useGetPetsAroundZone() {
     async function getPetsAround(data: locationData) {
         try {
             const response = await getPetsAroundZoneInDB(data.lat, data.lng);

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { TextField } from "@mui/material";
 
 
@@ -15,11 +15,8 @@ export function CustomTextField({...props}) {
                 InputLabelProps={props.InputLabelProps}
                 InputProps={props.InputProps}
                 error={props.error}
-                // helperText={props.helperText}
                 type="text"
                 value={props.value}
-                // defaultValue=""
-                // helperText="Incorrect entry."
                 sx={{ input: { color: '#fff' },
                     label: { color: '#fff' },
                     color: '#fff',
