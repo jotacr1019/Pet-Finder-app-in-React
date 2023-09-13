@@ -33,6 +33,33 @@ export const userReportDisplayTheme = createTheme({
                             backgroundColor: "#22222263",
                             borderRadius: "8px",
                         },
+                        "&.notFoundContainer": {
+                            display: "flex",
+                            flexDirection: { xs: "column", md: "row" },
+                            justifyContent: "center",
+                            alignItems: "center",
+                            gap: { xs: "4px", md: "24px", lg: "34px" },
+                            maxWidth: {
+                                xs: "400px",
+                                sm: "445px",
+                                md: "620px",
+                                lg: "690px",
+                            },
+                            marginTop: { xs: "140px", sm: "36px", md: "36px" },
+                            padding: {
+                                xs: "10px 10px",
+                                sm: "12px 20px",
+                            },
+                            boxShadow:
+                                "rgba(6, 24, 44, 0.4) 0px 0px 0px 2px, rgba(6, 24, 44, 0.65) 0px 4px 6px -1px, rgba(255, 255, 255, 0.08) 0px 1px 0px inset",
+                        },
+                        "&.notFoundTextButtonContainer": {
+                            display: "flex",
+                            flexDirection: "column",
+                            justifyContent: "center",
+                            alignItems: "center",
+                            gap: { xs: "50px", sm: "55px", md: "30px" },
+                        },
                     }),
             },
         },
@@ -79,6 +106,22 @@ export const userReportDisplayTheme = createTheme({
                         "&.skeletonRectangular": {
                             width: { xs: 180, sm: 200, md: 225 },
                             height: { xs: 180, sm: 210, md: 245 },
+                        },
+                    }),
+            },
+        },
+        MuiTypography: {
+            styleOverrides: {
+                h4: ({ theme }) =>
+                    theme.unstable_sx({
+                        "&.notFoundText": {
+                            color: "#fff",
+                            textAlign: "center",
+                            fontSize: {
+                                xs: "1.1rem",
+                                md: "1.6rem",
+                                lg: "1.7rem",
+                            },
                         },
                     }),
             },

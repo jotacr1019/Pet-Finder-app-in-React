@@ -1,48 +1,58 @@
-import React, { useState, useEffect } from 'react';
-import { Container, ThemeProvider, List, ListItem, Skeleton } from '@mui/material';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Container, ThemeProvider, List, ListItem, Box, Typography } from '@mui/material';
+import { CustomButton } from '../../ui/button';
 import { UserReportsCard } from '../userReportsCards';
-import { useGetPetsOfUser } from "../../hooks/petsOfUser";
+import { usePetsOfUser } from "../../hooks/petsOfUser";
 import { userReportDisplayTheme } from './themes';
 
 
 export function UserReportsDisplay() {
-    const { getPetsOfUser } = useGetPetsOfUser();
+    const [petsOfUser] = usePetsOfUser();
 
-    const [petsFound, setPetsFound] = useState([]);
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        getPetsOfUser().then((petsFound) => {
-            setPetsFound(petsFound);
-        });
-    }, []);
+    const handlePostClick = (e) => {
+        e.preventDefault();
+        navigate("/create-report");
+    }
 
     return (
         <ThemeProvider theme={userReportDisplayTheme}>
             <Container disableGutters={true} className="homeCardContainer">
                 <List className="listCard">
-                    {petsFound.length > 0
-                    ? (petsFound.map((pet, index) => (
-                        <ListItem className='listItem' disablePadding key={pet.id}>
-                            <UserReportsCard pet={pet} />
-                        </ListItem>
+                    { petsOfUser.length > 0 
+                    ? ( petsOfUser.map((pet, index) => (
+                            <ListItem className='listItem' disablePadding key={pet.id}>
+                                <UserReportsCard pet={pet} />
+                            </ListItem>
                     )))
-                    : (<List className="listCard" >
-                        <Container disableGutters={true} className="skeletonContainer" >
-                            <Skeleton variant="text" className="skeletonText1" />
-                            <Skeleton variant="rectangular" className="skeletonRectangular" />
-                            <Skeleton variant="text" className="skeletonText2" />
+                    : (
+                        <Container disableGutters={true} className="notFoundContainer">
+                            <Box    component="img" 
+                                    src="../../src/assets/publicacion.png"
+                                    sx={{ 
+                                        width: {xs: '100px', sm: '130px', md: '160px'}, 
+                                        height: {xs: '100px', sm: '130px', md: '160px'}, 
+                                    }} >
+                            </Box>
+                            <Container disableGutters={true} className="notFoundTextButtonContainer">
+                                <Typography variant="h4" className="notFoundText"> 
+                                    Aún no has hecho reportes de mascotas perdidas
+                                </Typography>
+                                <CustomButton   variant="contained"
+                                                onClick={handlePostClick}
+                                                sx={{ 
+                                                    backgroundColor: '#191970',
+                                                    '&:hover': {
+                                                        backgroundColor: '#00004e',
+                                                    }
+                                                }} >
+                                    Publicar reporte
+                                </CustomButton>
+                            </Container>
                         </Container>
-                        <Container disableGutters={true} className="skeletonContainer" >
-                            <Skeleton variant="text" className="skeletonText1" />
-                            <Skeleton variant="rectangular" className="skeletonRectangular" />
-                            <Skeleton variant="text" className="skeletonText2" />
-                        </Container>
-                        <Container disableGutters={true} className="skeletonContainer" >
-                            <Skeleton variant="text" className="skeletonText1" />
-                            <Skeleton variant="rectangular" className="skeletonRectangular" />
-                            <Skeleton variant="text" className="skeletonText2" />
-                        </Container>
-                    </List>)
+                    )
                     }
                 </List>
             </Container>

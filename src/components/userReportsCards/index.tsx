@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from "react-router-dom";
+import React from 'react';
+import { Link } from "react-router-dom";
 import { Container, 
     ThemeProvider,
     Box,
@@ -10,6 +10,7 @@ import { userReportsCardTheme } from './themes';
 
 
 export function UserReportsCard({...props}) {
+
     return (
         <ThemeProvider theme={userReportsCardTheme}>
             <Container disableGutters={true} className="card">
