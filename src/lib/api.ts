@@ -1,5 +1,4 @@
-const API_BASE_URL = "https://pet-finder-app-muig.onrender.com";
-// const API_BASE_URL = "http://localhost:6008";
+const API_BASE_URL = process.env.API_BASE_URL;
 
 type userData = {
     full_name: string;
