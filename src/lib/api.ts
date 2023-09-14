@@ -1,4 +1,4 @@
-const API_BASE_URL = process.env.API_BASE_URL;
+const API_BASE_URL = "https://pet-finder-app-muig.onrender.com";
 
 type userData = {
     full_name: string;
