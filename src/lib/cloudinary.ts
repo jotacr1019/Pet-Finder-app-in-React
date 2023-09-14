@@ -1,5 +1,5 @@
-const cloudName = process.env.CLOUD_NAME;
-const uploadPreset = process.env.UPLOAD_PRESET;
+const cloudName = "dpnltzax";
+const uploadPreset = "vvtvx8pc";
 
 export async function imgToURLCloudinary(images) {
     try {

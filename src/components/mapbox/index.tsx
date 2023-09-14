@@ -19,7 +19,7 @@ import { mapboxTheme } from './themes';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 
-const mapBoxToken = process.env.MAPBOX_TOKEN;
+const mapBoxToken = "pk.eyJ1Ijoiam90YTEwIiwiYSI6ImNsajR0d2xqdzA0d3QzZG52bjJpcWJnOXAifQ.K29xndPwRQ9o0lIQnIYqpg";
 
 type MapBoxSearchProps = {
     onChange?: (any) => any;
