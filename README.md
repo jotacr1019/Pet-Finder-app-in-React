@@ -1,4 +1,4 @@
-# Pet Finder App-en React
+# Pet Finder App (React)
 
 ## Proyecto de la carrera "Software Developer" de APX School.
 
