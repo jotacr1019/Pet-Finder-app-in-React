@@ -21,6 +21,8 @@ import 'mapbox-gl/dist/mapbox-gl.css';
 
 const mapBoxToken = process.env.MAPBOX_TOKEN;
 
+console.log({mapBoxToken});
+
 type MapBoxSearchProps = {
     onChange?: (any) => any;
 };
