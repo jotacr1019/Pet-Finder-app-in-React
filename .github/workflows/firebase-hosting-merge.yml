@@ -22,10 +22,11 @@ jobs:
                   firebaseServiceAccount: "${{ secrets.FIREBASE_SERVICE_ACCOUNT_FINAL_PROJECT_MOD8 }}"
                   channelId: live
                   projectId: final-project-mod8
-name: Create env file
-    run: |
-      touch .env
-      echo MAPBOX_TOKEN=${{ secrets.MAPBOX_TOKEN }} >> .env
-      echo CLOUD_NAME=${{ secrets.CLOUD_NAME }} >> .env
-      echo UPLOAD_PRESET=${{ secrets.UPLOAD_PRESET }} >> .env
-      cat .env
+create_env_file:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Create env file
+          run: |
+              echo "MAPBOX_TOKEN=${{ secrets.MAPBOX_TOKEN }}" > .env
+              echo "CLOUD_NAME=${{ secrets.CLOUD_NAME }}" >> .env
+              echo "UPLOAD_PRESET=${{ secrets.UPLOAD_PRESET }}" >> .env
