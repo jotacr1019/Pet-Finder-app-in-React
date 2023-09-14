@@ -1,4 +1,4 @@
-const cloudName = "dpnltzax";
+const cloudName = "dpnltzaxy";
 const uploadPreset = "vvtvx8pc";
 
 export async function imgToURLCloudinary(images) {
