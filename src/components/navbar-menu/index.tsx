@@ -1,34 +1,13 @@
-import React, {useState} from "react";
-import { Link, useNavigate } from "react-router-dom";
-import { ListItemIcon,
-        ListItemButton, 
-        ListItemText,
-        Backdrop, 
-        CircularProgress,
-        Menu,
-        MenuItem } from "@mui/material";
-import { useGetPetsOfUser, usePetsOfUser } from "../../hooks/petsOfUser";
+import React from "react";
+import { Link } from "react-router-dom";
+import { ListItemIcon, ListItemButton, ListItemText, Menu, MenuItem } from "@mui/material";
 import css from "./index.module.css";
 
 
 export function CustomMenu({navLinks, anchorEl, open, onClose}){
-    const [petsOfUser, setPetsOfUser] = usePetsOfUser();
-    const { getPetsOfUser } = useGetPetsOfUser();
-
-    const [openLocationBtnReload, setOpenLocationBtnReload] = useState(false);
-
-    const navigate = useNavigate();
-
     const handlePaths = async(name) => {
         if(name === 'Cerrar sesión'){
             localStorage.removeItem('user_token');
-        }
-        if(name === 'Mascotas reportadas'){
-            setOpenLocationBtnReload(true);
-            const petsFound = await getPetsOfUser();
-            setPetsOfUser(petsFound);
-            setOpenLocationBtnReload(false);
-            navigate("/user-reports");
         }
     }
 
@@ -67,16 +46,6 @@ export function CustomMenu({navLinks, anchorEl, open, onClose}){
                             );
                         }
                     })}
-                    <Backdrop
-                        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                        open={openLocationBtnReload} >   
-                        <CircularProgress color="inherit" />
-                    </Backdrop>
                 </Menu>
-                <Backdrop
-                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                    open={openLocationBtnReload} >   
-                    <CircularProgress color="inherit" />
-                </Backdrop>
             </>)
 }

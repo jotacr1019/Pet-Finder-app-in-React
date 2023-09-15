@@ -1,11 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import { useNavigate } from "react-router-dom";
-import { Box, 
-    Container, 
-    Typography,
-    Backdrop, 
-    CircularProgress,
-    ThemeProvider } from '@mui/material';
+import { Box, Container, Typography, Backdrop, CircularProgress, ThemeProvider } from '@mui/material';
 import { MyDropzone } from '../dropzone';
 import { Mapbox } from '../mapbox';
 import { DisplayImages } from '../displayImages';

@@ -1,24 +1,28 @@
 .imageStatic {
     width: 100%;
     max-height: 222px;
+    min-height: 222px;
     height: fit-content;
 }
 
 @media(min-width: 600px) {
     .imageStatic {
         max-height: 250px;
+        min-height: 250px;
     }
 }
 
 @media(min-width: 900px) {
     .imageStatic {
         max-height: 270px;
+        min-height: 270px;
     }
 }
 
 @media(min-width: 1200px) {
     .imageStatic {
         max-height: 280px;
+        min-height: 280px;
     }
 }
 
@@ -36,6 +40,7 @@
     width: 100%;
     height: fit-content;
     max-height: 222px;
+    min-height: 222px;
     object-fit: contain;
     animation: two var(--d) linear infinite;
 }
@@ -43,18 +48,21 @@
 @media(min-width: 600px) {
     .containerOfTwoImages>img {
         max-height: 250px;
+        min-height: 250px;
     }
 }
 
 @media(min-width: 900px) {
     .containerOfTwoImages>img {
         max-height: 270px;
+        min-height: 270px;
     }
 }
 
 @media(min-width: 1200px) {
     .containerOfTwoImages>img {
         max-height: 280px;
+        min-height: 280px;
     }
 }
 
@@ -85,6 +93,7 @@
     width: 100%;
     height: fit-content;
     max-height: 222px;
+    min-height: 222px;
     object-fit: contain;
     animation: three var(--d) linear infinite;
 }
@@ -92,18 +101,21 @@
 @media(min-width: 600px) {
     .containerOfThreeImages>img {
         max-height: 250px;
+        min-height: 250px;
     }
 }
 
 @media(min-width: 900px) {
     .containerOfThreeImages>img {
         max-height: 270px;
+        min-height: 270px;
     }
 }
 
 @media(min-width: 1200px) {
     .containerOfThreeImages>img {
         max-height: 280px;
+        min-height: 280px;
     }
 }
 
@@ -138,6 +150,7 @@
     width: 100%;
     height: fit-content;
     max-height: 222px;
+    min-height: 222px;
     object-fit: contain;
     animation: four var(--d) linear infinite;
 }
@@ -145,18 +158,21 @@
 @media(min-width: 600px) {
     .containerOfFourImages>img {
         max-height: 250px;
+        min-height: 250px;
     }
 }
 
 @media(min-width: 900px) {
     .containerOfFourImages>img {
         max-height: 270px;
+        min-height: 270px;
     }
 }
 
 @media(min-width: 1200px) {
     .containerOfFourImages>img {
         max-height: 280px;
+        min-height: 280px;
     }
 }
 

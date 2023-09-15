@@ -3,12 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import { Container, ThemeProvider, List, ListItem, Box, Typography } from '@mui/material';
 import { CustomButton } from '../../ui/button';
 import { UserReportsCard } from '../userReportsCards';
-import { usePetsOfUser } from "../../hooks/petsOfUser";
+import { useGetPetsOfUser } from "../../hooks/petsOfUser";
 import { userReportDisplayTheme } from './themes';
 
 
 export function UserReportsDisplay() {
-    const [petsOfUser] = usePetsOfUser();
+    const petsOfUser = useGetPetsOfUser();
 
     const navigate = useNavigate();
 
@@ -52,8 +52,7 @@ export function UserReportsDisplay() {
                                 </CustomButton>
                             </Container>
                         </Container>
-                    )
-                    }
+                    )}
                 </List>
             </Container>
         </ThemeProvider>

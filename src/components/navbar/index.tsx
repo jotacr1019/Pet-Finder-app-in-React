@@ -1,10 +1,8 @@
 import React, { useState } from "react";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { AppBar, 
     Box,
     Container,
-    Backdrop, 
-    CircularProgress,
     ThemeProvider,
     Toolbar,
     Typography,
@@ -18,24 +16,16 @@ import FolderSharedIcon from '@mui/icons-material/FolderShared';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
-import { useGetPetsOfUser, usePetsOfUser } from "../../hooks/petsOfUser";
 import { CustomMenu } from "../navbar-menu";
 import { navbarTheme } from "./themes";
 
 
 export function Navbar() {
-    const [petsOfUser, setPetsOfUser] = usePetsOfUser();
-    const { getPetsOfUser } = useGetPetsOfUser();
-
-    const navigate = useNavigate();
-
     const location = useLocation();
 
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const open = Boolean(anchorEl);
-
-    const [openLocationBtnReload, setOpenLocationBtnReload] = useState(false);
 
     const handleMenuClick = (event: React.MouseEvent<HTMLButtonElement>) => {
         setAnchorEl(event.currentTarget);
@@ -49,13 +39,6 @@ export function Navbar() {
         if(name === 'Cerrar sesión'){
             localStorage.removeItem('user_token');
         }
-        if(name === 'Mascotas reportadas'){
-            setOpenLocationBtnReload(true);
-            const petsFound = await getPetsOfUser();
-            setPetsOfUser(petsFound);
-            setOpenLocationBtnReload(false);
-            navigate("/user-reports");
-        }
     }
 
     const navLinks = [
@@ -67,6 +50,7 @@ export function Navbar() {
         },
         {
             name: 'Mascotas reportadas',
+            path: '/user-reports',
             icon: <PetsIcon />,
             pathSources: ['edit-report', 'menu', 'create-report']
         },
@@ -157,11 +141,6 @@ export function Navbar() {
                             onClose={handleCloseMenu} 
                 />
             </Container>
-            <Backdrop
-                sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                open={openLocationBtnReload} >   
-                <CircularProgress color="inherit" />
-            </Backdrop>
         </ThemeProvider>
     );
 }

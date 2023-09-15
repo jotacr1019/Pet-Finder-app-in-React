@@ -10,7 +10,6 @@ import { CustomSnackbar } from '../../ui/snackbar';
 import { usePetReport, useCreatePetReport } from '../../hooks/createPetReport';
 import { imgToURLCloudinary } from '../../lib/cloudinary';
 import { formCreateReportTheme } from './themes';
-import { useGetPetsOfUser, usePetsOfUser } from "../../hooks/petsOfUser";
 
 
 
@@ -36,9 +35,6 @@ const initialState: mapboxData = {
 
 export function FormCreateReport(){
     const [petReportData, setPetReportData] = usePetReport();
-    
-    const [petsOfUser, setPetsOfUser] = usePetsOfUser();
-    const { getPetsOfUser } = useGetPetsOfUser();
 
     const { createPetReport } = useCreatePetReport();
 
@@ -125,8 +121,6 @@ export function FormCreateReport(){
         const createResponse = await createPetReport(allData);
         if (createResponse) {
             setOpenSuccessSnackbar(true);
-            const petsFound = await getPetsOfUser();
-            setPetsOfUser(petsFound);
             setTimeout(() => {
                 setOpenReload(false);
                 navigate("/user-reports");

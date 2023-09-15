@@ -1,16 +1,11 @@
 import React from 'react';
 import { Link } from "react-router-dom";
-import { Container, 
-    ThemeProvider,
-    Box,
-    Typography,
-    Button } from '@mui/material';
+import { Container, ThemeProvider, Box, Typography, Button } from '@mui/material';
 import PetsIcon from '@mui/icons-material/Pets';
 import { userReportsCardTheme } from './themes';
 
 
-export function UserReportsCard({...props}) {
-
+export function UserReportsCard({pet}) {
     return (
         <ThemeProvider theme={userReportsCardTheme}>
             <Container disableGutters={true} className="card">
@@ -18,13 +13,13 @@ export function UserReportsCard({...props}) {
                     <Container disableGutters={true} className="titleContainer">
                         <PetsIcon />
                         <Typography variant="h4" className="textTitle">
-                            {props.pet.name}
+                            {pet.name}
                         </Typography>
                     </Container>
                     <Container disableGutters={true} className="cardImageStaticContainer" >
                             <Box    component="img"
-                                    src={props.pet.imageUrl[0]}
-                                    alt={props.pet.name}
+                                    src={pet.imageUrl[0]}
+                                    alt={pet.name}
                                     sx={{
                                         width: '100%',
                                         maxHeight: {xs: 222, sm: 250, md: 270, lg: 280},
@@ -33,10 +28,10 @@ export function UserReportsCard({...props}) {
                             </Box>
                     </Container>
                     <Typography variant="body1" className="textBody">
-                        {props.pet.location}
+                        {pet.location}
                     </Typography>
                 </Container>
-                <Link to={`/edit-report/petId-${props.pet.id}`} >
+                <Link to={`/edit-report/petId-${pet.id}`} >
                     <Button className="cardButton"
                             variant="contained" >
                         Editar

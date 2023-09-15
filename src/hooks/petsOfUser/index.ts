@@ -1,16 +1,10 @@
-import { useRecoilState } from "recoil";
-import { atom } from "recoil";
+import { useRecoilValue } from "recoil";
+import { selector } from "recoil";
 import { getPetsOfUserFromDB, getDataOfUserFromDB } from "../../lib/api";
 
-export const newPetsOfUserState = atom({
-    key: "newPetsOfUser",
-    default: [],
-});
-
-export const usePetsOfUser = () => useRecoilState(newPetsOfUserState);
-
-export function useGetPetsOfUser() {
-    async function getPetsOfUser() {
+export const petsOfUserState = selector({
+    key: "petsOfUserState",
+    get: async () => {
         try {
             const token = localStorage.getItem("user_token");
             const userData = await getDataOfUserFromDB(token);
@@ -25,8 +19,10 @@ export function useGetPetsOfUser() {
             console.error("Ha habido un error: ", e);
             return [];
         }
-    }
-    return {
-        getPetsOfUser,
-    };
+    },
+});
+
+export function useGetPetsOfUser() {
+    const results = useRecoilValue(petsOfUserState);
+    return results;
 }
