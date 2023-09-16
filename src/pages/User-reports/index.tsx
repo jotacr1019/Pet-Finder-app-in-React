@@ -17,5 +17,5 @@ export function UserReports(){
 }
 
 function Loading(){
-    return  <CircularProgress sx={{color: "#191970"}} size={80} />
+    return  <CircularProgress size={60} sx={{color: "#191970"}} />
 }
