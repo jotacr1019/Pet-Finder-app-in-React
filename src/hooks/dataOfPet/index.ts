@@ -4,34 +4,34 @@ import { useParams } from "react-router-dom";
 import { atom, selector } from "recoil";
 import { getDataOfPetInDB } from "../../lib/api";
 
-export const newDataOfPetState = atom({
-    key: "newDataOfPet",
-    default: {},
-});
+// export const newDataOfPetState = atom({
+//     key: "newDataOfPet",
+//     default: {},
+// });
 
-export const usePetsOfUser = () => useRecoilState(newDataOfPetState);
+// export const usePetsOfUser = () => useRecoilState(newDataOfPetState);
 
-export function useGetDataOfPet() {
-    const params = useParams();
-    const id = parseInt(params.id.split("-")[1]);
-    async function getDataOfPet() {
-        try {
-            const token = localStorage.getItem("user_token");
-            const response = await getDataOfPetInDB(token, id);
-            if (response) {
-                return response;
-            } else {
-                return false;
-            }
-        } catch (e) {
-            console.error("Ha habido un error: ", e);
-            return false;
-        }
-    }
-    return {
-        getDataOfPet,
-    };
-}
+// export function useGetDataOfPet() {
+//     const params = useParams();
+//     const id = parseInt(params.id.split("-")[1]);
+//     async function getDataOfPet() {
+//         try {
+//             const token = localStorage.getItem("user_token");
+//             const response = await getDataOfPetInDB(token, id);
+//             if (response) {
+//                 return response;
+//             } else {
+//                 return false;
+//             }
+//         } catch (e) {
+//             console.error("Ha habido un error: ", e);
+//             return false;
+//         }
+//     }
+//     return {
+//         getDataOfPet,
+//     };
+// }
 
 const atomDATA = atom({
     key: "atomDATA",
@@ -42,7 +42,7 @@ const atomDATA = atom({
 
 export const dataOfP = selector({
     key: "dataOfP",
-    get: async () => {
+    get: async ({ get }) => {
         try {
             // const id = get(atomDATA).id;
             const params = useParams();
@@ -63,7 +63,7 @@ export const dataOfP = selector({
     },
 });
 
-export function useDataOfP() {
+export function useGetDataOfPet() {
     // const params = useParams();
     // const idn = parseInt(params.id.split("-")[1]);
 

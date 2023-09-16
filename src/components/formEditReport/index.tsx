@@ -7,7 +7,7 @@ import { DisplayImages } from '../displayImages';
 import { CustomTextField } from "../../ui/textField";
 import { CustomButton } from '../../ui/button';
 import { CustomSnackbar } from '../../ui/snackbar';
-import { useGetDataOfPet, useDataOfP } from '../../hooks/dataOfPet';
+import { useGetDataOfPet } from '../../hooks/dataOfPet';
 import { useUpdatePetData } from '../../hooks/editPetData';
 import { useDeleteReport } from '../../hooks/deleteReport';
 import { imgToURLCloudinary } from '../../lib/cloudinary';
@@ -60,41 +60,41 @@ export function FormEditReport(){
 
     const navigate = useNavigate();
 
-    const dataOfP = useDataOfP();
+    const dataOfP = useGetDataOfPet();
 
     // useEffect(()=>{
     //     console.log({dataOfP})
     // }, [dataOfP])
 
-    // const pullData = async() => {
-    //     const form: HTMLFormElement = document.querySelector('.form');
-    //     // const dataResponse = await getDataOfPet();
+    const pullData = async() => {
+        const form: HTMLFormElement = document.querySelector('.form');
+        // const dataResponse = await getDataOfPet();
         
-    //     // if(!dataResponse){
-    //     //     return false;
-    //     // }
+        // if(!dataResponse){
+        //     return false;
+        // }
 
-    //     // if()  ????
+        // if()  ????
 
-    //     setIdOfPet(dataOfP.id);
-    //     form.pet_name.value = dataOfP.name;
-    //     setMapboxFormData({
-    //         ...mapBoxFormData,
-    //         mapbox: {
-    //             query: dataOfP.location,
-    //             coords: {
-    //                 lat: dataOfP.last_lat,
-    //                 lng: dataOfP.last_lng
-    //         }
-    //     }});
-    //     setImagesUrl(dataOfP.imageUrl);
-    //     return true;
-    // }
+        setIdOfPet(dataOfP.id);
+        form.pet_name.value = dataOfP.name;
+        setMapboxFormData({
+            ...mapBoxFormData,
+            mapbox: {
+                query: dataOfP.location,
+                coords: {
+                    lat: dataOfP.last_lat,
+                    lng: dataOfP.last_lng
+            }
+        }});
+        setImagesUrl(dataOfP.imageUrl);
+        return true;
+    }
 
-    // useEffect(()=>{
-            // if(dataOfP){}
-    //     pullData();
-    // }, [dataOfP])
+    useEffect(()=>{
+        // if(dataOfP){}
+        pullData();
+    }, [dataOfP])
 
     useEffect(()=>{
         imagesUrl.length > 3 ? setBtnDisable(true) : setBtnDisable(false);
