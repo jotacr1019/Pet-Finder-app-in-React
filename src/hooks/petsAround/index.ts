@@ -1,5 +1,7 @@
-import { useRecoilState } from "recoil";
-import { atom } from "recoil";
+import { useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { useRecoilState, useRecoilValue } from "recoil";
+import { atom, selector } from "recoil";
 import { getPetsAroundZoneInDB } from "../../lib/api";
 
 type locationData = {
@@ -7,28 +9,48 @@ type locationData = {
     lng: number;
 };
 
-export const newPetsFoundState = atom({
-    key: "newPetsFoundState",
-    default: [],
+const atomPetsAround = atom({
+    key: "atomPetsAround",
+    default: {
+        lat: 0,
+        lng: 0,
+    },
 });
 
-export const usePetsFound = () => useRecoilState(newPetsFoundState);
-
-export function useGetPetsAroundZone() {
-    async function getPetsAround(data: locationData) {
+const petsAroundZoneState = selector({
+    key: "petsAroundZoneState",
+    get: async ({ get }) => {
         try {
-            const response = await getPetsAroundZoneInDB(data.lat, data.lng);
-            if (response) {
-                return response;
-            } else {
-                return false;
+            const data: locationData = get(atomPetsAround);
+            if (data.lat !== 0) {
+                const response = await getPetsAroundZoneInDB(
+                    data.lat,
+                    data.lng
+                );
+                if (response) {
+                    return response;
+                } else {
+                    return [];
+                }
             }
         } catch (e) {
             console.error("Ha habido un error: ", e);
             return false;
         }
-    }
-    return {
-        getPetsAround,
-    };
+    },
+});
+
+export function useGetPetsAroundZone() {
+    const params = useParams();
+    const [data, setData] = useRecoilState(atomPetsAround);
+
+    useEffect(() => {
+        setData({
+            lat: parseFloat(params.location.split("=")[2].split("&")[0]),
+            lng: parseFloat(params.location.split("=")[3]),
+        });
+    }, [params.location]);
+
+    const results = useRecoilValue(petsAroundZoneState);
+    return results;
 }

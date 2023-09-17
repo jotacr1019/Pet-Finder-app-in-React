@@ -9,6 +9,7 @@ import { Home } from "../pages/Home";
 import { Menu } from "../pages/Menu";
 import { SignUp } from "../pages/Sign-up";
 import { UserReports } from "../pages/User-reports";
+import "../index.css";
 
 
 export function AppRoutes(){

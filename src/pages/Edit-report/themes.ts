@@ -21,6 +21,11 @@ export const editReportTheme = createTheme({
                             minWidth: "375px",
                             maxWidth: "none",
                             height: "fit-content",
+                            minHeight: {
+                                xs: "92.4vh",
+                                sm: "90.4vh",
+                                md: "90.4vh",
+                            },
                             padding: {
                                 xs: "35px 35px 75px",
                                 sm: "45px 100px 75px",

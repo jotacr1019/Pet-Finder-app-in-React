@@ -60,41 +60,36 @@ export function FormEditReport(){
 
     const navigate = useNavigate();
 
-    const dataOfP = useGetDataOfPet();
-
-    // useEffect(()=>{
-    //     console.log({dataOfP})
-    // }, [dataOfP])
-
     const pullData = async() => {
         const form: HTMLFormElement = document.querySelector('.form');
-        // const dataResponse = await getDataOfPet();
+        const dataResponse = await getDataOfPet();
         
-        // if(!dataResponse){
-        //     return false;
-        // }
+        if(!dataResponse){
+            setOpenReload(false);
+            setOpenFailSnackbar(true);
+            return false;
+        }
 
-        // if()  ????
-
-        setIdOfPet(dataOfP.id);
-        form.pet_name.value = dataOfP.name;
+        setIdOfPet(dataResponse.id);
+        form.pet_name.value = dataResponse.name;
         setMapboxFormData({
             ...mapBoxFormData,
             mapbox: {
-                query: dataOfP.location,
+                query: dataResponse.location,
                 coords: {
-                    lat: dataOfP.last_lat,
-                    lng: dataOfP.last_lng
+                    lat: dataResponse.last_lat,
+                    lng: dataResponse.last_lng
             }
         }});
-        setImagesUrl(dataOfP.imageUrl);
+        setImagesUrl(dataResponse.imageUrl);
+        setOpenReload(false);
         return true;
     }
 
     useEffect(()=>{
-        // if(dataOfP){}
+        setOpenReload(true);
         pullData();
-    }, [dataOfP])
+    }, [])
 
     useEffect(()=>{
         imagesUrl.length > 3 ? setBtnDisable(true) : setBtnDisable(false);
@@ -121,6 +116,13 @@ export function FormEditReport(){
     const handleSubmit = async (e) => {
         e.preventDefault();
         setOpenReload(true);
+
+        const userToken = localStorage.getItem("user_token");
+        if(!userToken){
+            setOpenNoTokenSnackbar(true);
+            setOpenReload(false);
+            return;
+        }
         
         if(imagesUrl.length === 0){
             setOpenImagesUrlSnackbar(true)
@@ -134,13 +136,6 @@ export function FormEditReport(){
             setOpenReload(false);
             return;
         } 
-
-        const userToken = localStorage.getItem("user_token");
-        if(!userToken){
-            setOpenNoTokenSnackbar(true);
-            setOpenReload(false);
-            return;
-        }
 
         const imagesWithoutClodinary = imagesUrl.filter((item)=> {return !item.includes('cloudinary')});
         const imagesWithCloudinary: string[] = imagesUrl.filter((item)=> {return item.includes('cloudinary')});

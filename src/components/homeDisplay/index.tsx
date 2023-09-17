@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Container, 
     Box, 
     ThemeProvider, 
@@ -16,7 +16,7 @@ import { HomeCard } from '../homeCards';
 import { CustomTextField } from '../../ui/textField';
 import { CustomButton } from '../../ui/button';
 import { CustomSnackbar } from '../../ui/snackbar';
-import { usePetsFound } from "../../hooks/petsAround";
+import { useGetPetsAroundZone } from "../../hooks/petsAround";
 import { useCreateReport } from "../../hooks/createReport";
 import { homeDisplayTheme } from './themes';
 
@@ -43,7 +43,7 @@ type userData = {
 }
 
 export function HomeDisplay() {
-    const [petsFound] = usePetsFound();
+    const petsFound = useGetPetsAroundZone();
 
     const { createReport } = useCreateReport();
 
@@ -71,28 +71,12 @@ export function HomeDisplay() {
         setReportFormOpen(false);
     };
 
-    const handleNameValue = (e) => {
+    const handleInputsChange = (e, field) => {
         e.preventDefault();
         setUserData({
             ...userData,
-            reporter_name: e.target.value
+            [field]: e.target.value
         });
-    }
-
-    const handlePhoneValue = (e) => {
-        e.preventDefault();
-        setUserData({
-            ...userData,
-            phone: e.target.value
-        })
-    }
-
-    const handleMessageValue = (e) => {
-        e.preventDefault();
-        setUserData({
-            ...userData,
-            message: e.target.value
-        })
     }
 
     const handleSendClick = async(e) => {
@@ -127,13 +111,8 @@ export function HomeDisplay() {
         <ThemeProvider theme={homeDisplayTheme}>
             <Container disableGutters={true} className="homeCardContainer">
                 <List className="listCard">
-                    {petsFound.length > 0
-                        ?   petsFound.map((pet, index) => (
-                                <ListItem className='listItem' disablePadding key={index} >
-                                    <HomeCard pet={pet} onChange={handleClickFromCard} />
-                                </ListItem>
-                        ))
-                        :   <Container disableGutters={true} className="notFoundContainer">
+                    {petsFound?.length < 1
+                        ?   <Container disableGutters={true} className="notFoundContainer">
                                 <Box    component="img" 
                                         src="../../src/assets/notDog.png"
                                         sx={{ 
@@ -145,6 +124,11 @@ export function HomeDisplay() {
                                     No hay mascotas reportadas cerca de tu ubicación
                                 </Typography>
                             </Container>
+                        :   petsFound?.map((pet, index) => (
+                                <ListItem className='listItem' disablePadding key={index} >
+                                    <HomeCard pet={pet} onChange={handleClickFromCard} />
+                                </ListItem>
+                    ))
                     }
                 </List>
             </Container>
@@ -169,7 +153,7 @@ export function HomeDisplay() {
                         </Typography>
                     </Container>
                     <DialogContent className="dialogContent">
-                        <CustomTextField onChange={handleNameValue}
+                        <CustomTextField onChange={(e) => handleInputsChange(e, 'reporter_name')}
                                         id="outlined-reporter-name"
                                         label="Nombre"
                                         placeholder="Ingresa tu nombre"
@@ -178,7 +162,7 @@ export function HomeDisplay() {
                                             shrink: true,
                                         }} >
                         </CustomTextField>
-                        <CustomTextField onChange={handlePhoneValue}
+                        <CustomTextField onChange={(e) => handleInputsChange(e, 'phone')}
                                         id="outlined-reporter-name"
                                         label="Teléfono"
                                         placeholder="Ejem: 8888-8888"
@@ -187,8 +171,7 @@ export function HomeDisplay() {
                                             shrink: true,
                                         }} >
                         </CustomTextField>
-                        <TextField
-                                onChange={handleMessageValue}
+                        <TextField onChange={(e) => handleInputsChange(e, 'message')}
                                 id="outlined-multiline-static"
                                 label="¿Dónde lo viste?"
                                 multiline

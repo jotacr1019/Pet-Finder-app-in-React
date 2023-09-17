@@ -7,7 +7,7 @@ import { editReportTheme } from './themes';
 export function EditReport(){
     return  <ThemeProvider theme={editReportTheme}>
                 <Container disableGutters={true} className="editReportContainer" >
-                <Suspense fallback={<Loading />}>
+                {/* <Suspense fallback={<Loading />}> */}
                     <Typography variant="h2" className="title" >
                         Editar reporte de mascota
                     </Typography>
@@ -15,11 +15,11 @@ export function EditReport(){
                         Realizá los cambios que consideres necesarios, y guardá la información
                     </Typography>
                     <FormEditReport />
-                </Suspense>
+                {/* </Suspense> */}
                 </Container>
             </ThemeProvider>
 }
 
-function Loading(){
-    return  <CircularProgress size={60} sx={{color: "#191970"}} />
-}
+// function Loading(){
+//     return  <CircularProgress size={60} sx={{color: "#191970"}} />
+// }

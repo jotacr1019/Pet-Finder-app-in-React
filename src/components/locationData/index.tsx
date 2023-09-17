@@ -12,7 +12,7 @@ import { styled } from '@mui/material/styles';
 import { Mapbox } from "../../components/mapbox";
 import { CustomButton } from "../../ui/button";
 import { CustomSnackbar } from '../../ui/snackbar';
-import { usePetsFound, useGetPetsAroundZone } from "../../hooks/petsAround";
+import { useGetPetsAroundZone } from "../../hooks/petsAround";
 import { locationButtonTheme } from "./themes";
 
 
@@ -66,8 +66,8 @@ async function getLocationOfUser() {
 }
 
 export function LocationData(){
-    const [petsFound, setPetsFound] = usePetsFound();
-    const {getPetsAround} = useGetPetsAroundZone();
+    // const [petsFound, setPetsFound] = usePetsFound();
+    // const {getPetsAround} = useGetPetsAroundZone();
 
     const [query, setQuery] = useState("");
 
@@ -75,10 +75,10 @@ export function LocationData(){
 
     const [mapboxOpen, setMapboxOpen] = useState(false);
 
-    const [openDialogReload, setOpenDialogReload] = useState(false);
-    const [openLocationBtnReload, setOpenLocationBtnReload] = useState(false);
+    // const [openDialogReload, setOpenDialogReload] = useState(false);
+    // const [openLocationBtnReload, setOpenLocationBtnReload] = useState(false);
 
-    const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
+    // const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
 
     const [locationButtonDisplay, setLocationButtonDisplay] = useState("initial");
 
@@ -96,42 +96,42 @@ export function LocationData(){
 
     const handleClick = async() => {
         try{
-            setOpenLocationBtnReload(true);
+            // setOpenLocationBtnReload(true);
             const response: any = await getLocationOfUser();
             const lat = response.lat;
             const lng = response.lng;
-            const petsFound: [] = await getPetsAround({lat, lng});
+            // const petsFound: [] = await getPetsAround({lat, lng});
 
-            if(!petsFound){
-                setOpenLocationBtnReload(false);
-                setOpenErrorSnackbar(true);
-            }
+            // if(!petsFound){
+            //     setOpenLocationBtnReload(false);
+            //     setOpenErrorSnackbar(true);
+            // }
 
-            setPetsFound(petsFound);
-            setOpenLocationBtnReload(false);
+            // setPetsFound(petsFound);
+            // setOpenLocationBtnReload(false);
             navigate(`/home/location=lat=${lat}&lng=${lng}`);
         }
         catch(err){
             console.log(err);
-            setOpenLocationBtnReload(false);
+            // setOpenLocationBtnReload(false);
             setMapboxOpen(true);
         }
     }
 
     const handleSearch = async (e) => {
         e.preventDefault();
-        setOpenDialogReload(true);
+        // setOpenDialogReload(true);
         const lat = mapBoxFormData.mapbox.coords.newLat;
         const lng = mapBoxFormData.mapbox.coords.newLng;
 
-        const petsFound: [] = await getPetsAround({lat, lng});
-        if(!petsFound){
-            setOpenDialogReload(false);
-            setOpenErrorSnackbar(true);
-        }
+        // const petsFound: [] = await getPetsAround({lat, lng});
+        // if(!petsFound){
+        //     setOpenDialogReload(false);
+        //     setOpenErrorSnackbar(true);
+        // }
 
-        setPetsFound(petsFound);
-        setOpenDialogReload(false);
+        // setPetsFound(petsFound);
+        // setOpenDialogReload(false);
         navigate(`/home/location=lat=${lat}&lng=${lng}`);
     }
 
@@ -190,20 +190,20 @@ export function LocationData(){
                             />
                         </Container>
                     </Container>
-                    <Backdrop
+                    {/* <Backdrop
                         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                         open={openDialogReload} >   
                         <CircularProgress color="inherit" />
-                    </Backdrop>
+                    </Backdrop> */}
                 </BootstrapDialog>
-                <CustomSnackbar open={openErrorSnackbar} severity="error" onClose={setOpenErrorSnackbar}>
+                {/* <CustomSnackbar open={openErrorSnackbar} severity="error" onClose={setOpenErrorSnackbar}>
                     Ha ocurrido un error, inténtalo de nuevo!
-                </CustomSnackbar>
-                <Backdrop
+                </CustomSnackbar> */}
+                {/* <Backdrop
                     sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                     open={openLocationBtnReload} >   
                     <CircularProgress color="inherit" />
-                </Backdrop>
+                </Backdrop> */}
             </Container>
         </ThemeProvider> )
 }

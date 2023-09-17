@@ -31,7 +31,7 @@ export function UserReportsCard({pet}) {
                         {pet.location}
                     </Typography>
                 </Container>
-                <Link to={`/edit-report/petId-${pet.id}`} >
+                <Link to={"/edit-report/petId-" + pet.id} >
                     <Button className="cardButton"
                             variant="contained" >
                         Editar
