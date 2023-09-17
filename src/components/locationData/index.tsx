@@ -5,14 +5,10 @@ import { Button,
     Container, 
     TextField, 
     InputAdornment, 
-    Dialog,
-    Backdrop, 
-    CircularProgress } from '@mui/material';
+    Dialog } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Mapbox } from "../../components/mapbox";
 import { CustomButton } from "../../ui/button";
-import { CustomSnackbar } from '../../ui/snackbar';
-import { useGetPetsAroundZone } from "../../hooks/petsAround";
 import { locationButtonTheme } from "./themes";
 
 
@@ -66,19 +62,11 @@ async function getLocationOfUser() {
 }
 
 export function LocationData(){
-    // const [petsFound, setPetsFound] = usePetsFound();
-    // const {getPetsAround} = useGetPetsAroundZone();
-
     const [query, setQuery] = useState("");
 
     const [mapBoxFormData, setMapboxFormData] = useState(initialState);
 
     const [mapboxOpen, setMapboxOpen] = useState(false);
-
-    // const [openDialogReload, setOpenDialogReload] = useState(false);
-    // const [openLocationBtnReload, setOpenLocationBtnReload] = useState(false);
-
-    // const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
 
     const [locationButtonDisplay, setLocationButtonDisplay] = useState("initial");
 
@@ -96,42 +84,21 @@ export function LocationData(){
 
     const handleClick = async() => {
         try{
-            // setOpenLocationBtnReload(true);
             const response: any = await getLocationOfUser();
             const lat = response.lat;
             const lng = response.lng;
-            // const petsFound: [] = await getPetsAround({lat, lng});
-
-            // if(!petsFound){
-            //     setOpenLocationBtnReload(false);
-            //     setOpenErrorSnackbar(true);
-            // }
-
-            // setPetsFound(petsFound);
-            // setOpenLocationBtnReload(false);
             navigate(`/home/location=lat=${lat}&lng=${lng}`);
         }
         catch(err){
             console.log(err);
-            // setOpenLocationBtnReload(false);
             setMapboxOpen(true);
         }
     }
 
     const handleSearch = async (e) => {
         e.preventDefault();
-        // setOpenDialogReload(true);
         const lat = mapBoxFormData.mapbox.coords.newLat;
         const lng = mapBoxFormData.mapbox.coords.newLng;
-
-        // const petsFound: [] = await getPetsAround({lat, lng});
-        // if(!petsFound){
-        //     setOpenDialogReload(false);
-        //     setOpenErrorSnackbar(true);
-        // }
-
-        // setPetsFound(petsFound);
-        // setOpenDialogReload(false);
         navigate(`/home/location=lat=${lat}&lng=${lng}`);
     }
 
@@ -190,20 +157,7 @@ export function LocationData(){
                             />
                         </Container>
                     </Container>
-                    {/* <Backdrop
-                        sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                        open={openDialogReload} >   
-                        <CircularProgress color="inherit" />
-                    </Backdrop> */}
                 </BootstrapDialog>
-                {/* <CustomSnackbar open={openErrorSnackbar} severity="error" onClose={setOpenErrorSnackbar}>
-                    Ha ocurrido un error, inténtalo de nuevo!
-                </CustomSnackbar> */}
-                {/* <Backdrop
-                    sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-                    open={openLocationBtnReload} >   
-                    <CircularProgress color="inherit" />
-                </Backdrop> */}
             </Container>
         </ThemeProvider> )
 }

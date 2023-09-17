@@ -123,7 +123,7 @@ export function FormCreateReport(){
             setOpenSuccessSnackbar(true);
             setTimeout(() => {
                 setOpenReload(false);
-                navigate("/user-reports");
+                navigate("/user-reports", {replace: true});
             }, 2500);
         } else {
             setOpenReload(false);

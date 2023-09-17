@@ -1,9 +1,5 @@
 import React, { useState } from 'react';
-import { Container, 
-    ThemeProvider,
-    Box,
-    Typography,
-    Button } from '@mui/material';
+import { Container, ThemeProvider, Box, Typography, Button } from '@mui/material';
 import PetsIcon from '@mui/icons-material/Pets';
 import { homeCardTheme } from './themes';
 import css from './index.module.css';
