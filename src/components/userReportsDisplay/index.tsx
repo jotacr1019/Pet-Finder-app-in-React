@@ -1,16 +1,24 @@
-import React from 'react';
+import React, {useState, useEffect} from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Container, ThemeProvider, List, ListItem, Box, Typography } from '@mui/material';
+import { Container, ThemeProvider, List, ListItem, Box, Typography, CircularProgress } from '@mui/material';
 import { CustomButton } from '../../ui/button';
 import { UserReportsCard } from '../userReportsCards';
-import { useGetPetsOfUser } from "../../hooks/petsOfUser";
+import { getPetsOfUser } from "../../hooks/petsOfUser";
 import { userReportDisplayTheme } from './themes';
 
 
 export function UserReportsDisplay() {
-    const petsOfUser = useGetPetsOfUser();
+    const [petsFound, setPetsFound] = useState([]);
+    const [wildCard, setWildCard] = useState(false);
 
     const navigate = useNavigate();
+
+    useEffect(() => {
+        getPetsOfUser().then((data) => {
+            data.length > 0 ? setWildCard(false) : setWildCard(true);
+            setPetsFound(data);
+        })
+    }, []);
 
     const handlePostClick = (e) => {
         e.preventDefault();
@@ -21,14 +29,14 @@ export function UserReportsDisplay() {
         <ThemeProvider theme={userReportDisplayTheme}>
             <Container disableGutters={true} className="homeCardContainer">
                 <List className="listCard">
-                    { petsOfUser.length > 0 
-                    ? ( petsOfUser.map((pet, index) => (
+                    { petsFound.length > 0 
+                    ?   ( petsFound.map((pet, index) => (
                             <ListItem className='listItem' disablePadding key={pet.id}>
                                 <UserReportsCard pet={pet} />
                             </ListItem>
-                    )))
-                    : (
-                        <Container disableGutters={true} className="notFoundContainer">
+                        )))
+                    :   petsFound.length < 1 && wildCard 
+                    ?   ( <Container disableGutters={true} className="notFoundContainer">
                             <Box    component="img" 
                                     src="../../src/assets/publicacion.png"
                                     sx={{ 
@@ -52,7 +60,16 @@ export function UserReportsDisplay() {
                                 </CustomButton>
                             </Container>
                         </Container>
-                    )}
+                    )
+                    :   <CircularProgress   size={60} 
+                                            sx={{
+                                                color: "#191970",
+                                                justifySelf: "center",
+                                                marginTop: {xs: "160px", sm: "162px", md: "132px"},
+                                                marginBottom: {xs: "162px", sm: "142px", md: "42px"}
+                                            }}
+                        /> 
+                    }
                 </List>
             </Container>
         </ThemeProvider>
