@@ -7,6 +7,7 @@
     "license": "ISC",
     "scripts": {
         "test": "npx playwright test",
+        "test:all": "npx playwright test --grep @myTests",
         "dev": "cross-env NODE_ENV=development webpack",
         "build": "cross-env NODE_ENV=production webpack",
         "start": "live-server"

@@ -80,7 +80,7 @@ export function Mapbox(props: MapBoxSearchProps) {
         if (onChange) {
             onChange({
                 query: name,
-                coords: {lat, lng}
+                coords: { newLat: lat, newLng: lng }
             });
         }
     }
