@@ -8,6 +8,7 @@ import { Button,
     Dialog } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import { Mapbox } from "../../components/mapbox";
+import { CustomSnackbar } from "../../ui/snackbar";
 import { CustomButton } from "../../ui/button";
 import { locationButtonTheme } from "./themes";
 
@@ -68,9 +69,9 @@ export function LocationData(){
 
     const [mapboxOpen, setMapboxOpen] = useState(false);
 
-    const [locationButtonDisplay, setLocationButtonDisplay] = useState("initial");
-
     const [btnSearchDisabled, setBtnSearchDisabled] = useState(false);
+
+    const [openFailSnackbar, setOpenFailSnackbar] = useState(false);
 
     const navigate = useNavigate();
 
@@ -107,6 +108,7 @@ export function LocationData(){
             ...mapBoxFormData,
             mapbox: data,
         });
+        data.query === "" ? setOpenFailSnackbar(true) : setOpenFailSnackbar(false);
     }
 
     const handleClose = () => {
@@ -118,7 +120,6 @@ export function LocationData(){
             <Container disableGutters={true} className="locationContainer">
                 <CustomButton   className="locationButton"
                                 onClick={handleClick}
-                                sx={{ display: locationButtonDisplay }}
                                 variant="contained" 
                                 size="large">
                     Dar mi ubicación actual
@@ -159,5 +160,8 @@ export function LocationData(){
                     </Container>
                 </BootstrapDialog>
             </Container>
+            <CustomSnackbar open={openFailSnackbar} severity="warning" onClose={setOpenFailSnackbar}>
+                Intenta con otra dirección!
+            </CustomSnackbar>
         </ThemeProvider> )
 }

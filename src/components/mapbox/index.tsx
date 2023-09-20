@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useState} from 'react';
 import { useLocation } from "react-router-dom";
 import Map, {Marker, NavigationControl} from 'react-map-gl';
 import { Box,
@@ -34,8 +34,6 @@ export function Mapbox(props: MapBoxSearchProps) {
     const [queryValues, setQueryValues] = useState([]);
     const [searchEmpty, setSearchEmpty] = useState("");
 
-    const [displayTextField, setDisplayTextField] = useState('none');
-
     const [displayList, setDisplayList] = useState('none');
 
     const [latLng, setLatLng] = useState({lat: 10.06666, lng: -84.30827});
@@ -45,10 +43,6 @@ export function Mapbox(props: MapBoxSearchProps) {
         latitude: latLng.lat,
         zoom: 7
     })
-
-    useEffect(() => {
-        location.pathname.split('/')[1] === 'create-report' || location.pathname.split('/')[1] === 'edit-report' ? setDisplayTextField('flex') : setDisplayTextField('none');
-    }, [location.pathname]);
 
     const handleSearch = async (e)=>{
         e.preventDefault();
@@ -64,7 +58,7 @@ export function Mapbox(props: MapBoxSearchProps) {
         setQueryValues(mapboxData.suggestions);
     }
 
-    const handleClickListItem = async (id) => {
+    const handleClickListItem = async (id: string) => {
         setDisplayList('none');
 
         const response = await fetch(
@@ -72,9 +66,9 @@ export function Mapbox(props: MapBoxSearchProps) {
         );
         const locationData = await response.json();
 
-        const lat = locationData.features[0].geometry.coordinates[1];
-        const lng = locationData.features[0].geometry.coordinates[0];
-        const name = locationData.features[0].properties.name
+        const lat = locationData.features[0]?.geometry.coordinates[1] || 0;
+        const lng = locationData.features[0]?.geometry.coordinates[0] || 0;
+        const name = locationData.features[0]?.properties.name || "";
         setLatLng({lat, lng});
 
         if (onChange) {
@@ -152,7 +146,6 @@ export function Mapbox(props: MapBoxSearchProps) {
                             placeholder="Busqueda"
                             onChange={handleInputChange}
                             className="searchInput"
-                            sx={{ display: displayTextField }}
                             InputProps={{
                                 endAdornment: (
                                     <InputAdornment position="start">
