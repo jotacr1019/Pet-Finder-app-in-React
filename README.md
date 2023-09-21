@@ -8,8 +8,8 @@
 
 
 ## Tech Stack
-**Frontend**: React, TypeScript, Webpack, Material UI, Mapbox, Dropzone, Firebase-GitHub Actions (deploy).
+**Frontend**: React, TypeScript, Webpack, Material UI, Mapbox, Dropzone, tests (Playwright), Firebase-GitHub Actions (deploy).
 
 _ _ _
 
-#### Nota: Al entrar por primera vez a la aplicación, puede que tarde en cargarse, ya que la app está subida en 'render.com' y este servicio después de 15 minutos de no darle uso se 'apaga' o deja de escuchar peticiones.
+#### Nota: Al entrar por primera vez a la aplicación, puede que tarde en cargarse, ya que la app está subida en 'render.com' y este servicio después de 15 minutos de no darle uso se 'apaga' o deja de escuchar peticiones. Debido a esto los tests pueden no pasar a la primera vez.
