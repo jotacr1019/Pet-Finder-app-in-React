@@ -40,7 +40,7 @@ test("action: click on '¿Cómo funciona Pet Finder?' and get info about the pag
 
     const locator = page.locator("p");
     await expect(locator).toContainText(
-        `Una vez aceptes dar tu ubicación, "Pet Finder" iniciará una busqueda de mascotas reportadas como perdidas dentro de tu zona. O bien puedes iniciar sesión o registrarte para reportar una mascota como perdida.`
+        `Una vez aceptes dar tu ubicación, 'Pet Finder' iniciará una busqueda de mascotas reportadas como perdidas dentro de tu zona. O bien puedes iniciar sesión o registrarte para reportar una mascota como perdida.`
     );
 });
 
