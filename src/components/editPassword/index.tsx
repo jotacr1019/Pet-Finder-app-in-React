@@ -1,14 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { Box, Container, Collapse, ThemeProvider } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import LoadingButton from '@mui/lab/LoadingButton';
-import { CustomPasswordField } from "../../ui/passwordField";
+import { CustomPasswordField } from '../../ui/passwordField';
 import { CustomSnackbar } from '../../ui/snackbar';
-import { usePasswordUserInDB } from "../../hooks/updatePassword";
+import { usePasswordUserInDB } from '../../hooks/updatePassword';
 import { useBtnPasswordDisabledState, 
     useBtnDataDisabledState,
-    useBackdropFilterState } from "../../atoms";
-import { editPasswordTheme } from "./themes";
+    useBackdropFilterState } from '../../atoms';
+import { editPasswordTheme } from './themes';
 
 
 export function CustomEditPassword(){
@@ -50,7 +50,7 @@ export function CustomEditPassword(){
         setBtnSaveColor(eventPasswordFullFilled && eventConfirmPasswordFullFilled ? '#fff' : 'rgba(0, 0, 0, 0.26)');
     }, [eventPasswordFullFilled, eventConfirmPasswordFullFilled])
 
-    const handleInputsCompletation = (event, id) => {
+    const handleInputsCompletation = (event: React.ChangeEvent<HTMLInputElement>, id: string) => {
         if (id === 'outlined-password') {
             setPasswordFullFilled(Boolean(event.target.value.length));
         }
@@ -60,7 +60,7 @@ export function CustomEditPassword(){
     };
 
     const handlePasswordChange = () => {
-        const userToken = localStorage.getItem("user_token");
+        const userToken = localStorage.getItem('user_token');
 
         if (!userToken) {
             setOpenTokenSnackbar(true);
@@ -79,8 +79,8 @@ export function CustomEditPassword(){
         setBtnSaveLoading(true);
         setBtnCancelDisabled(true);
         setBtnCancelColor('rgba(0, 0, 0, 0.26)');
-        const password = e.target.password.value;
-        const confirmPassword = e.target.confirmPassword.value;
+        const password: string = e.target.password.value;
+        const confirmPassword: string = e.target.confirmPassword.value;
         
         if(password !== confirmPassword){
             setBtnSaveLoading(false);
@@ -112,7 +112,7 @@ export function CustomEditPassword(){
 
     const handleBtnCancelPassword = (e) => {
         e.preventDefault();
-        const form = e.target.closest('form');
+        const form: HTMLFormElement = e.target.closest('form');
         if (form) {
             form.reset();
         }
@@ -125,12 +125,12 @@ export function CustomEditPassword(){
 
     return (
         <ThemeProvider theme={editPasswordTheme}>
-            <Container disableGutters={true} className="editPasswordContainer" >
+            <Container disableGutters={true} className='editPasswordContainer' >
                 <LoadingButton 
                             disabled={btnPasswordDisabled}
-                            variant="outlined"
+                            variant='outlined'
                             onClick={handlePasswordChange} 
-                            className="editPasswordButton"
+                            className='editPasswordButton'
                             sx={{ 
                                 display: buttonPasswordDisplay,
                                 color: editPasswordBtnColor
@@ -139,10 +139,10 @@ export function CustomEditPassword(){
                 </LoadingButton>
                 <Collapse in={collapsePasswordChecked}>
                     <Container 
-                            className="secundaryContainer"
+                            className='secundaryContainer'
                             disableGutters={true}
                             sx={{display: displayDivPassword}} >
-                        <Container  className="formContainer"
+                        <Container  className='formContainer'
                                     disableGutters={true} >
                             {<Box   component='form'   
                                     onSubmit={handlePasswordSubmit} >
@@ -162,10 +162,10 @@ export function CustomEditPassword(){
                                 </CustomPasswordField>
                                 <LoadingButton  
                                             disabled={btnSavePasswordDisabled}
-                                            type="submit"
+                                            type='submit'
                                             startIcon={<SaveIcon />} 
-                                            variant="text"
-                                            className="submitButton"
+                                            variant='text'
+                                            className='submitButton'
                                             sx={{ color: btnSaveColor }}
                                             loading={btnSaveloading}
                                             loadingPosition='center'
@@ -177,9 +177,9 @@ export function CustomEditPassword(){
                                 <LoadingButton 
                                             disabled={btnCancelDisabled}
                                             onClick={handleBtnCancelPassword}
-                                            variant="text"
-                                            className="cancelButton"
-                                            type="submit"
+                                            variant='text'
+                                            className='cancelButton'
+                                            type='submit'
                                             sx={{ color: btnCancelColor }} >
                                     Cancelar
                                 </LoadingButton>
@@ -187,16 +187,16 @@ export function CustomEditPassword(){
                         </Container>
                     </Container>
                 </Collapse>
-                <CustomSnackbar open={openTokenSnackbar} severity="error" onClose={setOpenTokenSnackbar}>
+                <CustomSnackbar open={openTokenSnackbar} severity='error' onClose={setOpenTokenSnackbar}>
                     No tienes los permisos para esta acción!
                 </CustomSnackbar>
-                <CustomSnackbar open={openSuccessSnackbar} severity="success" onClose={setOpenSuccessSnackbar}>
+                <CustomSnackbar open={openSuccessSnackbar} severity='success' onClose={setOpenSuccessSnackbar}>
                     Los datos han sido actualizados!
                 </CustomSnackbar>
-                <CustomSnackbar open={openPasswordSnackbar} severity="error" onClose={setOpenPasswordSnackbar}>
+                <CustomSnackbar open={openPasswordSnackbar} severity='error' onClose={setOpenPasswordSnackbar}>
                     Las contraseñas no coinciden!
                 </CustomSnackbar>
-                <CustomSnackbar open={openFailSnackbar} severity="error" onClose={setOpenFailSnackbar}>
+                <CustomSnackbar open={openFailSnackbar} severity='error' onClose={setOpenFailSnackbar}>
                     Ha ocurrido un error, datos no actualizados!
                 </CustomSnackbar>
             </Container>

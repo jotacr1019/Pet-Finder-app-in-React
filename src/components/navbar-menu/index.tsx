@@ -1,18 +1,18 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import { ListItemIcon, ListItemButton, ListItemText, Menu, MenuItem } from "@mui/material";
-import css from "./index.module.css";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { ListItemIcon, ListItemButton, ListItemText, Menu, MenuItem } from '@mui/material';
+import css from './index.module.css';
 
 
 export function CustomMenu({navLinks, anchorEl, open, onClose}){
-    const handlePaths = async(name) => {
+    const handlePaths = async(name: string) => {
         if(name === 'Cerrar sesión'){
             localStorage.removeItem('user_token');
         }
     }
 
     return (<>
-                <Menu   id="basic-menu"
+                <Menu   id='basic-menu'
                         anchorEl={anchorEl}
                         open={open}
                         onClose={onClose}

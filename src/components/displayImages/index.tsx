@@ -27,7 +27,7 @@ export function DisplayImages(props) {
         }
     }, [deletedImagesUrl])
 
-    const handleDeleteImage = (image) => {
+    const handleDeleteImage = (image: string): void => {
         setDeletedImagesUrl(imagesUrl.filter((item)=> item === image));
         setImagesUrl(imagesUrl.filter((item)=> item !== image));
     }
@@ -38,24 +38,24 @@ export function DisplayImages(props) {
                 {imagesUrl?.map((image, index) => (
                     <ImageButton key={image} >   
                         <ImageSrc style={{ backgroundImage: `url(${image})` }} />
-                        <ImageBackdrop className="MuiImageBackdrop-root" />
+                        <ImageBackdrop className='MuiImageBackdrop-root' />
                         <Image>
                             {index === 0
                                 ? <Typography
-                                        component="span"
-                                        variant="subtitle1"
-                                        color="inherit"
-                                        className="typographyText" >
+                                        component='span'
+                                        variant='subtitle1'
+                                        color='inherit'
+                                        className='typographyText' >
                                     {'Portada'}
-                                    <ImageMarked className="MuiImageMarked-root" />
+                                    <ImageMarked className='MuiImageMarked-root' />
                                 </Typography>
                                 : null
                             }
-                            <IconButton aria-label="delete" 
-                                        size="large"
-                                        className="iconButton"
+                            <IconButton aria-label='delete' 
+                                        size='large'
+                                        className='iconButton'
                                         onClick={() => handleDeleteImage(image)} >
-                                <DeleteIcon className="deleteIcon" />
+                                <DeleteIcon className='deleteIcon' />
                             </IconButton>
                         </Image>
                     </ImageButton>

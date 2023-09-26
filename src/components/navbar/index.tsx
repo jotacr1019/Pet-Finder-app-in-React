@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { AppBar, 
     Box,
     Container,
@@ -16,8 +16,8 @@ import FolderSharedIcon from '@mui/icons-material/FolderShared';
 import LoginIcon from '@mui/icons-material/Login';
 import LogoutIcon from '@mui/icons-material/Logout';
 import HomeIcon from '@mui/icons-material/Home';
-import { CustomMenu } from "../navbar-menu";
-import { navbarTheme } from "./themes";
+import { CustomMenu } from '../navbar-menu';
+import { navbarTheme } from './themes';
 
 
 export function Navbar() {
@@ -35,7 +35,7 @@ export function Navbar() {
         setAnchorEl(null);
     };
 
-    const handlePaths = async(name) => {
+    const handlePaths = async(name: string) => {
         if(name === 'Cerrar sesión'){
             localStorage.removeItem('user_token');
         }
@@ -82,35 +82,35 @@ export function Navbar() {
 
     return (
         <ThemeProvider theme={navbarTheme}>
-            <Container maxWidth={false} disableGutters={true} className="navbarContainer" >
-                <AppBar position="static" className="appbar" >
+            <Container maxWidth={false} disableGutters={true} className='navbarContainer' >
+                <AppBar position='static' className='appbar' >
                     <Toolbar>
                         <Box    sx={{ flexGrow: 1,
                                     display: 'flex',
                                     alignItems: 'center' 
                                 }} >
-                            <Avatar className="avatar"
-                                    src="../../src/assets/dog2.png" 
+                            <Avatar className='avatar'
+                                    src='../../src/assets/dog2.png' 
                             />
-                            <Typography variant="h6" 
-                                        component="div" 
-                                        className="navbarTitle" >
+                            <Typography variant='h6' 
+                                        component='div' 
+                                        className='navbarTitle' >
                                 Pet finder
                             </Typography>
                         </Box>
                         <IconButton onClick={handleMenuClick}
-                            size="large"
-                            edge="end"
-                            color="inherit"
-                            aria-label="menu"
-                            className="iconButton" >
+                            size='large'
+                            edge='end'
+                            color='inherit'
+                            aria-label='menu'
+                            className='iconButton' >
                             <MenuIcon />
                         </IconButton>
                         <Box sx={{display: {xs: 'none', md: 'flex'}}}>
                             {navLinks.map((item, index) => {
                                 if (item.pathSources.includes(location.pathname.split('/')[1])) {
                                     let buttonVariant: any = 'text';
-                                    let buttonColor: any = '#20b2aa';
+                                    let buttonColor: string = '#20b2aa';
 
                                     if (item.name === 'Iniciar sesión'|| item.name === 'Cerrar sesión') {
                                         buttonVariant = 'outlined';

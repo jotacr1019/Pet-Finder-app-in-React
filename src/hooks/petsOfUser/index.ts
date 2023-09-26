@@ -1,6 +1,6 @@
 import { getPetsOfUserFromDB, getDataOfUserFromDB } from "../../lib/api";
 
-export async function getPetsOfUser() {
+export async function getPetsOfUser(): Promise<[] | null> {
     try {
         const token = localStorage.getItem("user_token");
         const userData = await getDataOfUserFromDB(token);
@@ -13,6 +13,6 @@ export async function getPetsOfUser() {
         }
     } catch (e) {
         console.error("Ha habido un error: ", e);
-        return [];
+        return null;
     }
 }

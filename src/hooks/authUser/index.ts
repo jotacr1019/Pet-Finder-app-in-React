@@ -12,9 +12,12 @@ export const authDataState = atom({
 export const useAuthData = () => useRecoilState(authDataState);
 
 export function useAuthUserInDB() {
-    async function login(email: string, password: string) {
+    async function login(email: string, password: string): Promise<boolean> {
         try {
-            const userToken = await authUserInDB(email, password);
+            const userToken: string | null = await authUserInDB(
+                email,
+                password
+            );
             if (userToken) {
                 localStorage.setItem("user_token", userToken);
                 return true;

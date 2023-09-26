@@ -4,7 +4,7 @@ import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 
 
-export function CustomPasswordField({...props}){
+export function CustomPasswordField({...props}) {
     const [showPassword, setShowPassword] = useState(false);
     
     const handleClickShowPassword = () => setShowPassword((show) => !show);

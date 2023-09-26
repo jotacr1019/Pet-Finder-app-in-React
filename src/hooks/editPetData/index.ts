@@ -1,6 +1,6 @@
 import { updatePetInDB } from "../../lib/api";
 
-type petData = {
+type PetData = {
     id: number;
     name: string;
     location: string;
@@ -11,7 +11,7 @@ type petData = {
 };
 
 export function useUpdatePetData() {
-    async function updatePetData(petData: petData) {
+    async function updatePetData(petData: PetData) {
         try {
             const token = localStorage.getItem("user_token");
             const response = await updatePetInDB(petData, token);
@@ -22,6 +22,7 @@ export function useUpdatePetData() {
             }
         } catch (e) {
             console.error("Ha habido un error: ", e);
+            return false;
         }
     }
     return {

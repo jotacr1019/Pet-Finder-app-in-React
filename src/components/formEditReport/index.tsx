@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react'
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from 'react-router-dom';
 import { Box, Container, Typography, Backdrop, CircularProgress, ThemeProvider } from '@mui/material';
 import { MyDropzone } from '../dropzone';
 import { Mapbox } from '../mapbox';
 import { DisplayImages } from '../displayImages';
-import { CustomTextField } from "../../ui/textField";
+import { CustomTextField } from '../../ui/textField';
 import { CustomButton } from '../../ui/button';
 import { CustomSnackbar } from '../../ui/snackbar';
 import { useGetDataOfPet } from '../../hooks/dataOfPet';
@@ -14,23 +14,19 @@ import { imgToURLCloudinary } from '../../lib/cloudinary';
 import { formEditReportTheme } from './themes';
 
 
-type mapboxData = {
-    mapbox: {
+type MapboxData = {
         query: string,
         coords: {
             lat: number,
             lng: number
         }
-    }
 }
 
-const initialState: mapboxData = {
-    mapbox: {
-        query: '',
-        coords: {
-            lat: 0,
-            lng: 0
-        }
+const initialState: MapboxData = {
+    query: '',
+    coords: {
+        lat: 0,
+        lng: 0
     }
 }
 
@@ -74,12 +70,10 @@ export function FormEditReport(){
         form.pet_name.value = dataResponse.name;
         setMapboxFormData({
             ...mapBoxFormData,
-            mapbox: {
-                query: dataResponse.location,
-                coords: {
-                    lat: dataResponse.last_lat,
-                    lng: dataResponse.last_lng
-            }
+            query: dataResponse.location,
+            coords: {
+                lat: dataResponse.last_lat,
+                lng: dataResponse.last_lng
         }});
         setImagesUrl(dataResponse.imageUrl);
         setOpenReload(false);
@@ -95,21 +89,22 @@ export function FormEditReport(){
         imagesUrl.length > 3 ? setBtnDisable(true) : setBtnDisable(false);
     }, [imagesUrl])
 
-    const handleDropzoneChange = (acceptedFiles) => {
+    const handleDropzoneChange = (acceptedFiles: string[]): void => {
         const imagesDeletedVerified = acceptedFiles.filter((item)=> {return !deletedImages.includes(item)});
         const finalVerification = imagesDeletedVerified.filter((item)=> {return !imagesUrl.includes(item)});
         setImagesUrl(prevUrls => [...prevUrls, ...finalVerification]);
     }
 
-    const handleDisplayChange = (deletedImages) => {
+    const handleDisplayChange = (deletedImages: string[]): void => {
         setDeletedImages(prevUrls => [...prevUrls, ...deletedImages]);
         setImagesUrl(prevUrls => prevUrls.filter((item)=> {return !deletedImages.includes(item)}));
     }
 
-    function handleMapboxChange(data) {
+    function handleMapboxChange(data: MapboxData): void {
         setMapboxFormData({
             ...mapBoxFormData,
-            mapbox: data,
+            query: data.query,
+            coords: data.coords
         });
     }
 
@@ -117,7 +112,7 @@ export function FormEditReport(){
         e.preventDefault();
         setOpenReload(true);
 
-        const userToken = localStorage.getItem("user_token");
+        const userToken = localStorage.getItem('user_token');
         if(!userToken){
             setOpenNoTokenSnackbar(true);
             setOpenReload(false);
@@ -130,8 +125,8 @@ export function FormEditReport(){
             return;
         } 
 
-        const latLng: any = mapBoxFormData.mapbox.coords;
-        if(latLng.lat === undefined){
+        const latLng: MapboxData['coords'] = mapBoxFormData.coords;
+        if(latLng.lat === 0){
             setOpenUndefinedMapboxSnackbar(true);
             setOpenReload(false);
             return;
@@ -139,7 +134,7 @@ export function FormEditReport(){
 
         const imagesWithoutClodinary = imagesUrl.filter((item)=> {return !item.includes('cloudinary')});
         const imagesWithCloudinary: string[] = imagesUrl.filter((item)=> {return item.includes('cloudinary')});
-        const imagesUrlCloudinary: string[] = await imgToURLCloudinary(imagesWithoutClodinary);
+        const imagesUrlCloudinary = await imgToURLCloudinary(imagesWithoutClodinary);
         imagesWithCloudinary.push(...imagesUrlCloudinary);
 
         const petData = {
@@ -149,7 +144,7 @@ export function FormEditReport(){
             name: e.target.pet_name.value,
             imageUrl: imagesWithCloudinary,
             status: 'missing',
-            location: mapBoxFormData.mapbox.query
+            location: mapBoxFormData.query
         }
 
         const updateResponse = await updatePetData(petData);
@@ -157,7 +152,7 @@ export function FormEditReport(){
             setOpenSuccessSnackbar(true);
             setTimeout(() => {
                 setOpenReload(false);
-                navigate("/user-reports", {replace: true});
+                navigate('/user-reports', {replace: true});
             }, 2500);
         } else {
             setOpenReload(false);
@@ -174,7 +169,7 @@ export function FormEditReport(){
             setOpenDeleteSnackbar(true);
             setTimeout(() => {
                 setOpenReload(false);
-                navigate("/user-reports", {replace: true});
+                navigate('/user-reports', {replace: true});
             }, 2500);
         } else {
             setOpenReload(false);
@@ -184,18 +179,18 @@ export function FormEditReport(){
 
     const handleCancelBtn = (e) => {
         e.preventDefault();
-        const form = e.target.closest('form');
+        const form: HTMLFormElement = e.target.closest('form');
         if (form) {
             form.reset();
         }
-        navigate("/user-reports");
+        navigate('/user-reports');
     }
 
     return (
         <ThemeProvider theme={formEditReportTheme}>
-            <Box    component="form"
+            <Box    component='form'
                     onSubmit={handleSubmit}
-                    className="form"
+                    className='form'
                     sx={{
                         display: 'flex',
                         flexDirection: 'column',
@@ -205,11 +200,11 @@ export function FormEditReport(){
                         width: '100%',
                     }} >
                 <CustomTextField 
-                            id="outlined-pet-name"
-                            className="outlined-pet-name"
-                            label="Nombre"
-                            placeholder="Ingresa el nombre de la mascota"
-                            name="pet_name"
+                            id='outlined-pet-name'
+                            className='outlined-pet-name'
+                            label='Nombre'
+                            placeholder='Ingresa el nombre de la mascota'
+                            name='pet_name'
                             InputLabelProps={{
                                 shrink: true,
                             }} >
@@ -220,63 +215,63 @@ export function FormEditReport(){
                 <MyDropzone onChange={handleDropzoneChange} 
                             disabled={btnDisable} 
                 />
-                <Typography variant='h3' className="dropzoneText" >
+                <Typography variant='h3' className='dropzoneText' >
                     * Puedes agregar hasta 4 fotos
                 </Typography>
                 <Mapbox onChange={handleMapboxChange} />
-                <Typography variant='h3' className="mapboxText" >
+                <Typography variant='h3' className='mapboxText' >
                     Buscá un punto de referencia para reportar la mascota. Por ejemplo, la ubicación donde lo viste por última vez.
                 </Typography>
                 <CustomTextField 
                             disabled
                             required
-                            value={mapBoxFormData.mapbox.query}
-                            id="outlined-location"
-                            name="location"
-                            label="Ubicación"
+                            value={mapBoxFormData.query}
+                            id='outlined-location'
+                            name='location'
+                            label='Ubicación'
                             InputLabelProps={{
                                 shrink: true,
                             }} >
                 </CustomTextField>
-                <Container disableGutters={true} className="buttonsContainer">
-                    <CustomButton   type="submit" 
-                                    variant="contained"
-                                    className="createButton" >
+                <Container disableGutters={true} className='buttonsContainer'>
+                    <CustomButton   type='submit' 
+                                    variant='contained'
+                                    className='createButton' >
                         Guardar
                     </CustomButton>
-                    <CustomButton   variant="contained"
-                                    className="foundButton" 
+                    <CustomButton   variant='contained'
+                                    className='foundButton' 
                                     onClick={handleFoundBtn} >
                         Reportar como encontrado
                     </CustomButton>
-                    <CustomButton   variant="contained"
-                                    className="deleteButton" 
+                    <CustomButton   variant='contained'
+                                    className='deleteButton' 
                                     onClick={handleCancelBtn} >
                         Cancelar
                     </CustomButton>
                 </Container>
-                <CustomSnackbar open={openUndefinedMapboxSnackbar} severity="error" onClose={setOpenUndefinedMapboxSnackbar}>
+                <CustomSnackbar open={openUndefinedMapboxSnackbar} severity='error' onClose={setOpenUndefinedMapboxSnackbar}>
                     Necesitas elegir una ubicación más especifica!
                 </CustomSnackbar>
-                <CustomSnackbar open={openImagesUrlSnackbar} severity="error" onClose={setOpenImagesUrlSnackbar}>
+                <CustomSnackbar open={openImagesUrlSnackbar} severity='error' onClose={setOpenImagesUrlSnackbar}>
                     Necesitas agregar al menos una foto!
                 </CustomSnackbar>
-                <CustomSnackbar open={openNoTokenSnackbar} severity="error" onClose={setOpenNoTokenSnackbar}>
+                <CustomSnackbar open={openNoTokenSnackbar} severity='error' onClose={setOpenNoTokenSnackbar}>
                     No tienes los permisos para crear reportes!
                 </CustomSnackbar>
-                <CustomSnackbar open={openDeleteSnackbar} severity="success" onClose={setOpenDeleteSnackbar}>
+                <CustomSnackbar open={openDeleteSnackbar} severity='success' onClose={setOpenDeleteSnackbar}>
                     Reporte borrado exitosamente!
                 </CustomSnackbar>
-                <CustomSnackbar open={openSuccessSnackbar} severity="success" onClose={setOpenSuccessSnackbar}>
+                <CustomSnackbar open={openSuccessSnackbar} severity='success' onClose={setOpenSuccessSnackbar}>
                     Reporte editado!
                 </CustomSnackbar>
-                <CustomSnackbar open={openFailSnackbar} severity="error" onClose={setOpenFailSnackbar}>
+                <CustomSnackbar open={openFailSnackbar} severity='error' onClose={setOpenFailSnackbar}>
                     Ha sucedido un error, intentalo de nuevo!
                 </CustomSnackbar>
                 <Backdrop
                     sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                     open={openReload} >   
-                    <CircularProgress color="inherit" />
+                    <CircularProgress color='inherit' />
                 </Backdrop>
             </Box>
         </ThemeProvider>

@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import isEmail from 'validator/lib/isEmail';
 import { Typography,
     Box,
@@ -8,13 +8,13 @@ import { Typography,
     CircularProgress,
     ThemeProvider,
     Grow } from '@mui/material';
-import { CustomButton } from "../../ui/button";
-import { CustomTextField } from "../../ui/textField";
+import { CustomButton } from '../../ui/button';
+import { CustomTextField } from '../../ui/textField';
 import { CustomSnackbar } from '../../ui/snackbar';
-import { CustomPasswordField } from "../../ui/passwordField";
-import { useNewUserData, useCreateUserInDB } from "../../hooks/createUser";
-import { formSignupTheme } from "./themes";
-import css from "./index.module.css";
+import { CustomPasswordField } from '../../ui/passwordField';
+import { useNewUserData, useCreateUserInDB } from '../../hooks/createUser';
+import { formSignupTheme } from './themes';
+import css from './index.module.css';
 
 
 export function FormSignup(){
@@ -29,9 +29,10 @@ export function FormSignup(){
 
     const [urlVisible, setUrlVisible] = useState(false);
 
-    const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
+    const [openUnsuccessSnackbar, setOpenUnsuccessSnackbar] = useState(false);
     const [openEmailSnackbar, setOpenEmailSnackbar] = useState(false);
     const [openPasswordSnackbar, setOpenPasswordSnackbar] = useState(false);
+    const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
 
     const [openReload, setOpenReload] = useState(false);
 
@@ -48,10 +49,10 @@ export function FormSignup(){
     const handleFormSubmit = async (e) => {
         e.preventDefault();
         setOpenReload(true);
-        const full_name = e.target.name.value
-        const email = e.target.email.value
-        const password = e.target.password.value
-        const confirmPassword = e.target.confirmPassword.value
+        const full_name: string = e.target.name.value
+        const email: string = e.target.email.value
+        const password: string = e.target.password.value
+        const confirmPassword: string = e.target.confirmPassword.value
 
         if(password !== confirmPassword){
             setOpenReload(false)
@@ -79,7 +80,10 @@ export function FormSignup(){
         if (response) {
             setOpenReload(false)
             e.target.reset();
-            navigate("/user-reports");
+            navigate('/user-reports');
+        } else if(response === false){ 
+            setOpenReload(false)
+            setOpenUnsuccessSnackbar(true);
         } else {
             setOpenReload(false)
             setOpenErrorSnackbar(true);
@@ -89,8 +93,8 @@ export function FormSignup(){
     return (
         <ThemeProvider theme={formSignupTheme}>
             <Grow in={growChecked}>
-                <Container disableGutters={true} className="formSignupContainer" >
-                    <Box    component="form" 
+                <Container disableGutters={true} className='formSignupContainer' >
+                    <Box    component='form' 
                             onSubmit={handleFormSubmit}
                             sx={{
                                 display: 'flex',
@@ -98,26 +102,26 @@ export function FormSignup(){
                                 width: '100%',
                                 gap: { xs: '28px', sm: '22px' , md: '16px', lg: '16px' }
                             }} >
-                        <Typography variant="h3" className="title" >
+                        <Typography variant='h3' className='title' >
                             Registrarse
                         </Typography>
-                        <Typography variant="body1" className="subtitle" >
+                        <Typography variant='body1' className='subtitle' >
                             Ingresa los siguientes datos para completar el registro
                         </Typography>
                         <CustomTextField
                                     required={urlVisible}
-                                    id="outlined-name-input"
-                                    label="Nombre"
-                                    placeholder="Ingresa tu nombre"
-                                    name="name"
+                                    id='outlined-name-input'
+                                    label='Nombre'
+                                    placeholder='Ingresa tu nombre'
+                                    name='name'
                                     onChange={handleInputsCompletation}
                         />
                         <CustomTextField
                                     required={urlVisible}
-                                    id="outlined-email-input"
-                                    label="Email"
-                                    placeholder="ejemplo@mail.com"
-                                    name="email"
+                                    id='outlined-email-input'
+                                    label='Email'
+                                    placeholder='ejemplo@mail.com'
+                                    name='email'
                                     onChange={handleInputsCompletation}
                                     error={errorLabel && isValidEmail === false}
                         />
@@ -137,27 +141,30 @@ export function FormSignup(){
                                     name='confirmPassword'
                                     onChange={handleInputsCompletation} >
                         </CustomPasswordField>
-                        <Typography variant="body2" className="text" >
+                        <Typography variant='body2' className='text' >
                             ¿Ya tienes una cuenta?
                             <Link to={'/auth'} className={css.link}>
                                 Inicia sesión
                             </Link>
                         </Typography>
-                        <CustomButton type="submit" variant="contained">Registrarse</CustomButton>
+                        <CustomButton type='submit' variant='contained'>Registrarse</CustomButton>
                     </Box>
-                    <CustomSnackbar open={openErrorSnackbar} severity="error" onClose={setOpenErrorSnackbar}>
-                        Email o contraseña incorrectos!
+                    <CustomSnackbar open={openUnsuccessSnackbar} severity='error' onClose={setOpenUnsuccessSnackbar}>
+                        Usuario no creado, inténtalo de nuevo!
                     </CustomSnackbar>
-                    <CustomSnackbar open={openEmailSnackbar} severity="error" onClose={setOpenEmailSnackbar}>
+                    <CustomSnackbar open={openEmailSnackbar} severity='error' onClose={setOpenEmailSnackbar}>
                         No es un formato de correo válido!
                     </CustomSnackbar>
-                    <CustomSnackbar open={openPasswordSnackbar} severity="error" onClose={setOpenPasswordSnackbar}>
+                    <CustomSnackbar open={openPasswordSnackbar} severity='error' onClose={setOpenPasswordSnackbar}>
                         Las contraseñas no coinciden!
+                    </CustomSnackbar>
+                    <CustomSnackbar open={openErrorSnackbar} severity='error' onClose={setOpenErrorSnackbar}>
+                        Ha ocurrido un error, inténtalo de nuevo!
                     </CustomSnackbar>
                     <Backdrop
                         sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                         open={openReload} >   
-                        <CircularProgress color="inherit" />
+                        <CircularProgress color='inherit' />
                     </Backdrop>
                 </Container>
             </Grow>

@@ -1,5 +1,5 @@
 import React, { useState} from 'react';
-import { useLocation } from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 import Map, {Marker, NavigationControl} from 'react-map-gl';
 import { Box,
     Container,
@@ -19,7 +19,7 @@ import { mapboxTheme } from './themes';
 import 'mapbox-gl/dist/mapbox-gl.css';
 
 
-const mapBoxToken = "pk.eyJ1Ijoiam90YTEwIiwiYSI6ImNsajR0d2xqdzA0d3QzZG52bjJpcWJnOXAifQ.K29xndPwRQ9o0lIQnIYqpg";
+const mapBoxToken = 'pk.eyJ1Ijoiam90YTEwIiwiYSI6ImNsajR0d2xqdzA0d3QzZG52bjJpcWJnOXAifQ.K29xndPwRQ9o0lIQnIYqpg';
 
 type MapBoxSearchProps = {
     onChange?: (any) => any;
@@ -32,7 +32,7 @@ export function Mapbox(props: MapBoxSearchProps) {
 
     const [transitiveQuery, setTransitiveQuery] = useState('');
     const [queryValues, setQueryValues] = useState([]);
-    const [searchEmpty, setSearchEmpty] = useState("");
+    const [searchEmpty, setSearchEmpty] = useState('');
 
     const [displayList, setDisplayList] = useState('none');
 
@@ -68,20 +68,20 @@ export function Mapbox(props: MapBoxSearchProps) {
 
         const lat = locationData.features[0]?.geometry.coordinates[1] || 0;
         const lng = locationData.features[0]?.geometry.coordinates[0] || 0;
-        const name = locationData.features[0]?.properties.name || "";
+        const name = locationData.features[0]?.properties.name || '';
         setLatLng({lat, lng});
 
         if (onChange) {
             onChange({
                 query: name,
-                coords: { newLat: lat, newLng: lng }
+                coords: { lat, lng }
             });
         }
     }
 
     const handleDragEnd = async (e) => {
-        const lat = e.lngLat.lat
-        const lng = e.lngLat.lng
+        const lat: number = e.lngLat.lat
+        const lng: number = e.lngLat.lng
         setLatLng({lat, lng})
 
         const response = await fetch(
@@ -96,7 +96,7 @@ export function Mapbox(props: MapBoxSearchProps) {
         if (onChange) {
             onChange({
                 query: name,
-                coords: { newLat, newLng }
+                coords: { lat, lng }
             });
         }
     }
@@ -113,7 +113,7 @@ export function Mapbox(props: MapBoxSearchProps) {
 
     return (
         <ThemeProvider theme={mapboxTheme}>
-            <Container  disableGutters={true} className="mapboxContainer" >
+            <Container  disableGutters={true} className='mapboxContainer' >
                 <Map    mapboxAccessToken={mapBoxToken}
                         {...viewState}
                         onMove={evt => setViewState(evt.viewState)}
@@ -123,73 +123,73 @@ export function Mapbox(props: MapBoxSearchProps) {
                             borderRadius: '6px',
                         }}
                         onClick={handleMapClick}
-                        mapStyle="mapbox://styles/mapbox/streets-v9" >
+                        mapStyle='mapbox://styles/mapbox/streets-v9' >
                     <Marker longitude={latLng.lng} 
                             latitude={latLng.lat} 
-                            anchor="bottom" 
+                            anchor='bottom' 
                             draggable={true}
                             style={{
                                     width:  window.innerWidth < 768 ? '70px' : window.innerWidth < 1024 ? '78px' : '78px',
                                     height: '60px'
                                 }} 
                             onDragEnd={handleDragEnd} >
-                        <Box    component="img"
+                        <Box    component='img'
                                 style={{width: '100%', height: '100%'}} 
-                                src="../src/assets/dogMarker2.png"
-                                alt="marker" >
+                                src='../src/assets/dogMarker2.png'
+                                alt='marker' >
                         </Box>
                     </Marker>
                     <NavigationControl showCompass={false} showZoom={true} />
-                    <Container className="searchContainer" disableGutters={true} >
+                    <Container className='searchContainer' disableGutters={true} >
                         <TextField
-                            id="location-search"
-                            placeholder="Busqueda"
+                            id='location-search'
+                            placeholder='Busqueda'
                             onChange={handleInputChange}
-                            className="searchInput"
+                            className='searchInput'
                             InputProps={{
                                 endAdornment: (
-                                    <InputAdornment position="start">
+                                    <InputAdornment position='start'>
                                         <Button onClick={handleSearch} 
-                                                type="submit"
-                                                variant="text"
-                                                className="searchButton" >
+                                                type='submit'
+                                                variant='text'
+                                                className='searchButton' >
                                             <SearchIcon />
                                         </Button>
                                     </InputAdornment>
                                 ),
                             }}
                         />
-                        <List className="list"  sx={{ display: displayList }} >
+                        <List className='list'  sx={{ display: displayList }} >
                             {queryValues.length === 0
-                                ? <ListItem className="listEmptyItem" >
-                                    <ListItemText primary={`La busqueda "${searchEmpty}" no obtuvo resultados`} />
+                                ? <ListItem className='listEmptyItem' >
+                                    <ListItemText primary={`La busqueda '${searchEmpty}' no obtuvo resultados`} />
                                 </ListItem> 
                                 : queryValues.map((item, index) => (
                                     <div key={index}>    
-                                        <ListItem className="listItem" >
+                                        <ListItem className='listItem' >
                                             <ListItemAvatar>
                                                 <Avatar>
                                                     <PlaceTwoToneIcon />
                                                 </Avatar>
                                             </ListItemAvatar>
                                             <Container  
-                                                        className="itemsContainer" 
+                                                        className='itemsContainer' 
                                                         disableGutters={true} >
-                                                <Button className="listItemButton"
+                                                <Button className='listItemButton'
                                                         onClick={() => handleClickListItem(item.mapbox_id)}
                                                         disableRipple 
                                                         disableFocusRipple >
                                                     <ListItemText 
-                                                                className="primaryItemText"
+                                                                className='primaryItemText'
                                                                 primary={item.name} 
                                                     />
                                                 </Button>
-                                                <ListItemText   className="secondaryItemText"
+                                                <ListItemText   className='secondaryItemText'
                                                                 secondary={item.place_formatted} 
                                                 />
                                             </Container>
                                         </ListItem>
-                                        {index !== queryValues.length - 1 ? <Divider className="divider" /> : null}
+                                        {index !== queryValues.length - 1 ? <Divider className='divider' /> : null}
                                     </div>
                                 ))
                             }

@@ -5,12 +5,22 @@ import { homeCardTheme } from './themes';
 import css from './index.module.css';
 
 
+type PetData = {
+    id: number;
+    name: string;
+    location: string;
+    imageUrl: string[];
+    status: string;
+    last_lat: number;
+    last_lng: number;
+};
+
 export function HomeCard({...props}) {
     const {onChange} = props;
 
     const [imageClassName, setImageClassName] = useState('cardImageStaticContainer');
 
-    const handleReportClick = (petData) => {
+    const handleReportClick = (petData: PetData) => {
         if(onChange){
             onChange(petData);
         }
@@ -18,17 +28,17 @@ export function HomeCard({...props}) {
 
     return (
         <ThemeProvider theme={homeCardTheme}>
-            <Container disableGutters={true} className="card">
-                <Container disableGutters={true} className="cardDetails">
-                    <Container disableGutters={true} className="titleContainer">
+            <Container disableGutters={true} className='card'>
+                <Container disableGutters={true} className='cardDetails'>
+                    <Container disableGutters={true} className='titleContainer'>
                         <PetsIcon />
-                        <Typography variant="h4" className="cardTitle">
+                        <Typography variant='h4' className='cardTitle'>
                             {props.pet.name}
                         </Typography>
                     </Container>
                     <Container disableGutters={true} className={props.pet.imageUrl.length < 2 ? imageClassName : props.pet.imageUrl.length === 2 ? css.containerOfTwoImages : props.pet.imageUrl.length === 3 ? css.containerOfThreeImages : css.containerOfFourImages } >
                         {props.pet.imageUrl.map((url, index) => (
-                            <Box    component="img" 
+                            <Box    component='img' 
                                     key={index}
                                     src={url}
                                     alt={props.pet.name}
@@ -36,12 +46,12 @@ export function HomeCard({...props}) {
                             </Box>
                         ))}
                     </Container>
-                    <Typography variant="body1" className="cardText">
+                    <Typography variant='body1' className='cardText'>
                         {props.pet.location}
                     </Typography>
                 </Container>
-                <Button className="cardButton" 
-                        variant="contained"
+                <Button className='cardButton' 
+                        variant='contained'
                         onClick={() => handleReportClick(props.pet)} >
                     Reportar
                 </Button>

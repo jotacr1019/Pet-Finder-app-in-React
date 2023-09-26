@@ -31,9 +31,9 @@ export function InfoMessage() {
         <ThemeProvider theme={infoMessageTheme}>
             <Container disableGutters={true} className='infoMessageContainer'>
                 <CustomButton 
-                            variant="contained"
-                            className="infoMessageButton"
-                            size="large" 
+                            variant='contained'
+                            className='infoMessageButton'
+                            size='large' 
                             onClick={handleClickOpen}>
                     ¿Cómo funciona Pet Finder?
                 </CustomButton>
@@ -44,25 +44,25 @@ export function InfoMessage() {
                             }} >
                     <Container className='secondaryContainer' >
                         <Typography
-                                variant="h4"
-                                className="title"
+                                variant='h4'
+                                className='title'
                                 gutterBottom >
                             Pet Finder App
                         </Typography>
                         <CustomButton 
                                     onClick={handleClose}
-                                    variant="text"
-                                    className="closeButton" >
+                                    variant='text'
+                                    className='closeButton' >
                             X
                         </CustomButton>
                     </Container>
                     <DialogContent 
                                 dividers 
-                                className="dialogContent">
-                        <Typography variant="body1"
-                                    className="text"
+                                className='dialogContent'>
+                        <Typography variant='body1'
+                                    className='text'
                                     gutterBottom >
-                            Una vez aceptes dar tu ubicación, "Pet Finder" iniciará una busqueda de mascotas reportadas como perdidas dentro de tu zona. O bien puedes iniciar sesión o registrarte para reportar una mascota como perdida.
+                            Una vez aceptes dar tu ubicación, 'Pet Finder' iniciará una busqueda de mascotas reportadas como perdidas dentro de tu zona. O bien puedes iniciar sesión o registrarte para reportar una mascota como perdida.
                         </Typography>
                     </DialogContent>
                 </BootstrapDialog>

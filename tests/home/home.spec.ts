@@ -95,14 +95,11 @@ test("action: report a missing pet @myTests", async ({ page, request }) => {
             return res.json();
         });
 
-    console.log({ response });
-
     if (response.length > 0) {
         const elem = await page
             .locator("li")
             .filter({ hasText: /Reportar/ })
             .all();
-        console.log({ elem });
 
         await elem[0].getByRole("button").click();
 

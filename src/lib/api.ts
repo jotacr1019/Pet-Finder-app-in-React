@@ -1,17 +1,18 @@
 const API_BASE_URL = "https://pet-finder-app-muig.onrender.com";
 
-type userData = {
+type UserData = {
     full_name: string;
     email: string;
+    readonly id?: number;
 };
 
-type fullUserData = {
+type FullUserData = {
     full_name: string;
     email: string;
     password: string;
 };
 
-type newPetData = {
+type NewPetData = {
     name: string;
     location: string;
     imageUrl: string[];
@@ -20,7 +21,7 @@ type newPetData = {
     last_lng: number;
 };
 
-type petData = {
+type PetData = {
     id: number;
     name: string;
     location: string;
@@ -30,7 +31,7 @@ type petData = {
     last_lng: number;
 };
 
-type reportData = {
+type ReportData = {
     reporter_name: string;
     phone_number: string;
     message: string;
@@ -39,7 +40,10 @@ type reportData = {
     userId: number;
 };
 
-export async function authUserInDB(email: string, password: string) {
+export async function authUserInDB(
+    email: string,
+    password: string
+): Promise<string | null> {
     try {
         const response = await fetch(API_BASE_URL + "/auth/token", {
             method: "POST",
@@ -58,11 +62,13 @@ export async function authUserInDB(email: string, password: string) {
         }
     } catch (err) {
         console.log(err);
-        return false;
+        return null;
     }
 }
 
-export async function createUserInDB(userData: fullUserData) {
+export async function createUserInDB(
+    userData: FullUserData
+): Promise<string | null> {
     try {
         const response = await fetch(API_BASE_URL + "/auth", {
             method: "POST",
@@ -84,7 +90,10 @@ export async function createUserInDB(userData: fullUserData) {
     }
 }
 
-export async function updateUserInDB(userData: userData, token: string) {
+export async function updateUserInDB(
+    userData: UserData,
+    token: string
+): Promise<boolean> {
     try {
         const response = await fetch(API_BASE_URL + "/users", {
             method: "PUT",
@@ -109,7 +118,9 @@ export async function updateUserInDB(userData: userData, token: string) {
     }
 }
 
-export async function getDataOfUserFromDB(token: string) {
+export async function getDataOfUserFromDB(
+    token: string
+): Promise<UserData | null> {
     try {
         const response = await fetch(API_BASE_URL + "/users", {
             method: "GET",
@@ -130,7 +141,10 @@ export async function getDataOfUserFromDB(token: string) {
     }
 }
 
-export async function updatePasswordInDB(password: string, token: string) {
+export async function updatePasswordInDB(
+    password: string,
+    token: string
+): Promise<boolean | null> {
     try {
         const response = await fetch(API_BASE_URL + "/users/password", {
             method: "PUT",
@@ -160,7 +174,10 @@ export async function updatePasswordInDB(password: string, token: string) {
     }
 }
 
-export async function createPetInDB(petData: newPetData, token: string) {
+export async function createPetInDB(
+    petData: NewPetData,
+    token: string
+): Promise<boolean | null> {
     try {
         const response = await fetch(API_BASE_URL + "/pets", {
             method: "POST",
@@ -182,7 +199,10 @@ export async function createPetInDB(petData: newPetData, token: string) {
     }
 }
 
-export async function getPetsAroundZoneInDB(lat: number, lng: number) {
+export async function getPetsAroundZoneInDB(
+    lat: number,
+    lng: number
+): Promise<[] | null> {
     try {
         const response = await fetch(
             API_BASE_URL + "/pets-cerca-de?lat=" + lat + "&lng=" + lng,
@@ -195,7 +215,7 @@ export async function getPetsAroundZoneInDB(lat: number, lng: number) {
             return data;
         }
         if (response.status === 400) {
-            return false;
+            return null;
         }
     } catch (err) {
         console.log(err);
@@ -203,7 +223,7 @@ export async function getPetsAroundZoneInDB(lat: number, lng: number) {
     }
 }
 
-export async function getPetsOfUserFromDB(userId: number) {
+export async function getPetsOfUserFromDB(userId: number): Promise<[] | null> {
     try {
         const response = await fetch(
             API_BASE_URL + "/pets" + "?userId=" + userId,
@@ -216,10 +236,10 @@ export async function getPetsOfUserFromDB(userId: number) {
             return data;
         }
         if (response.status === 400) {
-            return false;
+            return null;
         }
         if (response.status === 404) {
-            return false;
+            return null;
         }
     } catch (err) {
         console.log(err);
@@ -227,7 +247,10 @@ export async function getPetsOfUserFromDB(userId: number) {
     }
 }
 
-export async function getDataOfPetInDB(token: string, petId: number) {
+export async function getDataOfPetInDB(
+    token: string,
+    petId: number
+): Promise<PetData | null> {
     try {
         const response = await fetch(
             API_BASE_URL + "/pets/pet" + "?petId=" + petId,
@@ -254,7 +277,10 @@ export async function getDataOfPetInDB(token: string, petId: number) {
     }
 }
 
-export async function updatePetInDB(petData: petData, token: string) {
+export async function updatePetInDB(
+    petData: PetData,
+    token: string
+): Promise<boolean | null> {
     try {
         const response = await fetch(API_BASE_URL + "/pets", {
             method: "PUT",
@@ -279,7 +305,10 @@ export async function updatePetInDB(petData: petData, token: string) {
     }
 }
 
-export async function deletePetFromDB(petId: number, token: string) {
+export async function deletePetFromDB(
+    petId: number,
+    token: string
+): Promise<boolean | null> {
     try {
         const response = await fetch(API_BASE_URL + "/pets", {
             method: "DELETE",
@@ -304,7 +333,9 @@ export async function deletePetFromDB(petId: number, token: string) {
     }
 }
 
-export async function createReportInDB(reportData: reportData) {
+export async function createReportInDB(
+    reportData: ReportData
+): Promise<boolean | null> {
     try {
         const response = await fetch(API_BASE_URL + "/reports", {
             method: "POST",

@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 import { Container, ThemeProvider } from '@mui/material';
-import { CustomEditData } from "../editPersonalData";
-import { CustomEditPassword } from "../editPassword";
-import { useBackdropFilterState } from "../../atoms";
-import { menuDisplayTheme } from "./themes";
+import { CustomEditData } from '../editPersonalData';
+import { CustomEditPassword } from '../editPassword';
+import { useBackdropFilterState } from '../../atoms';
+import { menuDisplayTheme } from './themes';
 
 
 export function MenuDisplay(){
@@ -12,7 +12,7 @@ export function MenuDisplay(){
     return  (<ThemeProvider theme={menuDisplayTheme}>
                 <Container  disableGutters={true}
                             maxWidth={false} 
-                            className="menuDisplayContainer" 
+                            className='menuDisplayContainer' 
                             sx={{ backdropFilter: backDropFilter }} >
                     <CustomEditData></CustomEditData>
                     <CustomEditPassword></CustomEditPassword>

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, 
     Box, 
     ThemeProvider, 
@@ -16,8 +16,8 @@ import { HomeCard } from '../homeCards';
 import { CustomTextField } from '../../ui/textField';
 import { CustomButton } from '../../ui/button';
 import { CustomSnackbar } from '../../ui/snackbar';
-import { useGetPetsAroundZone } from "../../hooks/petsAround";
-import { useCreateReport } from "../../hooks/createReport";
+import { useGetPetsAroundZone } from '../../hooks/petsAround';
+import { useCreateReport } from '../../hooks/createReport';
 import { homeDisplayTheme } from './themes';
 
 
@@ -30,13 +30,13 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-type petData = {
+type PetData = {
     id: number;
     name: string;
     userId: number;
 }
 
-type userData = {
+type UserData = {
     reporter_name: string;
     phone: string;
     message: string;
@@ -47,9 +47,9 @@ export function HomeDisplay() {
 
     const { createReport } = useCreateReport();
 
-    const [petData, setPetData] = useState({} as petData);
+    const [petData, setPetData] = useState({} as PetData);
 
-    const [userData, setUserData] = useState({} as userData);
+    const [userData, setUserData] = useState({} as UserData);
 
     const [reportFormOpen, setReportFormOpen] = useState(false);
 
@@ -58,7 +58,11 @@ export function HomeDisplay() {
     const [openUncompleteSnackbar, setOpenUncompleteSnackbar] = useState(false);
     const [openFailSnackbar, setOpenFailSnackbar] = useState(false);
 
-    const handleClickFromCard = (petData) => {
+    useEffect(() => {
+        petsFound === null ? setOpenFailSnackbar(true) : null;
+    }, [petsFound])
+
+    const handleClickFromCard = (petData: PetData): void => {
         setPetData({
             id: petData.id,
             name: petData.name,
@@ -71,7 +75,7 @@ export function HomeDisplay() {
         setReportFormOpen(false);
     };
 
-    const handleInputsChange = (e, field) => {
+    const handleInputsChange = (e, field: string) => {
         e.preventDefault();
         setUserData({
             ...userData,
@@ -89,7 +93,8 @@ export function HomeDisplay() {
             return;
         }
 
-        const reportResponse = await createReport({
+        let reportResponse: boolean = false
+        reportResponse = await createReport({
             reporter_name: userData.reporter_name,
             phone_number: userData.phone,
             message: userData.message,
@@ -97,30 +102,31 @@ export function HomeDisplay() {
             pet_name: petData.name,
             userId: petData.userId
         })
-        if(reportResponse){
-            setOpenReload(false);
-            setOpenSuccessSnackbar(true);
-            handleCloseReportForm();
-        } else {
+
+        if(!reportResponse){
             setOpenReload(false);
             setOpenFailSnackbar(true);
         }
+
+        setOpenReload(false);
+        setOpenSuccessSnackbar(true);
+        handleCloseReportForm();
     }
 
     return (
         <ThemeProvider theme={homeDisplayTheme}>
-            <Container disableGutters={true} className="homeCardContainer">
-                <List className="listCard">
-                    {petsFound?.length < 1
-                        ?   <Container disableGutters={true} className="notFoundContainer">
-                                <Box    component="img" 
-                                        src="../../src/assets/notDog.png"
+            <Container disableGutters={true} className='homeCardContainer'>
+                <List className='listCard'>
+                    {petsFound?.length < 1 || !petsFound
+                        ?   <Container disableGutters={true} className='notFoundContainer'>
+                                <Box    component='img' 
+                                        src='../../src/assets/notDog.png'
                                         sx={{ 
                                             width: {xs: '100px', sm: '130px', md: '160px'}, 
                                             height: {xs: '100px', sm: '130px', md: '160px'}, 
                                         }} >
                                 </Box>
-                                <Typography variant="h4" className="notFoundText"> 
+                                <Typography variant='h4' className='notFoundText'> 
                                     No hay mascotas reportadas cerca de tu ubicación
                                 </Typography>
                             </Container>
@@ -141,68 +147,68 @@ export function HomeDisplay() {
                     <Container className='secondaryContainer' >
                         <CustomButton 
                                     onClick={handleCloseReportForm}
-                                    variant="text"
-                                    className="closeButton" >
+                                    variant='text'
+                                    className='closeButton' >
                             <CloseIcon />
                         </CustomButton>
                         <Typography
-                                variant="h4"
-                                className="reportTitle"
+                                variant='h4'
+                                className='reportTitle'
                                 gutterBottom >
                             Enviar reporte de {petData?.name}
                         </Typography>
                     </Container>
-                    <DialogContent className="dialogContent">
+                    <DialogContent className='dialogContent'>
                         <CustomTextField onChange={(e) => handleInputsChange(e, 'reporter_name')}
-                                        id="outlined-reporter-name"
-                                        label="Nombre"
-                                        placeholder="Ingresa tu nombre"
-                                        name="reporter_name"
+                                        id='outlined-reporter-name'
+                                        label='Nombre'
+                                        placeholder='Ingresa tu nombre'
+                                        name='reporter_name'
                                         InputLabelProps={{
                                             shrink: true,
                                         }} >
                         </CustomTextField>
                         <CustomTextField onChange={(e) => handleInputsChange(e, 'phone')}
-                                        id="outlined-reporter-name"
-                                        label="Teléfono"
-                                        placeholder="Ejem: 8888-8888"
-                                        name="phone_number"
+                                        id='outlined-reporter-name'
+                                        label='Teléfono'
+                                        placeholder='Ejem: 8888-8888'
+                                        name='phone_number'
                                         InputLabelProps={{
                                             shrink: true,
                                         }} >
                         </CustomTextField>
                         <TextField onChange={(e) => handleInputsChange(e, 'message')}
-                                id="outlined-multiline-static"
-                                label="¿Dónde lo viste?"
+                                id='outlined-multiline-static'
+                                label='¿Dónde lo viste?'
                                 multiline
                                 rows={5}
-                                name="message"
-                                className="messageTextField"
+                                name='message'
+                                className='messageTextField'
                                 InputLabelProps={{
                                     shrink: true,
                                 }}
                         />
                         <CustomButton   
-                                    sx={{ width: "100%" }}
-                                    variant="contained"
+                                    sx={{ width: '100%' }}
+                                    variant='contained'
                                     onClick={handleSendClick} >
                             Enviar información
                         </CustomButton>
                     </DialogContent>
                 </BootstrapDialog>
-                <CustomSnackbar open={openSuccessSnackbar} severity="success" onClose={setOpenSuccessSnackbar}>
+                <CustomSnackbar open={openSuccessSnackbar} severity='success' onClose={setOpenSuccessSnackbar}>
                     Reporte enviado exitosamente!
                 </CustomSnackbar>
-                <CustomSnackbar open={openUncompleteSnackbar} severity="warning" onClose={setOpenUncompleteSnackbar}>
+                <CustomSnackbar open={openUncompleteSnackbar} severity='warning' onClose={setOpenUncompleteSnackbar}>
                     Falta información por completar!
                 </CustomSnackbar>
-                <CustomSnackbar open={openFailSnackbar} severity="error" onClose={setOpenFailSnackbar}>
+                <CustomSnackbar open={openFailSnackbar} severity='error' onClose={setOpenFailSnackbar}>
                     Ha sucedido un error, intentalo de nuevo!
                 </CustomSnackbar>
                 <Backdrop
                     sx={{ color: '#fff', zIndex: 110 }}
                     open={openReload} >   
-                    <CircularProgress color="inherit" />
+                    <CircularProgress color='inherit' />
                 </Backdrop>
         </ThemeProvider>
     )

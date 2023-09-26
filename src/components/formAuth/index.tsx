@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import isEmail from 'validator/lib/isEmail';
 import { Typography,
     Box,
@@ -8,20 +8,21 @@ import { Typography,
     CircularProgress,
     Grow,
     ThemeProvider } from '@mui/material';
-import { CustomButton } from "../../ui/button";
-import { CustomTextField } from "../../ui/textField";
+import { CustomButton } from '../../ui/button';
+import { CustomTextField } from '../../ui/textField';
 import { CustomSnackbar } from '../../ui/snackbar';
-import { CustomPasswordField } from "../../ui/passwordField";
-import { useAuthData, useAuthUserInDB } from "../../hooks/authUser";
-import { formAuthTheme } from "./themes";
-import css from "./index.module.css";
+import { CustomPasswordField } from '../../ui/passwordField';
+import { useAuthData, useAuthUserInDB } from '../../hooks/authUser';
+import { formAuthTheme } from './themes';
+import css from './index.module.css';
 
 
 export function FormAuth(){
     const [authData, setAuthData] = useAuthData();
     const { login } = useAuthUserInDB();
 
-    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [openWrongSnackbar, setOpenWrongSnackbar] = useState(false);
+    const [openErrorSnackbar, setOpenErrorSnackbar] = useState(false);
 
     const [openReload, setOpenReload] = useState(false);
 
@@ -60,36 +61,39 @@ export function FormAuth(){
         setErrorLabel(false);
         setAuthData(email);
         const response = await login(email, password);
-        
+
         if (response) {
             setOpenReload(false)
             e.target.reset();
-            navigate("/menu");
+            navigate('/menu');
+        } else if(response === false) {
+            setOpenReload(false)
+            setOpenWrongSnackbar(true);
         } else {
             setOpenReload(false)
-            setOpenSnackbar(true);
+            setOpenErrorSnackbar(true);
         }
     }
 
     return (<ThemeProvider theme={formAuthTheme}>
                 <Grow in={growChecked}>
-                    <Container disableGutters={true} className="formAuthContainer">
-                        <Box    component="form" 
+                    <Container disableGutters={true} className='formAuthContainer'>
+                        <Box    component='form' 
                                 onSubmit={handleFormSubmit}
                                 sx={{   display: 'flex',
                                         flexDirection: 'column',
                                         width: '100%',
                                         gap: { xs: '28px', sm: '22px' , md: '16px', lg: '16px' }
                                 }} >
-                            <Typography variant="h3" className="title" >
+                            <Typography variant='h3' className='title' >
                                 Iniciar sesión
                             </Typography>
                             <CustomTextField
                                         required={true}
-                                        id="outlined-email"
-                                        label="Email"
-                                        placeholder="ejemplo@mail.com"
-                                        name="email"
+                                        id='outlined-email'
+                                        label='Email'
+                                        placeholder='ejemplo@mail.com'
+                                        name='email'
                                         onChange={handleEmailandPasswordInputs}
                                         error={errorLabel && isValidEmail === false} 
                             />
@@ -101,23 +105,26 @@ export function FormAuth(){
                                         name='password'
                                         onChange={handleEmailandPasswordInputs} >
                             </CustomPasswordField>
-                            <Typography variant="body2" className="text" >
+                            <Typography variant='body2' className='text' >
                                 ¿Aún no tienes cuenta?
                                 <Link to={'/sign-up'} className={css.link}>
                                     Regístrate
                                 </Link>
                             </Typography>
-                            <CustomButton type="submit" variant="contained" >
+                            <CustomButton type='submit' variant='contained' >
                                 Acceder
                             </CustomButton>
                         </Box>
-                        <CustomSnackbar open={openSnackbar} severity="error" onClose={setOpenSnackbar}>
+                        <CustomSnackbar open={openWrongSnackbar} severity='error' onClose={setOpenWrongSnackbar}>
                             Email o contraseña incorrectos!
+                        </CustomSnackbar>
+                        <CustomSnackbar open={openErrorSnackbar} severity='error' onClose={setOpenErrorSnackbar}>
+                            Ha ocurrido un error, inténtalo de nuevo!
                         </CustomSnackbar>
                         <Backdrop
                             sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
                             open={openReload} >   
-                            <CircularProgress color="inherit" />
+                            <CircularProgress color='inherit' />
                         </Backdrop>
                     </Container>
                 </Grow>

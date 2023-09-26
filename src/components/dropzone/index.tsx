@@ -48,11 +48,11 @@ export function MyDropzone(props){
         <ThemeProvider theme={dropzoneTheme}>
             <Container  {...getRootProps()} 
                         disableGutters={true} 
-                        className="dropzoneContainer" >
+                        className='dropzoneContainer' >
                 <input  {...getInputProps()} />
-                <Button variant="contained"
+                <Button variant='contained'
                         disabled={disabled}
-                        className="dropzoneButton" >
+                        className='dropzoneButton' >
                     Agregar fotos
                 </Button>
             </Container>

@@ -1,17 +1,22 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState } from 'react';
 import { Box, Container, Collapse, ThemeProvider } from '@mui/material';
 import SaveIcon from '@mui/icons-material/Save';
 import LoadingButton from '@mui/lab/LoadingButton';
 import isEmail from 'validator/lib/isEmail';
-import { CustomTextField } from "../../ui/textField";
+import { CustomTextField } from '../../ui/textField';
 import { CustomSnackbar } from '../../ui/snackbar';
-import { useUserDataUpdated, useUpdateUserInDB } from "../../hooks/updateUserData";
+import { useUserDataUpdated, useUpdateUserInDB } from '../../hooks/updateUserData';
 import { useBtnPasswordDisabledState,
     useBtnDataDisabledState,
-    useBackdropFilterState } from "../../atoms";
-import { getDataOfUserFromDB } from "../../lib/api";
-import { editPersonalDataTheme } from "./themes";
+    useBackdropFilterState } from '../../atoms';
+import { getDataOfUserFromDB } from '../../lib/api';
+import { editPersonalDataTheme } from './themes';
 
+
+type UserData = {
+    full_name: string;
+    email: string;
+};
 
 export function CustomEditData(){
     const [personalData, setPersonalData] = useUserDataUpdated();
@@ -55,7 +60,7 @@ export function CustomEditData(){
         setBtnSaveDataColor(eventNameFullFilled && eventEmailFullFilled ? '#fff' : 'rgba(0, 0, 0, 0.26)');
     }, [eventNameFullFilled, eventEmailFullFilled])
 
-    const handleInputsCompletation = (event, id) => {
+    const handleInputsCompletation = (event: React.ChangeEvent<HTMLInputElement>, id: string) => {
         if (id === 'outlined-name') {
             setNameFullFilled(Boolean(event.target.value.length));
         } 
@@ -64,9 +69,9 @@ export function CustomEditData(){
         }
     };
 
-    const pullData = async(token) => {
+    const pullData = async(token: string): Promise<boolean> => {
         const form: HTMLFormElement = document.querySelector('.formData');
-        const dataResponse = await getDataOfUserFromDB(token);
+        const dataResponse: UserData | null = await getDataOfUserFromDB(token);
         
         if(!dataResponse){
             return false;
@@ -82,7 +87,7 @@ export function CustomEditData(){
     const handleDataChange = async () => {
         setBtnDataLoading(true);
         setBtnPasswordDisabled(true);
-        const userToken = localStorage.getItem("user_token");
+        const userToken = localStorage.getItem('user_token');
 
         if(!userToken){
             setBtnDataLoading(false);
@@ -111,8 +116,8 @@ export function CustomEditData(){
     const handleDataSubmit = async(e) => {
         e.preventDefault();
         setBtnSaveLoading(true);
-        const full_name = e.target.full_name.value;
-        const email = e.target.email.value;
+        const full_name: string = e.target.full_name.value;
+        const email: string = e.target.email.value;
 
         if(!isEmail(e.target.email.value)){
             setOpenEmailSnackbar(true);
@@ -136,15 +141,16 @@ export function CustomEditData(){
             setButtonDataDisplay('initial');
             setBtnSaveLoading(false);
         } else {
+            setBtnSaveLoading(false);
             setOpenFailSnackbar(true);
         }
     }
 
     return <ThemeProvider theme={editPersonalDataTheme}>      
-                <Container disableGutters={true} className="editDataContainer" >
+                <Container disableGutters={true} className='editDataContainer' >
                     <LoadingButton  
                             disabled={btnDataDisabled}
-                            variant="outlined"
+                            variant='outlined'
                             className='editDataButton'
                             onClick={handleDataChange} 
                             sx={{ 
@@ -159,34 +165,34 @@ export function CustomEditData(){
                         Modificar datos personales
                     </LoadingButton>
                     <Collapse   in={collapseDataChecked} >
-                        <Container  className="secondaryDataContainer"
+                        <Container  className='secondaryDataContainer'
                                     disableGutters={true}
                                     sx={{ display: displayDivData }} >
-                            <Container  className="formDataContainer" 
+                            <Container  className='formDataContainer' 
                                         disableGutters={true}>
                                 {<Box   component='form'
                                         className='formData'    
                                         onSubmit={handleDataSubmit} >
                                     <CustomTextField
-                                        id="outlined-name"
-                                        label="Nombre"
-                                        placeholder="Ingresa un nombre"
-                                        name="full_name"
+                                        id='outlined-name'
+                                        label='Nombre'
+                                        placeholder='Ingresa un nombre'
+                                        name='full_name'
                                         onChange={(event) => handleInputsCompletation(event, 'outlined-name')}
                                     />
                                     <CustomTextField
-                                        id="outlined-email"
-                                        label="Email"
-                                        placeholder="ejemplo@mail.com"
-                                        name="email"
+                                        id='outlined-email'
+                                        label='Email'
+                                        placeholder='ejemplo@mail.com'
+                                        name='email'
                                         onChange={(event) => handleInputsCompletation(event, 'outlined-email')}
                                         error={errorLabel && isValidEmail === false} 
                                     />
                                     <LoadingButton  
                                                 disabled={btnSaveDataDisabled}
-                                                type="submit"
-                                                variant="text"
-                                                className="submitDataButton"
+                                                type='submit'
+                                                variant='text'
+                                                className='submitDataButton'
                                                 sx={{ color: btnSaveDataColor }}
                                                 loading={btnSaveLoading}
                                                 loadingIndicator={  <span style={{color: 'white', textAlign: 'center'}}>
@@ -200,19 +206,19 @@ export function CustomEditData(){
                             </Container>
                         </Container>
                     </Collapse>
-                    <CustomSnackbar open={openEmailSnackbar} severity="error" onClose={setOpenEmailSnackbar}>
+                    <CustomSnackbar open={openEmailSnackbar} severity='error' onClose={setOpenEmailSnackbar}>
                         No es un formato de correo válido!
                     </CustomSnackbar>
-                    <CustomSnackbar open={openTokenSnackbar} severity="error" onClose={setOpenTokenSnackbar}>
+                    <CustomSnackbar open={openTokenSnackbar} severity='error' onClose={setOpenTokenSnackbar}>
                         No tienes los permisos para esta acción!
                     </CustomSnackbar>
-                    <CustomSnackbar open={openSuccessSnackbar} severity="success" onClose={setOpenSuccessSnackbar}>
+                    <CustomSnackbar open={openSuccessSnackbar} severity='success' onClose={setOpenSuccessSnackbar}>
                         Los datos han sido actualizados!
                     </CustomSnackbar>
-                    <CustomSnackbar open={openUnsuccessSnackbar} severity="error" onClose={setOpenUnsuccessSnackbar}>
+                    <CustomSnackbar open={openUnsuccessSnackbar} severity='error' onClose={setOpenUnsuccessSnackbar}>
                         Ha ocurrido un error, intenta nuevamente!
                     </CustomSnackbar>
-                    <CustomSnackbar open={openFailSnackbar} severity="error" onClose={setOpenFailSnackbar}>
+                    <CustomSnackbar open={openFailSnackbar} severity='error' onClose={setOpenFailSnackbar}>
                         Ha ocurrido un error, datos no actualizados!
                     </CustomSnackbar>
                 </Container>

@@ -4,7 +4,7 @@ import { useRecoilState, useRecoilValue } from "recoil";
 import { atom, selector } from "recoil";
 import { getPetsAroundZoneInDB } from "../../lib/api";
 
-type locationData = {
+type LocationData = {
     lat: number;
     lng: number;
 };
@@ -17,17 +17,17 @@ const atomPetsAround = atom({
     },
 });
 
-const petsAroundZoneState = selector({
+const petsAroundZoneState = selector<[] | null>({
     key: "petsAroundZoneState",
     get: async ({ get }) => {
         try {
-            const data: locationData = get(atomPetsAround);
+            const data: LocationData = get(atomPetsAround);
             if (data.lat !== 0) {
                 const response = await getPetsAroundZoneInDB(
                     data.lat,
                     data.lng
                 );
-                if (response) {
+                if (response.length > 0) {
                     return response;
                 } else {
                     return [];
@@ -35,7 +35,7 @@ const petsAroundZoneState = selector({
             }
         } catch (e) {
             console.error("Ha habido un error: ", e);
-            return false;
+            return null;
         }
     },
 });

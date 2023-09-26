@@ -1,7 +1,7 @@
 const cloudName = "dpnltzaxy";
 const uploadPreset = "vvtvx8pc";
 
-export async function imgToURLCloudinary(images) {
+export async function imgToURLCloudinary(images: string[]): Promise<string[]> {
     try {
         const uploadResults: string[] = [];
 
@@ -26,5 +26,6 @@ export async function imgToURLCloudinary(images) {
         return uploadResults;
     } catch (error) {
         console.error("Upload error:", error);
+        return [];
     }
 }

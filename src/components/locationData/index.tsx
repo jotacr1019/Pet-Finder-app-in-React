@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button, 
     ThemeProvider, 
     Container, 
@@ -7,29 +7,27 @@ import { Button,
     InputAdornment, 
     Dialog } from '@mui/material';
 import { styled } from '@mui/material/styles';
-import { Mapbox } from "../../components/mapbox";
-import { CustomSnackbar } from "../../ui/snackbar";
-import { CustomButton } from "../../ui/button";
-import { locationButtonTheme } from "./themes";
+import { Mapbox } from '../../components/mapbox';
+import { CustomSnackbar } from '../../ui/snackbar';
+import { CustomButton } from '../../ui/button';
+import { locationButtonTheme } from './themes';
 
 
-type mapboxData = {
-    mapbox: {
-        query: string,
-        coords: {
-            newLat: number,
-            newLng: number
-        }
-    }
+type Coords = {
+    lat: number,
+    lng: number
 }
 
-const initialState: mapboxData = {
-    mapbox: {
-        query: '',
-        coords: {
-            newLat: 0,
-            newLng: 0
-        }
+type MapboxData = {
+    query: string,
+    coords: Coords
+}
+
+const initialState: MapboxData = {
+    query: '',
+    coords: {
+        lat: 0,
+        lng: 0
     }
 }
 
@@ -42,7 +40,7 @@ const BootstrapDialog = styled(Dialog)(({ theme }) => ({
     },
 }));
 
-async function getLocationOfUser() {
+async function getLocationOfUser(): Promise<Coords> {
     return new Promise((resolve, reject) => {
         if (!navigator.geolocation) {
             reject(false);
@@ -52,7 +50,7 @@ async function getLocationOfUser() {
             resolve({ lat: coords.latitude, lng: coords.longitude });
         };
         const onErrorDeUbicacion = (err) => {
-            console.log("Error obteniendo ubicación: ", err);
+            console.log('Error obteniendo ubicación: ', err);
             reject(false);
         };
         navigator.geolocation.getCurrentPosition(
@@ -63,7 +61,7 @@ async function getLocationOfUser() {
 }
 
 export function LocationData(){
-    const [query, setQuery] = useState("");
+    const [query, setQuery] = useState('');
 
     const [mapBoxFormData, setMapboxFormData] = useState(initialState);
 
@@ -76,39 +74,39 @@ export function LocationData(){
     const navigate = useNavigate();
 
     useEffect(() => {
-        setQuery(mapBoxFormData.mapbox.query);
+        setQuery(mapBoxFormData.query);
     }, [mapBoxFormData])
 
     useEffect(() => {
-        query !== "" ? setBtnSearchDisabled(false) : setBtnSearchDisabled(true);
+        query !== '' ? setBtnSearchDisabled(false) : setBtnSearchDisabled(true);
     }, [query])
 
     const handleClick = async() => {
         try{
-            const response: any = await getLocationOfUser();
+            const response = await getLocationOfUser();
             const lat = response.lat;
             const lng = response.lng;
             navigate(`/home/location=lat=${lat}&lng=${lng}`);
         }
         catch(err){
-            console.log(err);
             setMapboxOpen(true);
         }
     }
 
     const handleSearch = async (e) => {
         e.preventDefault();
-        const lat = mapBoxFormData.mapbox.coords.newLat;
-        const lng = mapBoxFormData.mapbox.coords.newLng;
+        const lat = mapBoxFormData.coords.lat;
+        const lng = mapBoxFormData.coords.lng;
         navigate(`/home/location=lat=${lat}&lng=${lng}`);
     }
 
-    function handleMapboxChange(data) {
+    function handleMapboxChange(data: MapboxData): void {
         setMapboxFormData({
             ...mapBoxFormData,
-            mapbox: data,
+            query: data.query,
+            coords: data.coords
         });
-        data.query === "" ? setOpenFailSnackbar(true) : setOpenFailSnackbar(false);
+        data.query === '' ? setOpenFailSnackbar(true) : setOpenFailSnackbar(false);
     }
 
     const handleClose = () => {
@@ -117,11 +115,11 @@ export function LocationData(){
 
     return  (
         <ThemeProvider theme={locationButtonTheme}>
-            <Container disableGutters={true} className="locationContainer">
-                <CustomButton   className="locationButton"
+            <Container disableGutters={true} className='locationContainer'>
+                <CustomButton   className='locationButton'
                                 onClick={handleClick}
-                                variant="contained" 
-                                size="large">
+                                variant='contained' 
+                                size='large'>
                     Dar mi ubicación actual
                 </CustomButton>
                 <BootstrapDialog    open={mapboxOpen}
@@ -129,27 +127,27 @@ export function LocationData(){
                     <Container disableGutters={true} className='mapboxContainer' >
                         <CustomButton 
                                     onClick={handleClose}
-                                    variant="outlined"
-                                    className="closeButton" >
+                                    variant='outlined'
+                                    className='closeButton' >
                             Cerrar
                         </CustomButton>
                         <Mapbox onChange={handleMapboxChange}></Mapbox>
-                        <Container className="searchContainer" disableGutters={true} >
+                        <Container className='searchContainer' disableGutters={true} >
                             <TextField
                                 disabled
-                                id="location-search"
-                                placeholder="Ubicación"
+                                id='location-search'
+                                placeholder='Ubicación'
                                 value={query}
-                                className="searchInput"
+                                className='searchInput'
                                 InputProps={{
                                     endAdornment: (
-                                        <InputAdornment position="start">
+                                        <InputAdornment position='start'>
                                             <Button 
                                                     disabled={btnSearchDisabled}
                                                     onClick={handleSearch}
-                                                    type="submit"
-                                                    variant="contained"
-                                                    className="searchButton" >
+                                                    type='submit'
+                                                    variant='contained'
+                                                    className='searchButton' >
                                                 Buscar
                                             </Button>
                                         </InputAdornment>
@@ -160,7 +158,7 @@ export function LocationData(){
                     </Container>
                 </BootstrapDialog>
             </Container>
-            <CustomSnackbar open={openFailSnackbar} severity="warning" onClose={setOpenFailSnackbar}>
+            <CustomSnackbar open={openFailSnackbar} severity='warning' onClose={setOpenFailSnackbar}>
                 Intenta con otra dirección!
             </CustomSnackbar>
         </ThemeProvider> )
