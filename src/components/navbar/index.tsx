@@ -90,7 +90,8 @@ export function Navbar() {
                                     alignItems: 'center' 
                                 }} >
                             <Avatar className='avatar'
-                                    src='../../src/assets/dog2.png' 
+                                    src='../../src/assets/dog2.png'
+                                    alt='dog-logo'
                             />
                             <Typography variant='h6' 
                                         component='div' 
