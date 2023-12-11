@@ -12,4 +12,5 @@
 
 _ _ _
 
-#### Nota: Al entrar por primera vez a la aplicación, puede que tarde en cargar las peticiones, debido a que el servicio de hosting se 'apaga' o deja de escuchar peticiones después cierto tiempo de no darle uso. Debido a esto los tests pueden no pasar a la primera vez.
+> [!NOTE]  
+> Al entrar por primera vez a la aplicación, puede que tarde en cargar las peticiones, debido a que el servicio de hosting se 'apaga' o deja de escuchar peticiones después cierto tiempo de no darle uso. Debido a esto los tests pueden no pasar a la primera vez.
